@@ -1,16 +1,16 @@
 import { NavItem } from "@/@types/navitems";
-import { Grid, Users } from "lucide-react";
+import { DashboardIcon, UserIcon } from "@/icon/icon";
 
 export const NAV_ITEMS: NavItem[] = [
   {
     name: "Dashboard",
     path: "/overview",
-    icon: <Grid className="w-5 h-5 mr-3" />,
+    icon: <DashboardIcon />,
   },
   {
     name: "User Management",
     path: "/user-management",
-    icon: <Users className="w-5 h-5 mr-3" />,
+    icon: <UserIcon />,
     subItems: [
       { name: "All Users", path: "/user-management/all-users" },
       { name: "Active Users", path: "/user-management/active-users" },
@@ -22,7 +22,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     name: "Transactions",
     path: "/transactions",
-    icon: <Users className="w-5 h-5 mr-3" />,
+    icon: <DashboardIcon />,
     subItems: [
       { name: "All Transactions", path: "/transactions/all-transactions" },
       { name: "Confirmed", path: "/transactions/confirmed" },

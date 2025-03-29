@@ -3,32 +3,21 @@
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 import { MoreVertical } from "lucide-react"
+import { UsersTableProps } from "../../@types/dashbaord"
 
-export interface User {
-  id: string
-  name: string
-  avatar: string
-  transferred: number
-  country: string
-  email: string
-  joinDate: string
-}
 
-interface UsersTableProps {
-  users: User[]
-}
 
 export default function UsersTable({ users }: UsersTableProps) {
   const [activeMenu, setActiveMenu] = useState<string | null>(null)
   const menuRef = useRef<HTMLDivElement>(null)
 
-  const toggleMenu = (userId: string) => {
-    if (activeMenu === userId) {
-      setActiveMenu(null)
-    } else {
-      setActiveMenu(userId)
-    }
-  }
+  // const toggleMenu = (userId: string) => {
+  //   if (activeMenu === userId) {
+  //     setActiveMenu(null)
+  //   } else {
+  //     setActiveMenu(userId)
+  //   }
+  // }
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -86,7 +75,6 @@ export default function UsersTable({ users }: UsersTableProps) {
                 <td className="px-4 py-3 border-t border-b border-r border-[#EBE8FF] rounded-r-lg text-right whitespace-nowrap">
                   <div className="relative inline-block" ref={menuRef}>
                     <button
-                      onClick={() => toggleMenu(user.id)}
                       className="p-1 rounded-full hover:bg-gray-100"
                       aria-label="More options"
                     >
@@ -99,7 +87,6 @@ export default function UsersTable({ users }: UsersTableProps) {
                           <button
                             className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             onClick={() => {
-                              // onUserAction?.("view", user)
                               setActiveMenu(null)
                             }}
                           >
@@ -108,7 +95,6 @@ export default function UsersTable({ users }: UsersTableProps) {
                           <button
                             className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             onClick={() => {
-                              // onUserAction?.("edit", user)
                               setActiveMenu(null)
                             }}
                           >
@@ -117,7 +103,6 @@ export default function UsersTable({ users }: UsersTableProps) {
                           <button
                             className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                             onClick={() => {
-                              // onUserAction?.("delete", user)
                               setActiveMenu(null)
                             }}
                           >

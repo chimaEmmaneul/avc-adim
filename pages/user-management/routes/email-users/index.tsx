@@ -6,7 +6,6 @@ import "react-quill/dist/quill.snow.css"
 import { ChevronDown } from "lucide-react"
 import { modules } from "../../constants/config"
 
-// Dynamically import ReactQuill to avoid SSR issues
 const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
   loading: () => <div className="h-64 border border-gray-300 rounded-md animate-pulse bg-gray-50"></div>,
@@ -23,7 +22,6 @@ export default function EmailUsers() {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault()
-    // Handle form submission logic here
     console.log({
       user: selectedUser,
       subject,
@@ -36,7 +34,6 @@ export default function EmailUsers() {
     <div className="">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          {/* User Dropdown */}
           <div>
             <label htmlFor="user" className="block text-sm font-medium text-gray-700 mb-1">
               User<span className="text-red-500">*</span>
@@ -70,7 +67,6 @@ export default function EmailUsers() {
             </div>
           </div>
 
-          {/* Subject Input */}
           <div>
             <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
               Subject<span className="text-red-500">*</span>
@@ -104,7 +100,7 @@ export default function EmailUsers() {
         <div className="flex justify-center ">
           <button
             type="submit"
-            className="px-6 py-2 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
+            className="px-10 py-2 bg-main text-white font-medium rounded-md  focus:outline-none transition-colors"
           >
             Send Email
           </button>

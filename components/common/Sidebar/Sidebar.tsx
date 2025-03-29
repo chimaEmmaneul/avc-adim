@@ -15,7 +15,7 @@ export default function Sidebar() {
   return (
     <div className="h-screen sticky top-0 left-0 hidden   w-[320px] bg-black md:flex flex-col overflow-y-auto">
       <div className="p-6">
-        <Image src="/img/azanypay.png" alt="AZANYPAY" width={207} height={87} className="mx-auto" />
+        <Image src="/img/avclogo.png" alt="AZANYPAY" width={190} height={85} className="mx-auto" />
       </div>
 
       <div className="mt-6 flex-1 mx-3 max-h-[60rem] overflow-y-auto">
@@ -33,11 +33,11 @@ export default function Sidebar() {
                   <AccordionItem value={item.name} className="border-none">
                     <AccordionTrigger
                       className={cn(
-                        "flex items-center hover:no-underline whitespace-nowrap gap-3 px-3 py-3 text-gray-400 hover:text-white transition-colors rounded-[10px] mx-4",
-                        isActive && "bg-white text-red-600 hover:text-red-600",
+                        "flex items-center hover:no-underline whitespace-nowrap gap-3 px-2 py-3 text-gray-400 hover:text-yellow-700 transition-colors rounded-[10px] mx-4",
+                        isActive && "bg-white text-main ",
                       )}
                     >
-                      <div className="flex items-center">
+                        <div className="flex items-center gap-4">
                         {item.icon}
                         <span className="font-medium">{item.name}</span>
                       </div>
@@ -69,7 +69,7 @@ export default function Sidebar() {
                 <Link
                   href={item.path}
                   className={cn(
-                    "flex items-center px-6 py-3 text-gray-400 hover:text-white whitespace-nowrap transition-colors",
+                    "flex items-center gap-4 px-6 py-3 text-gray-400 hover:text-white whitespace-nowrap transition-colors",
                     isActive && "text-white",
                   )}
                 >

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -38,14 +39,13 @@ export default function LoginForm() {
       <div className="w-full max-w-md p-6">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-6">
-            <Image src="/img/azanypay.png" alt="AZANYPAY" width={124} height={52} className="mx-auto" />
+            <Image src="/img/avclogo.png" alt="AZANYPAY" width={124} height={52} className="mx-auto" />
           </div>
           <h2 className="text-2xl font-bold uppercase mb-4 text-black">Admin Login</h2>
-          <p className="text-[#2B2B2B]">Manage the Azany Pay System Operations</p>
+          <p className="text-[#2B2B2B]">Manage the African Vision Card System Operations</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Email Field */}
           <div className="space-y-2">
             <label htmlFor="email" className="block text-sm text-black font-medium">
               Email Address
@@ -60,7 +60,6 @@ export default function LoginForm() {
             {errors.email && <p className="text-main text-sm">{errors.email.message}</p>}
           </div>
 
-          {/* Password Field */}
           <div className="space-y-2">
             <label htmlFor="password" className="block text-sm text-black font-medium">
               Password
@@ -83,7 +82,6 @@ export default function LoginForm() {
             {errors.password && <p className="text-main text-sm">{errors.password.message}</p>}
           </div>
 
-          {/* Remember Me & Forgot Password */}
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <input type="checkbox" id="rememberMe" />
@@ -96,8 +94,7 @@ export default function LoginForm() {
             </a>
           </div>
 
-          {/* Login Button */}
-          <Button type="submit" className="w-full py-3 bg-main hover:bg-red-700 text-white h-12">
+          <Button type="submit" className="w-full py-3 bg-main  text-white h-12">
             Login
           </Button>
         </form>

@@ -2,8 +2,9 @@
 
 import { useState } from "react"
 import { type User, UserStatus } from "@/@types/users"
-import { ChevronLeft, ChevronRight, UserIcon } from "lucide-react"
+import { UserIcon } from "lucide-react"
 import { ActionIcon } from "@/icon/icon"
+import Pagination from "@/shared/Pagination"
 
 interface UserTableProps {
   data: User[]
@@ -14,22 +15,6 @@ interface UserTableProps {
 const UserTable = ({ data, itemsPerPage }: UserTableProps) => {
   const [currentPage, setCurrentPage] = useState(1)
   const totalPages = Math.ceil(data.length / itemsPerPage)
-
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1)
-    }
-  }
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1)
-    }
-  }
-
-  const handlePageClick = (page: number) => {
-    setCurrentPage(page)
-  }
 
   // Get current items
   const indexOfLastItem = currentPage * itemsPerPage
@@ -68,7 +53,7 @@ const UserTable = ({ data, itemsPerPage }: UserTableProps) => {
           <thead>
             <tr className="border-b">
               {["", "USERNAME", "EMAIL", "PHONE", "STATUS", "ACTION"].map((header) => (
-                <th key={header} className="text-left py-3 px-2 font-semibold text-sm text-black">
+                <th key={header} className="text-left py-3 px-4 font-semibold text-sm text-black whitespace-nowrap">
                   {header}
                 </th>
               ))}
@@ -82,16 +67,16 @@ const UserTable = ({ data, itemsPerPage }: UserTableProps) => {
                     <UserIcon size={16} className="text-gray-600" />
                   </div>
                 </td>
-                <td className="py-4 px-2 ">
+                <td className="py-4 px-4  whitespace-nowrap">
                   {user.username}
                 </td>
-                <td className="py-4 px-2">{user.email}</td>
-                <td className="py-4 px-2">{user.phone}</td>
-                <td className="py-4 px-2 text-xs">{renderStatusBadge(user.status)}</td>
-                <td className="py-4 px-2">
+                <td className="py-4 px-4 whitespace-nowrap">{user.email}</td>
+                <td className="py-4 px-4 whitespace-nowrap">{user.phone}</td>
+                <td className="py-4 px-4 whitespace-nowrap">{renderStatusBadge(user.status)}</td>
+                <td className="py-4 px-4 whitespace-nowrap">
                   <button
                     // onClick={() => onDelete(user.id)}
-                    className="w-8 h-8 bg-[#EC1A25] rounded-[4px] flex items-center justify-center text-white  "
+                    className="w-8 h-8 bg-main rounded-[4px] flex items-center justify-center text-white  "
                   >
                     <ActionIcon />
                   </button>
@@ -103,34 +88,8 @@ const UserTable = ({ data, itemsPerPage }: UserTableProps) => {
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-end items-center mt-5 gap-1">
-        <button
-          onClick={handlePrevPage}
-          disabled={currentPage === 1}
-          className="w-8 h-8 flex items-center justify-center border rounded disabled:opacity-50"
-        >
-          <ChevronLeft size={16} />
-        </button>
+      <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
 
-        {Array.from({ length: totalPages }).map((_, index) => (
-          <button
-            key={index}
-            onClick={() => handlePageClick(index + 1)}
-            className={`w-8 h-8 flex items-center justify-center border rounded ${currentPage === index + 1 ? "bg-red-500 text-white border-red-500" : "hover:bg-gray-50"
-              }`}
-          >
-            {index + 1}
-          </button>
-        ))}
-
-        <button
-          onClick={handleNextPage}
-          disabled={currentPage === totalPages}
-          className="w-8 h-8 flex items-center justify-center border rounded disabled:opacity-50"
-        >
-          <ChevronRight size={16} />
-        </button>
-      </div>
     </div>
   )
 }

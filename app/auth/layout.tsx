@@ -19,8 +19,8 @@ export default function AuthLayout({
       className={`grid grid-cols-1 md:grid-cols-2 h-screen`} >
       <div className=" flex-col justify-between p-4 bg-onboard bg-repeat bg-center bg-cover hidden md:flex">
         <Image
-          src={"/img/azanypay.png"}
-          alt="Azany"
+          src={"/img/avclogo.png"}
+          alt="afican vision card"
           width={180}
           height={45}
           className=""
