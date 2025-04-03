@@ -1,21 +1,21 @@
-export interface MetricCardProps {
+export type MetricCardProps = {
   title: string;
   value: string;
   percentChange: number;
   viewText: string;
   icon: React.ReactNode;
-}
+};
 
-export interface MetricData {
+export type MetricData = {
   id: string;
   title: string;
   value: string;
   percentChange: number;
   viewText: string;
   icon: React.ReactNode;
-}
+};
 
-export interface User {
+export type User = {
   id: string;
   name: string;
   avatar: string;
@@ -23,8 +23,18 @@ export interface User {
   country: string;
   email: string;
   joinDate: string;
-}
+};
 
-export interface UsersTableProps {
+export type UsersTableProps = {
   users: User[];
-}
+};
+
+export type RegionData = {
+  name: string;
+  value: number;
+  color: string;
+};
+
+export type UserRegionAnalyticsProps = {
+  regions: RegionData[];
+};

@@ -26,10 +26,9 @@ const TransactionTable = ({ data, itemsPerPage }: UserTableProps) => {
   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem)
 
 
-
   return (
     <div className="w-full mt-4">
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto mb-6">
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b">

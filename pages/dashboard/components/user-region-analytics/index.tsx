@@ -4,28 +4,16 @@
 import { useState } from "react"
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, TooltipProps } from "recharts"
 import { ChevronRight } from "lucide-react"
-
-interface RegionData {
-  name: string
-  value: number
-  color: string
-}
-
-interface UserRegionAnalyticsProps {
-  regions: RegionData[]
-}
-
+import { UserRegionAnalyticsProps } from "../../@types/dashbaord"
 
 const UserRegionAnalytics = ({ regions }: UserRegionAnalyticsProps) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const totalUsers = regions.reduce((sum, region) => sum + region.value, 0)
 
-  // Format number with k suffix
   const formatNumber = (num: number): string => {
     return num >= 1000 ? `${(num / 1000).toFixed(1)}k` : num.toString()
   }
 
-  // Format for tooltip value
   const formatTooltipValue = (value: number) => {
     return [`${formatNumber(value)} Users`, `${((value / totalUsers) * 100).toFixed(1)}%`]
   }
@@ -92,11 +80,6 @@ const UserRegionAnalytics = ({ regions }: UserRegionAnalyticsProps) => {
               <Tooltip
                 formatter={formatTooltipValue}
                 content={<CustomTooltip />}
-              // contentStyle={{
-              //   borderRadius: "6px",
-              //   border: "1px solid #e2e8f0",
-              //   boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-              // }}
               />
             </PieChart>
           </ResponsiveContainer>

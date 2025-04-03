@@ -13,8 +13,8 @@ const Header = () => {
   }
 
   const titleHeader = () => {
-    const primaryRoute = pathname.split("/")[1]
-    return primaryRoute.split("-").join(" ")
+    const primaryRoute = pathname?.split("/")[1]
+    return primaryRoute?.split("-").join(" ")
   }
 
   return (
@@ -32,7 +32,7 @@ const Header = () => {
             {/* <GreenCheckIcon className="z-10 " /> */}
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="hidden md:flex flex-col">
           <span className="text-sm font-medium text-gray-900">{user.name}</span>
           <span className="text-xs bg-[#0085FF1A]/10  text-[#0085FF]">{user.email}</span>
         </div>
