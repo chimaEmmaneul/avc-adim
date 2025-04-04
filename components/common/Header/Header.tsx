@@ -1,10 +1,12 @@
 "use client"
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Bell } from 'lucide-react'
+import { Bell, Menu } from 'lucide-react'
 import { usePathname } from 'next/navigation'
+import MobileSidebar from '../mobilesidebar'
 
 const Header = () => {
+  const [open, setIsOpen] = React.useState(false)
   const pathname = usePathname()
   const user = {
     name: "Felix Johnson",
@@ -36,7 +38,11 @@ const Header = () => {
           <span className="text-sm font-medium text-gray-900">{user.name}</span>
           <span className="text-xs bg-[#0085FF1A]/10  text-[#0085FF]">{user.email}</span>
         </div>
+
+        <Menu size={30} className='md:hidden' onClick={() => setIsOpen(true)} />
       </div>
+
+      <MobileSidebar open={open} setIsOpen={setIsOpen} />
     </div>
   )
 }
