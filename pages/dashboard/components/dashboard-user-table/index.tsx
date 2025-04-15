@@ -4,13 +4,14 @@ import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 import { MoreVertical } from "lucide-react"
 import { UsersTableProps } from "../../@types/dashbaord"
+import { useRouter } from "next/navigation"
 
 
 
 export default function UsersTable({ users }: UsersTableProps) {
   const [activeMenu, setActiveMenu] = useState<string | null>(null)
   const menuRef = useRef<HTMLDivElement>(null)
-
+  const router = useRouter()
   // const toggleMenu = (userId: string) => {
   //   if (activeMenu === userId) {
   //     setActiveMenu(null)
@@ -75,42 +76,13 @@ export default function UsersTable({ users }: UsersTableProps) {
                 <td className="px-4 py-3 border-t border-b border-r border-[#EBE8FF] rounded-r-lg text-right whitespace-nowrap">
                   <div className="relative inline-block" ref={menuRef}>
                     <button
+                      onClick={() => router.push(`/overview/${user.id}`)}
                       className="p-1 rounded-full hover:bg-gray-100"
                       aria-label="More options"
                     >
                       <MoreVertical className="h-5 w-5 text-red-500" />
                     </button>
 
-                    {activeMenu === user.id && (
-                      <div className="absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
-                        <div className="py-1" role="menu" aria-orientation="vertical">
-                          <button
-                            className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            onClick={() => {
-                              setActiveMenu(null)
-                            }}
-                          >
-                            View Profile
-                          </button>
-                          <button
-                            className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            onClick={() => {
-                              setActiveMenu(null)
-                            }}
-                          >
-                            Edit User
-                          </button>
-                          <button
-                            className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                            onClick={() => {
-                              setActiveMenu(null)
-                            }}
-                          >
-                            Delete User
-                          </button>
-                        </div>
-                      </div>
-                    )}
                   </div>
                 </td>
               </tr>
