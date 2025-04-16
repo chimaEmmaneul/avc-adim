@@ -1,16 +1,17 @@
 import { NavItem } from "@/@types/navitems";
-import { DashboardIcon, UserIcon } from "@/icon/icon";
+// import { DashboardIcon, SettingsIcon, TransactionIcon, UserIcon } from "@/icon/icon";
+import { BadgeDollarSign, Bolt, LayoutGridIcon, UserRoundCog } from "lucide-react";
 
 export const NAV_ITEMS: NavItem[] = [
   {
     name: "Dashboard",
     path: "/overview",
-    icon: <DashboardIcon />,
+    icon: <LayoutGridIcon />,
   },
   {
     name: "User Management",
     path: "/user-management",
-    icon: <UserIcon />,
+    icon: <UserRoundCog />,
     subItems: [
       { name: "All Users", path: "/user-management/all-users" },
       { name: "Active Users", path: "/user-management/active-users" },
@@ -22,12 +23,17 @@ export const NAV_ITEMS: NavItem[] = [
   {
     name: "Transactions",
     path: "/transactions",
-    icon: <DashboardIcon />,
+    icon: <BadgeDollarSign />,
     subItems: [
       { name: "All Transactions", path: "/transactions/all-transactions" },
       { name: "Confirmed", path: "/transactions/confirmed" },
       { name: "Pending", path: "/transactions/pending" },
       { name: "Declined", path: "/transactions/declined" },
     ],
+  },
+  {
+    name: "Settings",
+    path: "/settings",
+    icon: <Bolt />,
   },
 ]

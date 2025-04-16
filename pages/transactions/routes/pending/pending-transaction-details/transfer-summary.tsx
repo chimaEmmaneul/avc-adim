@@ -2,15 +2,14 @@ import React from 'react'
 import { Button } from '@/components/ui/button'
 import { TransferInfo } from '@/pages/transactions/@types/transaction'
 import { Copy, Download } from 'lucide-react'
+import { TransactionDetailsIcon } from '@/icon/icon'
 
 const TransferSummary = (transferInfo: TransferInfo) => {
   return (
     <div className="mt-10 border border-[#EEEEEE] rounded-sm p-4">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 mt-2">
         <div className="flex items-center gap-2 mb-4 md:mb-0">
-          <div className="h-5 w-5 bg-red-500 flex items-center justify-center">
-            <span className="text-white text-xs">⬜</span>
-          </div>
+          <TransactionDetailsIcon />
           <h2 className="text-lg font-semibold">Transfer Summary</h2>
         </div>
         <div className="flex gap-2">

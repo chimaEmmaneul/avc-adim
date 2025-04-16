@@ -1,3 +1,4 @@
+import { SenderIcon } from '@/icon/icon'
 import { SenderInfo } from '@/pages/transactions/@types/transaction'
 import React from 'react'
 
@@ -5,9 +6,7 @@ const Sender = (senderInfo: SenderInfo) => {
   return (
     <div className="space-y-4 border border-[#EEEEEE] rounded-sm p-4">
       <div className="flex items-center gap-2 mb-4">
-        <div className="h-5 w-5 bg-red-500 flex items-center justify-center">
-          <span className="text-white text-xs">⬜</span>
-        </div>
+        <SenderIcon />
         <h2 className="text-lg font-semibold">Sender Summary</h2>
       </div>
 

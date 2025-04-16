@@ -1,13 +1,12 @@
 import React from 'react'
 import { RecipientInfo } from '@/pages/transactions/@types/transaction'
+import { ReceipientIcon } from '@/icon/icon'
 
 const Recipient = (recipientInfo: RecipientInfo) => {
   return (
     <div className="space-y-4 border border-[#EEEEEE] rounded-sm p-4">
       <div className="flex items-center gap-2 mb-4">
-        <div className="h-5 w-5 bg-red-500 flex items-center justify-center">
-          <span className="text-white text-xs">⬜</span>
-        </div>
+        <ReceipientIcon />
         <h2 className="text-lg font-semibold">Recipient Summary</h2>
       </div>
 
