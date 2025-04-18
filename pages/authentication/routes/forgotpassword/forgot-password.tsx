@@ -4,9 +4,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader } from "lucide-react";
 import { useRouter } from "next-nprogress-bar";
-import { forgotPasswordSchema } from '@/schema/authSchema';
+import { ForgotPasswordSchema, forgotPasswordSchema } from '@/schema/authSchema';
+import { useForgotPassword } from "../../api/mutations";
+import { showerror, showsuccess } from "@/lib/toasts";
+import { AxiosError } from "axios";
 
 
 
@@ -20,10 +23,17 @@ const ForgotPasswordView = () => {
   });
 
   const router = useRouter();
+  const { forgotPassword, isForgotPasswordLoading } = useForgotPassword()
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: ForgotPasswordSchema) => {
     console.log("Forgot Password Data:", data);
-    router.push("/auth/otp")
+    try {
+      const response = await forgotPassword(data)
+      showsuccess(response.message)
+      router.push("/auth/verifyotp")
+    } catch (error: AxiosError | any) {
+      showerror(error.response.data.message)
+    }
   };
 
   return (
@@ -46,12 +56,12 @@ const ForgotPasswordView = () => {
               {...register("email")}
               className="h-12 bg-[#EEEEEE] border-none outline-none "
             />
-            {errors.email && <p className="text-main text-sm">{errors.email.message}</p>}
+            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
           </div>
 
 
           <Button type="submit" className="w-full md:w-1/3 h-12 mx-auto bg-main/90 hover:bg-main text-white mt-10 transition transform active:scale-95">
-            Continue
+            {isForgotPasswordLoading ? <Loader size={25} className="animate-spin mx-auto " /> : " Continue"}
           </Button>
         </form>
 
@@ -72,7 +82,6 @@ const ForgotPasswordView = () => {
 export default ForgotPasswordView
 
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 
 

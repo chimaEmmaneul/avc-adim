@@ -1,0 +1,78 @@
+"use client";
+
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { otpSchema } from "@/schema/authSchema";
+import { useVerifyOtp } from "../../api/mutations";
+import { showerror, showsuccess } from "@/lib/toasts";
+import { AxiosError } from "axios";
+import { Loader } from "lucide-react";
+
+
+
+const Otpform = () => {
+  const [otp, setOtp] = useState("");
+  const {
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(otpSchema),
+  });
+  const { verifyOtp, isOtpverifying } = useVerifyOtp()
+  const onSubmit = async (data: any) => {
+    console.log(data)
+    try {
+      const response = await verifyOtp(data);
+      showsuccess(response.message)
+    } catch (error: AxiosError | any) {
+      showerror(error.response.data.message)
+    }
+  };
+
+  return (
+    <div>
+      <div className={cn(" min-h-screen flex flex-col items-center justify-center  p-6")}>
+        <h2 className="text-2xl md:text-[40px] font-bold mb-8">Verification</h2>
+        <p className="text-gray-500 mb-4">Enter your 4 digits code that you received on your email.</p>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center space-y-8">
+          <InputOTP
+            value={otp}
+            onChange={(val) => {
+              setOtp(val);
+              setValue("verification_code", val);
+            }}
+            maxLength={4}
+            className="flex space-x-2"
+          >
+            <InputOTPGroup className="flex space-x-4">
+              {[...Array(4)].map((_, index) => (
+                <InputOTPSlot
+                  key={index}
+                  index={index}
+                  className={`w-14 h-14  outline-[#4D4D4D]  border-3 border-[#4D4D4D]  text-center ring-1 ring-ring  focus:border-guyana text-xl rounded-sm ${errors.verification_code && "border-red-500"
+                    }`}
+                />
+              ))}
+            </InputOTPGroup>
+          </InputOTP>
+
+          {errors.verification_code && <p className="text-red-500 text-sm">{errors.verification_code.message}</p>}
+
+          <Button type="submit" className="w-full h-14  md:w-1/2 max-w-xs">
+            {isOtpverifying ? <Loader size={30} className="animate-spin" /> : "Continue"}
+          </Button>
+        </form>
+      </div>
+    </div>
+
+
+  );
+}
+export default Otpform;

@@ -3,21 +3,24 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye } from "lucide-react";
+import { Eye, Loader } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next-nprogress-bar";
-import * as z from "zod";
+import Cookies from 'js-cookie';
+
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useLogin } from "../../api/mutations";
+import { LoginSchema, loginSchema } from "@/schema/authSchema";
+import { AxiosError } from "axios";
+import { showerror, showsuccess } from "@/lib/toasts";
 
-const loginSchema = z.object({
-  email: z.string().email("Invalid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
+
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
+  const { login, isLoggingIn } = useLogin()
 
   const router = useRouter()
   const {
@@ -28,10 +31,19 @@ export default function LoginForm() {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: LoginSchema) => {
     console.log("Login Data:", data);
 
-    router.push("/dashboard")
+    try {
+      const res = await login(data)
+      console.log(res)
+      showsuccess("Logged in successfully")
+      Cookies.set('token', res.message.token, { expires: 1 / 24 });
+      // router.push("/overview")
+    } catch (error: AxiosError | any) {
+      showerror(error.response.data.errors)
+    }
+
   };
 
   return (
@@ -57,7 +69,7 @@ export default function LoginForm() {
               className="w-full h-12 border-gray-300"
               {...register("email")}
             />
-            {errors.email && <p className="text-main text-sm">{errors.email.message}</p>}
+            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
           </div>
 
           <div className="space-y-2">
@@ -79,7 +91,7 @@ export default function LoginForm() {
                 <Eye className="h-5 w-5" />
               </button>
             </div>
-            {errors.password && <p className="text-main text-sm">{errors.password.message}</p>}
+            {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
           </div>
 
           <div className="flex items-center justify-between">
@@ -95,7 +107,7 @@ export default function LoginForm() {
           </div>
 
           <Button type="submit" className="w-full py-3 bg-main  text-white h-12">
-            Login
+            {isLoggingIn ? <Loader className="animate-spin mx-auto" /> : "Login"}
           </Button>
         </form>
       </div>

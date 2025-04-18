@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ForgotPasswordView from '@/pages/authentication/forgot-password'
+import ForgotPasswordView from '@/pages/authentication/routes/forgotpassword/forgot-password'
 
 const ForgotPassword = () => {
   return (

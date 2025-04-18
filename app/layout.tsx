@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Karla } from 'next/font/google'
 import "./globals.css";
+import { ReactQuery } from "@/providers/Queryprovider";
+import { Toaster } from "sonner";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -36,7 +38,16 @@ export default function RootLayout({
       <body
         className={`${karla.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <ReactQuery>
         {children}
+          <Toaster
+            expand={true}
+            richColors
+            visibleToasts={3}
+            gap={14}
+            position="top-right"
+          />
+        </ReactQuery>
       </body>
     </html>
   );

@@ -1,5 +1,12 @@
 import { z } from "zod";
 
+export const loginSchema = z.object({
+  email: z.string().email("Invalid email"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+export type LoginSchema = z.infer<typeof loginSchema>;
+
 const forgotPasswordSchema = z.object({
   email: z.string().email("Please enter a valid email"),
 });
@@ -21,8 +28,12 @@ export const ResetPasswordSchema = z
 export type ResetPasswordType = z.infer<typeof ResetPasswordSchema>;
 
 export const userFormSchema = z.object({
-  firstName: z.string().min(2, { message: "First name must be at least 2 characters" }),
-  lastName: z.string().min(2, { message: "Last name must be at least 2 characters" }),
+  firstName: z
+    .string()
+    .min(2, { message: "First name must be at least 2 characters" }),
+  lastName: z
+    .string()
+    .min(2, { message: "Last name must be at least 2 characters" }),
   country: z.string().min(1, { message: "Please select a country" }),
   phoneNumber: z.string().regex(/^\+?[0-9\s\-()]{7,}$/, {
     message: "Please enter a valid phone number",
@@ -32,7 +43,18 @@ export const userFormSchema = z.object({
   zipCode: z.string().regex(/^[0-9]{5}(-[0-9]{4})?$/, {
     message: "Please enter a valid zip code (e.g., 12345 or 12345-6789)",
   }),
-  address: z.string().min(5, { message: "Address must be at least 5 characters" }),
-})
+  address: z
+    .string()
+    .min(5, { message: "Address must be at least 5 characters" }),
+});
 
-export type UserFormValues = z.infer<typeof userFormSchema>
+export type UserFormValues = z.infer<typeof userFormSchema>;
+
+export const otpSchema = z.object({
+  verification_code: z
+    .string()
+    .length(4, "OTP required")
+    .regex(/^\d+$/, "Only numbers allowed"),
+});
+
+export type OtpSchema = z.infer<typeof otpSchema>;
