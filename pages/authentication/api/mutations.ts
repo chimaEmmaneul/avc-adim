@@ -1,9 +1,16 @@
 import { AxiosError } from "axios";
 import { useMemo } from "react";
-import { LoginPayload, LoginResponse, VerifyEmailResponse } from "../@types";
-import { useMutation } from "@tanstack/react-query";
+import {
+  LoginPayload,
+  LoginResponse,
+  Profile,
+  ResetPasswordPayload,
+  VerifyEmailResponse,
+} from "../@types";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import authClient from ".";
 import { ForgotPasswordSchema, OtpSchema } from "@/schema/authSchema";
+import ResetPassword from "@/pages/setting/component/change-password/reset-password";
 
 export function useLogin() {
   const { mutateAsync, data, isPending, error, isError } = useMutation<
@@ -69,3 +76,45 @@ export function useVerifyOtp() {
     [mutateAsync, data, isPending, error, isError]
   );
 }
+export function useResetPassword() {
+  const { mutateAsync, data, isPending, error, isError } = useMutation<
+    VerifyEmailResponse,
+    AxiosError,
+    ResetPasswordPayload
+  >({
+    mutationFn: (data) => authClient.resetPassword(data),
+    onSuccess: () => {},
+  });
+
+  return useMemo(
+    () => ({
+      resetPassword: mutateAsync,
+      data,
+      isResettingPassword: isPending,
+      error,
+      isError,
+    }),
+    [mutateAsync, data, isPending, error, isError]
+  );
+}
+
+export function useGetAdmin() {
+  // const accessToken = getSessionItem('accessToken');
+  const { data, isLoading, refetch, isError, error } = useQuery<Profile>({
+    queryKey: ["GET_ADMIN_PROFILE"],
+    // enabled: !!accessToken,
+    queryFn: () => authClient.getUser(),
+  });
+
+  return useMemo(
+    () => ({
+      admin: data,
+      adminRefetch: refetch,
+      isLoading,
+      isError,
+      error,
+    }),
+    [data, isLoading, isError, error, refetch]
+  );
+}
+

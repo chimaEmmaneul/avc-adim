@@ -1,13 +1,18 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader } from "lucide-react";
 import { useRouter } from "next-nprogress-bar";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ResetPasswordSchema, ResetPasswordType } from "@/schema/authSchema";
+import { useResetPassword } from "../../api/mutations";
+import { useSearchParams } from "next/navigation";
+import { decryptEmail } from "@/lib/utils";
+import { showerror, showsuccess } from "@/lib/toasts";
+import { AxiosError } from "axios";
 
 export default function ResetPasswordView() {
   const {
@@ -17,12 +22,23 @@ export default function ResetPasswordView() {
   } = useForm({
     resolver: zodResolver(ResetPasswordSchema),
   });
-
+  const searchParams = useSearchParams()
+  const email = searchParams?.get("email")
   const router = useRouter();
+  const { resetPassword, isResettingPassword } = useResetPassword()
+  const onSubmit = async (data: ResetPasswordType) => {
+    const decryptedemail = decryptEmail(email!)
+    console.log(decryptedemail);
 
-  const onSubmit = (data: ResetPasswordType) => {
-    console.log("New Password Data:", data);
-    // API Call to Reset Password
+    try {
+      const res = await resetPassword({ ...data, email: decryptedemail })
+      console.log(res)
+      showsuccess(res.message)
+    } catch (error: AxiosError | any) {
+      console.log(error)
+      showerror(error.message)
+
+    }
   };
 
   return (
@@ -52,14 +68,14 @@ export default function ResetPasswordView() {
               id="confirmPassword"
               type="password"
               placeholder="Confirm new password..."
-              {...register("confirmPassword")}
+              {...register("password_confirmation")}
               className="h-12  bg-gray-100 "
             />
-            {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>}
+            {errors.password_confirmation && <p className="text-red-500 text-sm">{errors.password_confirmation.message}</p>}
           </div>
 
           <Button type="submit" className="w-full md:w-3/5 h-12 bg-main/90 !mt-12 text-white hover:bg-main">
-            Create new password
+            {isResettingPassword ? <Loader size={30} className="animate-spin mx-auto" /> : " Create new password"}
           </Button>
         </form>
 

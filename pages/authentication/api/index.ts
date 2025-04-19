@@ -19,6 +19,7 @@ const authClient = {
     ApiClient.post(AUTHENDPOINTS.RESEND_OTP, data),
   verifyCode: async (data: { verification_code: string }): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.VERIFY_CODE, data),
+  getUser: async (): Promise<any> => ApiClient.get(AUTHENDPOINTS.PROFILE),
   // logout: async (data: any): Promise<any> =>
   //   ApiClient.post(AUTHENDPOINTS.LOGOUT, data),
 };

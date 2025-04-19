@@ -10,6 +10,7 @@ import { ForgotPasswordSchema, forgotPasswordSchema } from '@/schema/authSchema'
 import { useForgotPassword } from "../../api/mutations";
 import { showerror, showsuccess } from "@/lib/toasts";
 import { AxiosError } from "axios";
+import { encryptEmail } from "@/lib/utils";
 
 
 
@@ -30,7 +31,7 @@ const ForgotPasswordView = () => {
     try {
       const response = await forgotPassword(data)
       showsuccess(response.message)
-      router.push("/auth/verifyotp")
+      router.push(`/auth/verifyotp?email=${encodeURIComponent(encryptEmail(data.email))}`)
     } catch (error: AxiosError | any) {
       showerror(error.response.data.message)
     }

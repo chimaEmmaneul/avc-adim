@@ -6,4 +6,5 @@ export const AUTHENDPOINTS = {
   RESEND_OTP: "/admin/connect/resend-code",
   VERIFY_CODE: "/admin/connect/verify-code",
   VERIFY_EMAIL: "/admin/connect/verify-email",
+  PROFILE: "/admin/profile",
 };

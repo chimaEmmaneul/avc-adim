@@ -18,9 +18,9 @@ export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
 export const ResetPasswordSchema = z
   .object({
     password: z.string().min(6, "Password must be at least 6 characters"),
-    confirmPassword: z.string(),
+    password_confirmation: z.string(),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.password_confirmation, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });

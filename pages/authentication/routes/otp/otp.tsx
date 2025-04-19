@@ -7,16 +7,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { otpSchema } from "@/schema/authSchema";
+import { OtpSchema, otpSchema } from "@/schema/authSchema";
 import { useVerifyOtp } from "../../api/mutations";
 import { showerror, showsuccess } from "@/lib/toasts";
 import { AxiosError } from "axios";
 import { Loader } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 
 
 const Otpform = () => {
   const [otp, setOtp] = useState("");
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const email = searchParams?.get("email")
   const {
     handleSubmit,
     setValue,
@@ -25,13 +29,15 @@ const Otpform = () => {
     resolver: zodResolver(otpSchema),
   });
   const { verifyOtp, isOtpverifying } = useVerifyOtp()
-  const onSubmit = async (data: any) => {
-    console.log(data)
+  const onSubmit = async (data: OtpSchema) => {
+
     try {
       const response = await verifyOtp(data);
       showsuccess(response.message)
+      router.push(`/auth/reset-password?email=${encodeURIComponent(email!)}`)
     } catch (error: AxiosError | any) {
-      showerror(error.response.data.message)
+      console.log(error)
+      showerror(error.message)
     }
   };
 

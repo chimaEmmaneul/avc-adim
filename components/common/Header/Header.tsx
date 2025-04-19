@@ -1,9 +1,12 @@
 "use client"
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Bell, Menu } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import MobileSidebar from '../mobilesidebar'
+import { useProfileStore } from '@/zustand/useProfileStore'
+import { useGetAdmin } from '@/pages/authentication/api/mutations'
+import { Profile } from '@/pages/authentication/@types'
 
 const Header = () => {
   const [open, setIsOpen] = React.useState(false)
@@ -13,6 +16,8 @@ const Header = () => {
     email: "admin@azany.com",
     avatar: "/placeholder.svg?height=40&width=40",
   }
+
+
 
   const titleHeader = () => {
     const primaryRoute = pathname?.split("/")[1]

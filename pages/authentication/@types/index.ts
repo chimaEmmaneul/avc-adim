@@ -28,3 +28,11 @@ export type ResetPasswordPayload = {
   password: string;
   password_confirmation: string;
 };
+
+export type Profile = {
+  id: number;
+  name: string;
+  email: string;
+  phone_number: string;
+  date: string;
+};
