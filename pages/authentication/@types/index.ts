@@ -30,9 +30,11 @@ export type ResetPasswordPayload = {
 };
 
 export type Profile = {
-  id: number;
-  name: string;
-  email: string;
-  phone_number: string;
-  date: string;
+  data: {
+    id: number;
+    name: string;
+    email: string;
+    phone_number: string;
+    date: string;
+  };
 };
