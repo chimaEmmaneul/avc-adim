@@ -4,32 +4,21 @@ import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
 import Image from "next/image"
 import { useProfileStore } from "@/zustand/useProfileStore"
-import { showerror } from "@/lib/toasts"
+import { showerror, showsuccess } from "@/lib/toasts"
+import { ProfileFormData, profileSchema } from "@/schema/authSchema"
+import { useUpadteAdminProfile } from "@/pages/authentication/api/mutations"
+import { Loader } from "lucide-react"
 
-const profileSchema = z.object({
-  firstName: z.string().min(2, { message: "First name must be at least 2 characters" }),
-  lastName: z.string().min(2, { message: "Last name must be at least 2 characters" }),
-  email: z.string().email({ message: "Please enter a valid email address" }),
-  phoneNumber: z.string().optional(),
-  country: z.string().min(1, { message: "Please select a country" }),
-  state: z.string().min(1, { message: "Please select a state" }),
-  city: z.string().min(1, { message: "Please select a city" }),
-  zipCode: z.string().optional(),
-  address: z.string().optional(),
-  profileImage: z.string().optional(),
-})
 
-type ProfileFormData = z.infer<typeof profileSchema>
 
 export default function ProfileForm() {
   const [previewImage, setPreviewImage] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { profile } = useProfileStore()
+  const { updateProfile, isUpdatingProfile } = useUpadteAdminProfile()
 
-  // Initialize React Hook Form
   const {
     register,
     handleSubmit,
@@ -40,34 +29,34 @@ export default function ProfileForm() {
   } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      firstName: profile?.data.name,
-      lastName: "",
+      first_name: profile?.data.name,
+      last_name: "",
       email: profile?.data.email,
-      phoneNumber: profile?.data.phone_number,
-      country: "",
+      phone_number: profile?.data.phone_number,
+      country_id: "",
       state: "",
       city: "",
-      zipCode: "",
+      zip_code: "",
       address: "",
-      profileImage: "",
+      profile_photo: null,
     },
   })
 
-  const watchCountry = watch("country")
+  const watchCountry = watch("country_id")
   const watchState = watch("state")
 
   useEffect(() => {
     reset({
-      firstName: profile?.data.name,
-      lastName: "",
+      first_name: profile?.data.name,
+      last_name: "",
       email: profile?.data.email,
-      phoneNumber: profile?.data.phone_number,
-      country: "",
+      phone_number: profile?.data.phone_number,
+      country_id: "",
       state: "",
       city: "",
-      zipCode: "",
+      zip_code: "",
       address: "",
-      profileImage: "",
+      profile_photo: null,
     })
   }, [profile, setValue])
 
@@ -76,19 +65,18 @@ export default function ProfileForm() {
     const file = e.target.files?.[0]
     if (!file) return
 
-    // Validate file type
     const validTypes = ["image/jpeg", "image/png", "image/gif"]
     if (!validTypes.includes(file.type)) {
       showerror("Please upload a valid image file (JPEG, PNG, GIF)")
       return
     }
 
-    // Create a preview
+    setValue("profile_photo", file, { shouldValidate: true })
+
     const reader = new FileReader()
     reader.onload = () => {
       const result = reader.result as string
       setPreviewImage(result)
-      setValue("profileImage", result, { shouldValidate: true })
     }
     reader.readAsDataURL(file)
   }
@@ -97,9 +85,16 @@ export default function ProfileForm() {
     fileInputRef.current?.click()
   }
 
-  const onSubmit = (data: ProfileFormData) => {
-    console.log("Form submitted:", data)
-    alert("Profile updated successfully!")
+  const onSubmit = async (data: ProfileFormData) => {
+
+    try {
+      const res = await updateProfile(data)
+      console.log(res, "res")
+      showsuccess("updated successfully")
+    } catch (error) {
+      console.log(error)
+      showerror("something went wrong")
+    }
     // Here you would typically send the data to your API
   }
 
@@ -144,7 +139,7 @@ export default function ProfileForm() {
               Drop your file or <span className="underline text-amber-600">click</span> to select
             </p>
             <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleImageUpload} />
-            <input type="hidden" {...register("profileImage")} />
+            <input type="hidden" {...register("profile_photo")} />
           </div>
         </div>
 
@@ -157,25 +152,25 @@ export default function ProfileForm() {
             </label>
             <input
               id="firstName"
-              {...register("firstName")}
-              className={`mt-1 block w-full rounded-md border ${errors.firstName ? "border-red-500" : "border-gray-300"
+              {...register("first_name")}
+              className={`mt-1 block w-full rounded-md border ${errors.first_name ? "border-red-500" : "border-gray-300"
                 } px-3 py-2 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500`}
             />
-            {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.firstName.message}</p>}
+            {errors.first_name && <p className="text-red-500 text-xs mt-1">{errors.first_name.message}</p>}
           </div>
 
           {/* Last Name */}
           <div>
-            <label htmlFor="lastName" className="block text-sm font-medium">
+            <label htmlFor="last_name" className="block text-sm font-medium">
               Last Name *
             </label>
             <input
               id="lastName"
-              {...register("lastName")}
-              className={`mt-1 block w-full rounded-md border ${errors.lastName ? "border-red-500" : "border-gray-300"
+              {...register("last_name")}
+              className={`mt-1 block w-full rounded-md border ${errors.last_name ? "border-red-500" : "border-gray-300"
                 } px-3 py-2 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500`}
             />
-            {errors.lastName && <p className="text-red-500 text-xs mt-1">{errors.lastName.message}</p>}
+            {errors.last_name && <p className="text-red-500 text-xs mt-1">{errors.last_name.message}</p>}
           </div>
 
           {/* Email */}
@@ -195,17 +190,17 @@ export default function ProfileForm() {
 
           {/* Phone Number */}
           <div>
-            <label htmlFor="phoneNumber" className="block text-sm font-medium">
+            <label htmlFor="phone_number" className="block text-sm font-medium">
               Phone Number
             </label>
             <input
-              id="phoneNumber"
-              {...register("phoneNumber")}
+              id="phone_number"
+              {...register("phone_number")}
               placeholder="Type here..."
-              className={`mt-1 block w-full rounded-md border ${errors.phoneNumber ? "border-red-500" : "border-gray-300"
+              className={`mt-1 block w-full rounded-md border ${errors.phone_number ? "border-red-500" : "border-gray-300"
                 } px-3 py-2 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500`}
             />
-            {errors.phoneNumber && <p className="text-red-500 text-xs mt-1">{errors.phoneNumber.message}</p>}
+            {errors.phone_number && <p className="text-red-500 text-xs mt-1">{errors.phone_number.message}</p>}
           </div>
         </div>
       </div>
@@ -218,8 +213,8 @@ export default function ProfileForm() {
           </label>
           <select
             id="country"
-            {...register("country")}
-            className={`mt-1 block w-full rounded-md border ${errors.country ? "border-red-500" : "border-gray-300"
+            {...register("country_id")}
+            className={`mt-1 block w-full rounded-md border ${errors.country_id ? "border-red-500" : "border-gray-300"
               } px-3 py-2 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500`}
           >
             <option value="">Select Country</option>
@@ -228,7 +223,7 @@ export default function ProfileForm() {
             </option>
 
           </select>
-          {errors.country && <p className="text-red-500 text-xs mt-1">{errors.country.message}</p>}
+          {errors.country_id && <p className="text-red-500 text-xs mt-1">{errors.country_id.message}</p>}
         </div>
 
         {/* State */}
@@ -279,12 +274,12 @@ export default function ProfileForm() {
           </label>
           <input
             id="zipCode"
-            {...register("zipCode")}
+            {...register("zip_code")}
             placeholder="Type here..."
-            className={`mt-1 block w-full rounded-md border ${errors.zipCode ? "border-red-500" : "border-gray-300"
+            className={`mt-1 block w-full rounded-md border ${errors.zip_code ? "border-red-500" : "border-gray-300"
               } px-3 py-2 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500`}
           />
-          {errors.zipCode && <p className="text-red-500 text-xs mt-1">{errors.zipCode.message}</p>}
+          {errors.zip_code && <p className="text-red-500 text-xs mt-1">{errors.zip_code.message}</p>}
         </div>
       </div>
 
@@ -310,7 +305,7 @@ export default function ProfileForm() {
           type="submit"
           className="w-full bg-amber-500 hover:bg-amber-600 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out"
         >
-          Save & Change
+          {isUpdatingProfile ? <Loader className="animate-spin mx-auto" /> : " Save & Change"}
         </button>
       </div>
     </form>

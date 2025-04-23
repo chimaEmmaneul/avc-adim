@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApiClient } from "@/api";
 import {
   LoginPayload,
@@ -5,6 +6,7 @@ import {
   VerifyEmailPayload,
 } from "../@types";
 import { AUTHENDPOINTS } from "./endpoints";
+import { ProfileFormData } from "@/schema/authSchema";
 
 const authClient = {
   login: async (data: LoginPayload): Promise<any> =>
@@ -20,6 +22,8 @@ const authClient = {
   verifyCode: async (data: { verification_code: string }): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.VERIFY_CODE, data),
   getUser: async (): Promise<any> => ApiClient.get(AUTHENDPOINTS.PROFILE),
+  updateProfile: async (data: ProfileFormData): Promise<any> =>
+    ApiClient.post(AUTHENDPOINTS.UPDATE_PROFILE, data),
   // logout: async (data: any): Promise<any> =>
   //   ApiClient.post(AUTHENDPOINTS.LOGOUT, data),
 };

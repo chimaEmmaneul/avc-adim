@@ -7,4 +7,5 @@ export const AUTHENDPOINTS = {
   VERIFY_CODE: "/admin/connect/verify-code",
   VERIFY_EMAIL: "/admin/connect/verify-email",
   PROFILE: "/admin/profile",
+  UPDATE_PROFILE: "admin/update-profile",
 };

@@ -5,6 +5,8 @@ import Header from "@/components/common/Header/Header";
 import { useGetAdmin } from "@/pages/authentication/api/mutations";
 import { useProfileStore } from "@/zustand/useProfileStore";
 import { Profile } from "@/pages/authentication/@types";
+import { showerror } from "@/lib/toasts";
+import { redirect } from "next/navigation";
 
 export default function DashboardLayout({
   children
@@ -14,8 +16,8 @@ export default function DashboardLayout({
 
 
   const { setProfile } = useProfileStore()
-  const { admin, isLoading, isError, error } = useGetAdmin()
-
+  const { admin, isLoading, isError } = useGetAdmin()
+  console.log(admin, "admin")
   useEffect(() => {
     if (admin) {
       setProfile(admin as Profile);
@@ -32,11 +34,8 @@ export default function DashboardLayout({
   }
 
   if (isError) {
-    return (
-      <div>
-        {error?.message}
-      </div>
-    )
+    showerror("Unauthenticated")
+    redirect("/auth/login")
   }
 
 

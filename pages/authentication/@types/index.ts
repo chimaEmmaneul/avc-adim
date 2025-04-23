@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type LoginPayload = {
   email: string;
   password: string;
@@ -38,3 +39,5 @@ export type Profile = {
     date: string;
   };
 };
+
+

@@ -58,3 +58,35 @@ export const otpSchema = z.object({
 });
 
 export type OtpSchema = z.infer<typeof otpSchema>;
+
+export const profileSchema = z.object({
+  first_name: z
+    .string()
+    .min(2, { message: "First name must be at least 2 characters" }),
+  last_name: z
+    .string()
+    .min(2, { message: "Last name must be at least 2 characters" }),
+  email: z.string().email({ message: "Please enter a valid email address" }),
+  phone_number: z.string().optional(),
+  country_id: z.string().min(1, { message: "Please select a country" }),
+  state: z.string().min(1, { message: "Please select a state" }),
+  city: z.string().min(1, { message: "Please select a city" }),
+  zip_code: z.string().optional(),
+  address: z.string().optional(),
+  profile_photo: z.instanceof(File).optional().or(z.literal(null)),
+});
+
+export type ProfileFormData = z.infer<typeof profileSchema>;
+
+// export interface UserProfile {
+//   first_name: string;
+//   last_name: string;
+//   email: string;
+//   phone_number: string;
+//   country_id: string;
+//   state: string;
+//   city: string;
+//   address: string;
+//   zip_code: string;
+//   profile_photo: File | null;
+// }

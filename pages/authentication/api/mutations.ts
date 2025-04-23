@@ -9,8 +9,11 @@ import {
 } from "../@types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import authClient from ".";
-import { ForgotPasswordSchema, OtpSchema } from "@/schema/authSchema";
-import ResetPassword from "@/pages/setting/component/change-password/reset-password";
+import {
+  ForgotPasswordSchema,
+  OtpSchema,
+  ProfileFormData,
+} from "@/schema/authSchema";
 
 export function useLogin() {
   const { mutateAsync, data, isPending, error, isError } = useMutation<
@@ -118,3 +121,24 @@ export function useGetAdmin() {
   );
 }
 
+export function useUpadteAdminProfile() {
+  const { mutateAsync, data, isPending, error, isError } = useMutation<
+    ProfileFormData,
+    AxiosError,
+    ProfileFormData
+  >({
+    mutationFn: (data) => authClient.updateProfile(data),
+    onSuccess: () => {},
+  });
+
+  return useMemo(
+    () => ({
+      updateProfile: mutateAsync,
+      data,
+      isUpdatingProfile: isPending,
+      error,
+      isError,
+    }),
+    [mutateAsync, data, isPending, error, isError]
+  );
+}
