@@ -4,16 +4,21 @@ import React, { useState } from 'react'
 import Search from '@/shared/Search/Search'
 import { bannedUserData } from '@/constant/Users'
 import UserTable from '@/pages/user-management/components/users-table'
+import { useDebounce } from 'use-debounce'
+import { useGetAllBannedUsers } from '../../api/mutations'
 
 const BannedUsers = () => {
   const [search, setSearch] = useState("")
+  const [debouncedValue] = useDebounce(search, 1000);
+  const { bannedUsers, isLoading } = useGetAllBannedUsers({ search: debouncedValue });
+  console.log(bannedUsers, "admindata")
   return (
     <div>
       <div className='flex items-center justify-between'>
         <h1 className='text-black font-semibold'>Email Unverified</h1>
         <Search searchTerm={search} setSearchTerm={setSearch} />
       </div>
-      <UserTable data={bannedUserData} itemsPerPage={6} />
+      {isLoading ? "loading..." : <UserTable data={bannedUserData} itemsPerPage={6} />}
     </div>
   )
 }

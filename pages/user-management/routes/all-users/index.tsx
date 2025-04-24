@@ -4,16 +4,21 @@ import React, { useState } from 'react'
 import { userData } from '@/constant/Users'
 import Search from '@/shared/Search/Search'
 import UserTable from '@/pages/user-management/components/users-table'
+import { useGetAllUsers } from '../../api/mutations'
+import { useDebounce } from 'use-debounce'
 
 const Users = () => {
   const [search, setSearch] = useState("")
+  const [debouncedValue] = useDebounce(search, 1000);
+  const { allUsers, isLoading } = useGetAllUsers({ search: debouncedValue });
+  console.log(allUsers, "admindata")
   return (
     <div>
       <div className='flex items-center justify-between'>
         <h1 className='text-black font-semibold'>All users</h1>
         <Search searchTerm={search} setSearchTerm={setSearch} />
       </div>
-      <UserTable data={userData} itemsPerPage={6} />
+      {isLoading ? "loading..." : <UserTable data={userData} itemsPerPage={6} />}
     </div>
   )
 }
