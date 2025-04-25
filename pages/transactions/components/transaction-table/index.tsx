@@ -33,7 +33,7 @@ const TransactionTable = ({ data, itemsPerPage }: UserTableProps) => {
           <thead>
             <tr className="border-b">
               {["TRX ID", "USERNAME", "TRANSACTION TYPE", "AMOUNT/CONVERTION", "PAYMENTETHOD", "STATUS", ""].map((header) => (
-                <th key={header} className="text-left py-3 px-4 font-semibold text-sm text-[#6E768E]">
+                <th key={header} className="text-left py-3 px-4 font-semibold whitespace-nowrap text-sm text-[#6E768E]">
                   {header}
                 </th>
               ))}
