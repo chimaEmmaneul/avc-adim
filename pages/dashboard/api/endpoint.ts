@@ -1,0 +1,3 @@
+export const DASHBOARDMANAGEMENTENDPOINTS = {
+  GET_DASHBOARD_ANALYTICS: "admin/dashboard",
+};

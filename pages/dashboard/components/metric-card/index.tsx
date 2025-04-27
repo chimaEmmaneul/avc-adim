@@ -2,7 +2,10 @@ import type React from "react"
 import { MetricCardProps } from "../../@types/dashbaord"
 
 export default function MetricCard({ title, value, percentChange, viewText, icon }: MetricCardProps) {
-  const isPositive = percentChange >= 0
+  let isPositive;
+  if (percentChange) {
+    isPositive = percentChange >= 0
+  }
 
   return (
     <div className="border border-[#2E3591] rounded-2xl p-5 flex flex-col">

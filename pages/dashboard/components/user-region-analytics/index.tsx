@@ -8,7 +8,7 @@ import { UserRegionAnalyticsProps } from "../../@types/dashbaord"
 
 const UserRegionAnalytics = ({ regions }: UserRegionAnalyticsProps) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
-  const totalUsers = regions.reduce((sum, region) => sum + region.value, 0)
+  const totalUsers = regions.reduce((sum, region) => sum + region.total_users, 0)
 
   const formatNumber = (num: number): string => {
     return num >= 1000 ? `${(num / 1000).toFixed(1)}k` : num.toString()
@@ -62,8 +62,8 @@ const UserRegionAnalytics = ({ regions }: UserRegionAnalyticsProps) => {
                 innerRadius={60}
                 outerRadius={80}
                 paddingAngle={0}
-                dataKey="value"
-                nameKey="name"
+                dataKey="total_users"
+                nameKey="country_name"
                 onMouseEnter={onPieEnter}
                 onMouseLeave={onPieLeave}
                 animationDuration={800}
@@ -104,10 +104,10 @@ const UserRegionAnalytics = ({ regions }: UserRegionAnalyticsProps) => {
             >
               <div className="flex items-center">
                 <span className="h-3 w-3 rounded-full mr-2" style={{ backgroundColor: region.color }}></span>
-                <span className="text-gray-600">{region.name}</span>
+                <span className="text-gray-600">{region.country_name}</span>
               </div>
               <div className="flex items-center gap-6">
-                <span className="font-medium">{formatNumber(region.value)}</span>
+                <span className="font-medium">{formatNumber(region.total_users)}</span>
                 <span className="text-gray-400 w-12">Users</span>
               </div>
             </div>

@@ -33,7 +33,7 @@ export default function DashboardLayout({
     )
   }
 
-  if (isError) {
+  if (isError && !isLoading) {
     showerror("Unauthenticated")
     Cookies.remove("token")
     redirect("/auth/login")
