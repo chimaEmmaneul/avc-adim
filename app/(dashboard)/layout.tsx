@@ -2,12 +2,8 @@
 import React, { useEffect } from "react";
 import SidebarNavigation from "@/components/common/Sidebar/Sidebar";
 import Header from "@/components/common/Header/Header";
-import { useGetAdmin } from "@/pages/authentication/api/mutations";
-import { useProfileStore } from "@/zustand/useProfileStore";
-import { Profile } from "@/pages/authentication/@types";
-import { showerror } from "@/lib/toasts";
-import { redirect } from "next/navigation";
-import Cookies from "js-cookie"
+
+import { useAuth } from "@/hooks/useAuth";
 
 export default function DashboardLayout({
   children
@@ -15,33 +11,19 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
 
-
-  const { setProfile } = useProfileStore()
-  const { admin, isLoading, isError } = useGetAdmin()
-  useEffect(() => {
-    if (admin) {
-      setProfile(admin as Profile);
-    }
-  }, [admin, setProfile]);
-
+  const { isLoading } = useAuth()
 
   if (isLoading) {
     return (
-      <div>
-        Loading ...
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
       </div>
     )
   }
 
-  if (isError && !isLoading) {
-    showerror("Unauthenticated")
-    Cookies.remove("token")
-    redirect("/auth/login")
-  }
-
 
   return (
-    <main className=" flex bg-black ">
+    <main className=" flex bg-black">
       <SidebarNavigation />
       <div className="flex flex-col w-full min-h-screen overflow-x-auto py-6 px-8 md:rounded-[36px]  bg-white ">
         <Header />

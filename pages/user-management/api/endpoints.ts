@@ -7,6 +7,6 @@ export const USERMANAGEMENTENDPOINTS = {
   GET_ALL_BANNED_USERS: (status: string) =>
     `admin/users?status=banned&search=${status}`,
   GET_ALL_EMAILUNVERIFIED_USERS: (status: string) =>
-    `admin/users?status=unverified&search=${status}`,
+    `admin/users?status=pending&search=${status}`,
   SEND_EMAIL: "admin/users/bulk-email",
 };

@@ -61,4 +61,3 @@ export interface DashboardAnalytics {
 export interface DashboardResponse {
   data: DashboardAnalytics;
 }
-

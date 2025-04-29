@@ -5,6 +5,8 @@ import dynamic from "next/dynamic"
 import "react-quill/dist/quill.snow.css"
 import { ChevronDown } from "lucide-react"
 import { modules } from "../../constants/config"
+import { useSendEmail } from "../../api/mutations"
+import { showerror, showsuccess } from "@/lib/toasts"
 
 const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
@@ -16,18 +18,28 @@ export default function EmailUsers() {
   const [content, setContent] = useState("")
   const [selectedUser, setSelectedUser] = useState("")
   const [dropdownOpen, setDropdownOpen] = useState(false)
+  const { sendEmail, isSendingEmail } = useSendEmail()
+  const users = ["all", "active", "blocked", "unverified", "banned", "suspended"]
 
-  const users = ["John Doe", "Jane Smith", "Robert Johnson", "Emily Davis", "Michael Wilson"]
 
-
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
     console.log({
       user: selectedUser,
       subject,
       content,
     })
-    alert("Email sent successfully!")
+
+    try {
+      const response = await sendEmail({
+        type: selectedUser,
+        message: content,
+      })
+      showsuccess("Email sent successfully!")
+    } catch (error) {
+      console.log(error)
+      showerror("something went wrong")
+    }
   }
 
   return (

@@ -13,6 +13,9 @@ const userManagementClient = {
     ApiClient.get(
       USERMANAGEMENTENDPOINTS.GET_ALL_EMAILUNVERIFIED_USERS(search)
     ),
+
+  sendEmail: async (data: any): Promise<any> =>
+    ApiClient.post(USERMANAGEMENTENDPOINTS.SEND_EMAIL, data),
 };
 
 export default userManagementClient;

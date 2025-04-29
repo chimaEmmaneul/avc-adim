@@ -11,7 +11,6 @@ const BannedUsers = () => {
   const [search, setSearch] = useState("")
   const [debouncedValue] = useDebounce(search, 1000);
   const { bannedUsers, isLoading } = useGetAllBannedUsers({ search: debouncedValue });
-  console.log(bannedUsers, "admindata")
   return (
     <div>
       <div className='flex items-center justify-between'>
