@@ -36,4 +36,9 @@ export const NAV_ITEMS: NavItem[] = [
     path: "/settings",
     icon: <Bolt />,
   },
+  {
+    name: "Manage Blogs",
+    path: "/manage-blogs",
+    icon: <Bolt />,
+  },
 ]

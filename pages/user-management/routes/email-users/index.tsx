@@ -24,15 +24,10 @@ export default function EmailUsers() {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
-    console.log({
-      user: selectedUser,
-      subject,
-      content,
-    })
-
     try {
       const response = await sendEmail({
         type: selectedUser,
+        subject,
         message: content,
       })
       showsuccess("Email sent successfully!")

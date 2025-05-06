@@ -1,12 +1,19 @@
+"use client"
 import React from 'react'
 import { Button } from '@/components/ui/button'
 import { Copy, Download } from 'lucide-react'
 import { TRANSACTION_DETAILS } from '@/pages/transactions/constants/transactions'
 import { WithdrawalIcon } from '@/icon/icon'
+import { useGetTransactionDetails } from '@/pages/transactions/api/mutations'
+import { usePathname } from 'next/navigation'
 
 
 const ConfirmedTransactionDetails = () => {
   const { transferDetails: { transferInfo } } = TRANSACTION_DETAILS
+  const pathname = usePathname()
+  const transaction_id = pathname?.split("/").pop()!
+  const { transactionDetails, isLoading } = useGetTransactionDetails({ transaction_id })
+  console.log(transactionDetails, "trasacitnodeta")
   return (
     <div>
 

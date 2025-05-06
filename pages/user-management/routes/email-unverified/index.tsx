@@ -5,6 +5,7 @@ import { unverifiedUserData, } from '@/constant/Users'
 import Search from '@/shared/Search/Search'
 import { useGetAllPendingUser } from '../../api/mutations'
 import { useDebounce } from 'use-debounce'
+import UserTableSkeleton from '@/skeleonloaders/usertable'
 
 const EmailUnverified = () => {
   const [search, setSearch] = useState("")
@@ -18,7 +19,7 @@ const EmailUnverified = () => {
         <Search searchTerm={search} setSearchTerm={setSearch} />
       </div>
 
-      {isLoading ? "loading..." : <UserTable data={unverifiedUserData} itemsPerPage={6} />}
+      {isLoading ? <UserTableSkeleton /> : <UserTable data={unverifiedUserData} itemsPerPage={6} />}
     </div>
   )
 }

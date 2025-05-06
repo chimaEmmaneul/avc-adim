@@ -3,17 +3,22 @@ import React, { useState } from 'react'
 import Search from '@/shared/Search/Search'
 import { DECLINED_TRANSACTIONS, } from '../../constants/transactions'
 import TransactionTable from '../../components/transaction-table'
+import { useGetAllDeclinedTransactions } from '../../api/mutations'
+import { useDebounce } from 'use-debounce'
 
 const DeclinedTransactions = () => {
 
   const [search, setSearch] = useState("")
+  const [debouncedValue] = useDebounce(search, 1000);
+  const { declinedTransaction, isLoading } = useGetAllDeclinedTransactions({ search: debouncedValue })
+  console.log(declinedTransaction) 
   return (
     <div>
       <div className='flex items-center justify-between'>
         <h1 className='text-black font-semibold'>Declined Transaction</h1>
         <Search searchTerm={search} setSearchTerm={setSearch} />
       </div>
-      <TransactionTable data={DECLINED_TRANSACTIONS} itemsPerPage={6} />
+      {isLoading ? "loading..." : <TransactionTable data={DECLINED_TRANSACTIONS} itemsPerPage={8} />}
     </div>
   )
 }

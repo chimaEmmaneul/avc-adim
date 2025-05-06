@@ -11,6 +11,8 @@ const transactionManagementClient = {
     ApiClient.get(TRANSACTIONENDPOINTS.GET_ALL_PENDING_TRANSACTION(search)),
   getAllDeclinedTrasactions: async (search: string): Promise<any> =>
     ApiClient.get(TRANSACTIONENDPOINTS.GET_ALL_DECLINED_TRANSACTION(search)),
+  getTransactionDetails: async (transaction_d: string): Promise<any> =>
+    ApiClient.get(TRANSACTIONENDPOINTS.GETD_TRANSACTION_DETAILS(transaction_d)),
 };
 
 export default transactionManagementClient;

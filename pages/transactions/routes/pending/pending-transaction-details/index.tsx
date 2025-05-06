@@ -1,15 +1,20 @@
 "use client"
-
 import { Button } from "@/components/ui/button"
 import Sender from "./sender"
 import Recipient from "./receiver"
 import TransferSummary from "./transfer-summary"
 import { TRANSACTION_DETAILS } from "@/pages/transactions/constants/transactions"
 import TransactionProgress from "@/pages/transactions/components/transaction-progress"
+import { usePathname } from "next/navigation"
+import { useGetTransactionDetails } from "@/pages/transactions/api/mutations"
 
 
 export default function PendingTransactionDetails() {
   const { transferDetails } = TRANSACTION_DETAILS
+  const pathname = usePathname()
+  const transaction_id = pathname?.split("/").pop()!
+  const { transactionDetails, isLoading } = useGetTransactionDetails({ transaction_id })
+  console.log(transactionDetails, "trasacitnodeta")
 
   return (
     <div className="w-full">

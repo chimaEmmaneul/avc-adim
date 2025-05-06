@@ -53,7 +53,7 @@ const UserTable = ({ data, itemsPerPage }: UserTableProps) => {
                 <td className="py-4 px-4 whitespace-nowrap">
                   <button
                     // onClick={() => onDelete(user.id)}
-                    className="w-8 h-8 bg-main rounded-[4px] flex items-center justify-center text-white  "
+                    className="w-8 h-8 bg-main rounded-[4px] flex items-center justify-center text-white"
                   >
                     <ActionIcon />
                   </button>

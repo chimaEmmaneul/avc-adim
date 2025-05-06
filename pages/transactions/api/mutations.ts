@@ -86,3 +86,28 @@ export function useGetAllDeclinedTransactions({ search }: { search: string }) {
     [data, isLoading, isError, error, refetch]
   );
 }
+export function useGetTransactionDetails({
+  transaction_id,
+}: {
+  transaction_id: string;
+}) {
+  const { data, isLoading, refetch, isError, error } = useQuery<any>({
+    queryKey: ["GET_TRANSACTION_DETAILS", transaction_id],
+    queryFn: ({ queryKey }) => {
+      const [, transaction_id] = queryKey as [string, string];
+      return transactionManagementClient.getTransactionDetails(transaction_id);
+    },
+    enabled: !!transaction_id,
+  });
+
+  return useMemo(
+    () => ({
+      transactionDetails: data,
+      transactionDetailsRefetch: refetch,
+      isLoading,
+      isError,
+      error,
+    }),
+    [data, isLoading, isError, error, refetch]
+  );
+}

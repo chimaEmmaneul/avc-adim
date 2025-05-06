@@ -9,20 +9,20 @@ import { AUTHENDPOINTS } from "./endpoints";
 import { ProfileFormData } from "@/schema/authSchema";
 
 const authClient = {
-  login: async (data: LoginPayload): Promise<any> =>
+  login: (data: LoginPayload): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.LOGIN, data),
-  verifyEmail: async (data: VerifyEmailPayload): Promise<any> =>
+  verifyEmail: (data: VerifyEmailPayload): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.VERIFY_EMAIL, data),
-  resetPassword: async (data: ResetPasswordPayload): Promise<any> =>
+  resetPassword: (data: ResetPasswordPayload): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.RESET_PASSWORD, data),
-  forgotPassword: async (data: { email: string }): Promise<any> =>
+  forgotPassword: (data: { email: string }): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.FORGOT_PASSWORD, data),
-  resendCode: async (data: { email: string }): Promise<any> =>
+  resendCode: (data: { email: string }): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.RESEND_OTP, data),
-  verifyCode: async (data: { verification_code: string }): Promise<any> =>
+  verifyCode: (data: { verification_code: string }): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.VERIFY_CODE, data),
-  getUser: async (): Promise<any> => ApiClient.get(AUTHENDPOINTS.PROFILE),
-  updateProfile: async (data: ProfileFormData): Promise<any> =>
+  getUser: (): Promise<any> => ApiClient.get(AUTHENDPOINTS.PROFILE),
+  updateProfile: (data: ProfileFormData): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.UPDATE_PROFILE, data),
   // logout: async (data: any): Promise<any> =>
   //   ApiClient.post(AUTHENDPOINTS.LOGOUT, data),

@@ -11,7 +11,7 @@ import Cookies from "js-cookie"
 export function useAuth() {
   const router = useRouter()
   const { setProfile } = useProfileStore()
-  const { admin, isLoading, isError } = useGetAdmin()
+  const { admin, isLoading, isError, error } = useGetAdmin()
 
   useEffect(() => {
     if (admin) {
@@ -24,6 +24,7 @@ export function useAuth() {
       redirect("/auth/login")
     }
   }, [admin, isError, isLoading, router, setProfile])
+
 
   return { isLoading, isAuthenticated: !!admin }
 }

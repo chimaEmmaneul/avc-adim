@@ -1,19 +1,24 @@
 "use client"
 import React, { useState } from 'react'
-import TransactionTable from '../../components/transaction-table'
 import Search from '@/shared/Search/Search'
+import { useDebounce } from 'use-debounce'
+import TransactionTable from '../../components/transaction-table'
 import { PENDING_TRANSACTIONS } from '../../constants/transactions'
+import { useGetAllPendingTransactions } from '../../api/mutations'
 
 const PendingTransactions = () => {
 
   const [search, setSearch] = useState("")
+  const [debouncedValue] = useDebounce(search, 1000);
+  const { pendingTransaction, isLoading } = useGetAllPendingTransactions({ search: debouncedValue })
+  console.log(pendingTransaction) 
   return (
     <div>
       <div className='flex items-center justify-between'>
         <h1 className='text-black font-semibold'>Pending Transaction</h1>
         <Search searchTerm={search} setSearchTerm={setSearch} />
       </div>
-      <TransactionTable data={PENDING_TRANSACTIONS} itemsPerPage={8} />
+      {isLoading ? "loading..." : <TransactionTable data={PENDING_TRANSACTIONS} itemsPerPage={8} />}
     </div>
   )
 }

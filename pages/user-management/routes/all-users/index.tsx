@@ -6,6 +6,7 @@ import Search from '@/shared/Search/Search'
 import UserTable from '@/pages/user-management/components/users-table'
 import { useGetAllUsers } from '../../api/mutations'
 import { useDebounce } from 'use-debounce'
+import UserTableSkeleton from '@/skeleonloaders/usertable'
 
 const Users = () => {
   const [search, setSearch] = useState("")
@@ -18,7 +19,7 @@ const Users = () => {
         <h1 className='text-black font-semibold'>All users</h1>
         <Search searchTerm={search} setSearchTerm={setSearch} />
       </div>
-      {isLoading ? "loading..." : <UserTable data={userData} itemsPerPage={6} />}
+      {isLoading ? <UserTableSkeleton /> : <UserTable data={userData} itemsPerPage={6} />}
     </div>
   )
 }
