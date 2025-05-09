@@ -32,14 +32,19 @@ export type ResetPasswordPayload = {
 
 export type Profile = {
   data: {
-    id: number;
+    id: string;
     name: string;
     email: string;
     phone_number: string;
+    country_id: string;
+    state: string;
+    city: string;
+    address: string;
+    zip_code: string;
+    profile_photo: File;
     date: string;
   };
 };
-
 
 export type User = {
   id: number;
@@ -64,6 +69,20 @@ export type UserResponse = {
   success: boolean;
   message: string;
   data: User;
+};
+
+export type Country = {
+  id: number;
+  code: string;
+  name: string;
+  currency_code: string;
+  flag: string;
+};
+
+export type CountryResponse = {
+  success: boolean;
+  message: string;
+  data: Country[];
 };
 
 

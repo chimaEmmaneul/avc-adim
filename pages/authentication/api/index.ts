@@ -26,6 +26,7 @@ const authClient = {
     ApiClient.post(AUTHENDPOINTS.UPDATE_PROFILE, data),
   getUser: (id: string): Promise<any> =>
     ApiClient.get(AUTHENDPOINTS.GET_USER(id)),
+  getCountries: (): Promise<any> => ApiClient.get(AUTHENDPOINTS.GET_COUNTRIES),
 };
 
 export default authClient;

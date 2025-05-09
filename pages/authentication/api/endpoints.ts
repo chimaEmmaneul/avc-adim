@@ -8,5 +8,6 @@ export const AUTHENDPOINTS = {
   VERIFY_EMAIL: "/admin/connect/verify-email",
   PROFILE: "/admin/profile",
   UPDATE_PROFILE: "admin/update-profile",
+  GET_COUNTRIES: "countries",
   GET_USER: (id: string) => `admin/users/details/${id}`,
 };

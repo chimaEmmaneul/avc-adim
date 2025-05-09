@@ -8,7 +8,7 @@ import Image from "next/image"
 import { useProfileStore } from "@/zustand/useProfileStore"
 import { showerror, showsuccess } from "@/lib/toasts"
 import { ProfileFormData, profileSchema } from "@/schema/authSchema"
-import { useUpadteAdminProfile } from "@/pages/authentication/api/mutations"
+import { useGetAllCountries, useUpadteAdminProfile } from "@/pages/authentication/api/mutations"
 import { Loader } from "lucide-react"
 
 
@@ -17,8 +17,9 @@ export default function ProfileForm() {
   const [previewImage, setPreviewImage] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { profile } = useProfileStore()
-  const { updateProfile, isUpdatingProfile } = useUpadteAdminProfile()
-
+  const { updateProfile, isUpdatingProfile, } = useUpadteAdminProfile()
+  const { countries, isLoading: isLoadingCountries } = useGetAllCountries()
+  console.log(countries, "countrie")
   const {
     register,
     handleSubmit,
@@ -33,11 +34,11 @@ export default function ProfileForm() {
       last_name: "",
       email: profile?.data.email,
       phone_number: profile?.data.phone_number,
-      country_id: "",
-      state: "",
-      city: "",
-      zip_code: "",
-      address: "",
+      country_id: profile?.data.country_id,
+      state: profile?.data.state,
+      city: profile?.data.city,
+      zip_code: profile?.data.zip_code,
+      address: profile?.data.address,
       profile_photo: null,
     },
   })
@@ -48,14 +49,13 @@ export default function ProfileForm() {
   useEffect(() => {
     reset({
       first_name: profile?.data.name,
-      last_name: "",
       email: profile?.data.email,
       phone_number: profile?.data.phone_number,
       country_id: "",
-      state: "",
-      city: "",
-      zip_code: "",
-      address: "",
+      state: profile?.data.state,
+      city: profile?.data.city,
+      zip_code: profile?.data.zip_code,
+      address: profile?.data.address,
       profile_photo: null,
     })
   }, [profile, setValue])
@@ -86,17 +86,24 @@ export default function ProfileForm() {
   }
 
   const onSubmit = async (data: ProfileFormData) => {
-
     try {
-      const res = await updateProfile(data)
-      console.log(res, "res")
-      showsuccess("updated successfully")
+
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+          formData.append(key, value);
+        }
+      });
+      console.log(formData,)
+      const res = await updateProfile(formData as unknown as ProfileFormData);
+      console.log(res, "res");
+      showsuccess("updated successfully");
     } catch (error) {
-      console.log(error)
-      showerror("something went wrong")
+      console.log(error);
+      showerror("something went wrong");
     }
-    // Here you would typically send the data to your API
   }
+
 
 
   return (
@@ -111,7 +118,7 @@ export default function ProfileForm() {
             {previewImage ? (
               <div className="relative w-32 h-32 mb-2">
                 <Image
-                  src={previewImage || "/placeholder.svg"}
+                  src={previewImage || profile?.data.profile_photo || "/placeholder.svg"}
                   alt="Profile preview"
                   fill
                   className="object-cover rounded-full"
@@ -218,10 +225,12 @@ export default function ProfileForm() {
               } px-3 py-2 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500`}
           >
             <option value="">Select Country</option>
-            <option key={"Nigeria"} value={"Nigeria"}>
-              Nigeria
-            </option>
 
+            {countries?.data.map((country) => (
+              <option key={country.id} value={country.id}>
+                {country.name}
+              </option>
+            ))}
           </select>
           {errors.country_id && <p className="text-red-500 text-xs mt-1">{errors.country_id.message}</p>}
         </div>

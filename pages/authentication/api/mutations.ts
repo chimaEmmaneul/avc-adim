@@ -1,6 +1,7 @@
 import { AxiosError } from "axios";
 import { useMemo } from "react";
 import {
+  CountryResponse,
   LoginPayload,
   LoginResponse,
   Profile,
@@ -8,7 +9,7 @@ import {
   UserResponse,
   VerifyEmailResponse,
 } from "../@types";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import authClient from ".";
 import {
   ForgotPasswordSchema,
@@ -145,15 +146,36 @@ export function useGetUser(id: string) {
     [data, isLoading, isError, error, refetch]
   );
 }
+export function useGetAllCountries() {
+  const { data, isLoading, refetch, isError, error } =
+    useQuery<CountryResponse>({
+      queryKey: ["GET_ALL_COUNTRIES"],
+      queryFn: () => authClient.getCountries(),
+    });
+
+  return useMemo(
+    () => ({
+      countries: data,
+      refetch,
+      isLoading,
+      isError,
+      error,
+    }),
+    [data, isLoading, isError, error, refetch]
+  );
+}
 
 export function useUpadteAdminProfile() {
+  const queryClient = new QueryClient();
   const { mutateAsync, data, isPending, error, isError } = useMutation<
     ProfileFormData,
     AxiosError,
     ProfileFormData
   >({
     mutationFn: (data) => authClient.updateProfile(data),
-    onSuccess: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["GET_ADMIN_PROFILE"] });
+    },
   });
 
   return useMemo(
