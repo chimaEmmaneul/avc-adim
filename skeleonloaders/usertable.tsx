@@ -1,5 +1,4 @@
 export default function UserTableSkeleton() {
-  // Create an array of 5 items to match the number of rows in the example
   const skeletonRows = Array(6).fill(null)
 
   return (

@@ -5,6 +5,7 @@ import {
   LoginResponse,
   Profile,
   ResetPasswordPayload,
+  UserResponse,
   VerifyEmailResponse,
 } from "../@types";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -106,13 +107,37 @@ export function useGetAdmin() {
   const { data, isLoading, refetch, isError, error } = useQuery<Profile>({
     queryKey: ["GET_ADMIN_PROFILE"],
     // enabled: !!accessToken,
-    queryFn: () => authClient.getUser(),
+    queryFn: () => authClient.getAdminProfile(),
   });
 
   return useMemo(
     () => ({
       admin: data,
       adminRefetch: refetch,
+      isLoading,
+      isError,
+      error,
+    }),
+    [data, isLoading, isError, error, refetch]
+  );
+}
+
+export function useGetUser(id: string) {
+  const { data, isLoading, refetch, isError, error } = useQuery<
+    UserResponse,
+    { id: string }
+  >({
+    queryKey: ["GET_USER_PROFILE", id],
+    queryFn: ({ queryKey }) => {
+      const [, id] = queryKey as [string, string];
+      return authClient.getUser(id);
+    },
+  });
+
+  return useMemo(
+    () => ({
+      userProfile: data,
+      refetch,
       isLoading,
       isError,
       error,

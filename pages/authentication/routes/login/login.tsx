@@ -41,7 +41,7 @@ export default function LoginForm() {
       Cookies.set('token', res.message.token, { expires: 1 / 24 })
       router.push("/overview")
     } catch (error: AxiosError | any) {
-      showerror(error.response.data.message)
+      showerror(error.message)
     }
 
   };

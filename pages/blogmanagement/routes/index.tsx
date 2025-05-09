@@ -5,6 +5,7 @@ import { Pencil, Trash2 } from "lucide-react"
 import { sampleBlogPosts } from "@/pages/blogmanagement/constants"
 import { useRouter } from "next/navigation"
 import BlogNavigation from "../components/blognavigation"
+import { useGetAllBlogs, useGetAllCategory } from "../api/mutations"
 
 interface BlogPost {
   id: number
@@ -13,30 +14,33 @@ interface BlogPost {
   description: string
 }
 
-interface BlogManagementProps {
-  blogPosts: BlogPost[]
-  onEdit?: (id: number) => void
-  onDelete?: (id: number) => void
-  onNewBlog?: () => void
-  onManageCategories?: () => void
-}
 
 export default function BlogManagement() {
   const [activeTab, setActiveTab] = useState<"blogs" | "categories">("blogs")
   const [searchTerm, setSearchTerm] = useState("")
-
   const router = useRouter()
+  const { allBlogs, isLoading } = useGetAllBlogs()
+
+  console.log(allBlogs, "allBlog")
 
   const handleSearch = (value: string) => {
     setSearchTerm(value)
     console.log("Search term:", value)
   }
 
-  // Truncate description text
   const truncateText = (text: string, maxLength = 100) => {
     if (text.length <= maxLength) return text
     return text.substring(0, maxLength) + "..."
   }
+
+  if (isLoading) {
+    return (
+      <div>
+        Loading...
+      </div>
+    )
+  }
+
 
   return (
     <div className="w-full">
@@ -68,7 +72,7 @@ export default function BlogManagement() {
             </thead>
 
             <tbody>
-              {sampleBlogPosts.map((post) => (
+              {allBlogs.data.map((post: any) => (
                 <tr key={post.id} className="border-b border-gray-200 text-sm">
                   <td className="py-4 px-4">{post.id}</td>
                   <td className="py-4 px-4">{post.title}</td>

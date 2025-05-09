@@ -5,6 +5,8 @@ import { Edit2, Trash2, Search } from "lucide-react"
 import Link from "next/link"
 import { useForm } from "react-hook-form"
 import BlogNavigation from "../../components/blognavigation"
+import { useRouter } from "next/navigation"
+import { useGetAllCategory } from "../../api/mutations"
 
 interface Category {
   id: number
@@ -16,6 +18,7 @@ interface SearchFormValues {
 }
 
 export default function BlogCategories() {
+  const router = useRouter
   const [categories, setCategories] = useState<Category[]>([
     { id: 1, title: "Security" },
     { id: 2, title: "Security" },
@@ -28,15 +31,25 @@ export default function BlogCategories() {
     { id: 9, title: "Security" },
   ])
 
+
   const { register, watch } = useForm<SearchFormValues>({
     defaultValues: {
       searchTerm: "",
     },
   })
+  const { allCategory, isLoading } = useGetAllCategory()
+  console.log(allCategory, "category")
+
+  if (isLoading) {
+    return (
+      <div>Loading....</div>
+    )
+  }
+
 
   const searchTerm = watch("searchTerm")
 
-  const filteredCategories = categories.filter((category) =>
+  const filteredCategories = allCategory.data.filter((category: any) =>
     category.title.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
@@ -92,13 +105,14 @@ export default function BlogCategories() {
               </tr>
             </thead>
             <tbody>
-              {filteredCategories.map((category) => (
+              {filteredCategories.map((category: any) => (
                 <tr key={category.id} className="border-b border-gray-100 hover:bg-gray-50">
                   <td className="px-6 py-4 text-sm text-gray-500">{category.id}</td>
                   <td className="px-6 py-4 text-sm text-gray-700 w-full flex-1">{category.title}</td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex flex-col items-center justify-end gap-2">
                       <button
+                        onClick={() => router}
                         className="p-1.5 text-cyan-500 bg-cyan-50 hover:bg-cyan-100 rounded-md transition-colors"
                         aria-label="Edit category"
                       >

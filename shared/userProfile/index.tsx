@@ -1,14 +1,18 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Image from "next/image"
 import { userFormSchema, UserFormValues } from "@/schema/authSchema"
+import { useRouter } from "next/navigation"
+import { useGetUser } from "@/pages/authentication/api/mutations"
 
 
 
-export default function UserProfile() {
+export default function UserProfile({ params }: { params: { id: string } }) {
+  const router = useRouter()
+  const { isLoading, userProfile } = useGetUser(params.id)
   const [userStatus, setUserStatus] = useState<"Active" | "Banned">("Active")
   const [emailVerification, setEmailVerification] = useState<"Verified" | "Unverified">("Verified")
   const [twoFAVerification, setTwoFAVerification] = useState<"Verified" | "Unverified">("Verified")
@@ -17,12 +21,13 @@ export default function UserProfile() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<UserFormValues>({
     resolver: zodResolver(userFormSchema),
     defaultValues: {
-      firstName: "Saif",
-      lastName: "Ahmed",
+      firstName: "",
+      lastName: "",
       country: "",
       phoneNumber: "",
       city: "",
@@ -31,6 +36,23 @@ export default function UserProfile() {
       address: "",
     },
   })
+
+
+  useEffect(() => {
+    reset({
+      firstName: userProfile?.data?.first_name,
+      lastName: userProfile?.data?.last_name,
+      country: userProfile?.data?.country,
+      phoneNumber: userProfile?.data?.phone,
+      state: userProfile?.data?.state,
+      zipCode: userProfile?.data?.zip_code,
+      address: userProfile?.data?.address,
+    })
+  }, [userProfile])
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
 
   const onSubmit = async (data: UserFormValues) => {
     console.log("Form submitted:", data)
@@ -54,14 +76,14 @@ export default function UserProfile() {
   return (
     <div className=" w-full">
       <div className="flex justify-end">
-        <button className="bg-main text-white px-4 py-2 rounded-md font-medium">Go Back</button>
+        <button onClick={() => router.back()} className="bg-main text-white px-4 py-2 rounded-md font-medium">Go Back</button>
       </div>
 
       <div className="relative h-fit  w-full grid  place-items-center ">
         <div className="flex flex-col xl:flex-row items-center">
           <div className="flex order-2 xl:order-1 flex-col space-y-4  xl:-mr-7">
             <div className="w-full xl:-ml-0 ">
-              <InfoBar icon="👤" label="Full Name" value="Johnny Test" />
+              <InfoBar icon="👤" label="Full Name" value={`${userProfile?.data.first_name} ${userProfile?.data.last_name}`} />
             </div>
             <div className="w-full xl:ml-2 ">
               <InfoBar icon="✉️" label="Send Email" value="" isButton />
@@ -74,7 +96,7 @@ export default function UserProfile() {
 
           <div className="w-[200px] h-[200px] mb-2 xl:mb-0  xl:w-[320px] order-1 xl:order-2 xl:h-[320px] rounded-full z-20 bg-gray-200 overflow-hidden mx-auto">
             <Image
-              src="/placeholder.svg?height=192&width=192"
+              src={userProfile?.data.profile_photo ? userProfile.data.profile_photo : "/placeholder.svg?height=192&width=192"}
               alt="Profile"
               width={320}
               height={320}
@@ -84,16 +106,16 @@ export default function UserProfile() {
 
           <div className="flex flex-col order-3 space-y-4 my-4 xl:my-0 xl:-ml-9">
             <div className="w-full xl:-ml-4  ">
-              <InfoBar label="username" value="@johnnytest" alignRight />
+              <InfoBar label="username" value="" alignRight />
             </div>
             <div className="w-full xl:ml-4">
-              <InfoBar label="Email" value="johnnytest@gmail.com" alignRight />
+              <InfoBar label="Email" value={userProfile?.data.email || ""} alignRight />
             </div>
             <div className="w-full xl:ml-2  ">
-              <InfoBar label="Status" value="Active" alignRight />
+              <InfoBar label="Status" value={userProfile?.data.status || ""} alignRight />
             </div>
             <div className="w-full xl:-ml-2 ">
-              <InfoBar label="Last Login" value="18:13 PM, 27 Mar 2025" alignRight />
+              <InfoBar label="Last Login" value={userProfile?.data.last_login || ""} alignRight />
             </div>
           </div>
         </div>
@@ -101,7 +123,7 @@ export default function UserProfile() {
 
       {/* Form section */}
       <form onSubmit={handleSubmit(onSubmit)} className="py-6">
-        <h2 className="text-lg font-medium mb-6">Information of User</h2>
+        <h2 className="text-lg font-medium mb-6 border-b pb-2">Information of User</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
@@ -204,7 +226,7 @@ export default function UserProfile() {
                 active={userStatus === "Active"}
                 onClick={() => setUserStatus("Active")}
                 label="Active"
-                color="bg-blue-600"
+                color="bg-main"
               />
               <StatusButton
                 active={userStatus === "Banned"}
@@ -222,7 +244,7 @@ export default function UserProfile() {
                 active={emailVerification === "Verified"}
                 onClick={() => setEmailVerification("Verified")}
                 label="Verified"
-                color="bg-blue-600"
+                color="bg-main"
               />
               <StatusButton
                 active={emailVerification === "Unverified"}
@@ -246,7 +268,7 @@ export default function UserProfile() {
                 active={twoFAVerification === "Unverified"}
                 onClick={() => setTwoFAVerification("Unverified")}
                 label="Unverified"
-                color="bg-red-500"
+                color="bg-main"
               />
             </div>
           </div>
@@ -264,7 +286,7 @@ export default function UserProfile() {
                 active={kycVerification === "Unverified"}
                 onClick={() => setKYCVerification("Unverified")}
                 label="Unverified"
-                color="bg-red-500"
+                color="bg-main"
               />
             </div>
           </div>

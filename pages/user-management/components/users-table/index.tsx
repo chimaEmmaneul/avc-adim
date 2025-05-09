@@ -6,6 +6,7 @@ import { UserIcon } from "lucide-react"
 import { ActionIcon } from "@/icon/icon"
 import Pagination from "@/shared/Pagination"
 import RenderStatusBadge from "@/shared/statusbadge"
+import { usePathname, useRouter } from "next/navigation"
 
 interface UserTableProps {
   data: User[]
@@ -16,8 +17,9 @@ interface UserTableProps {
 const UserTable = ({ data, itemsPerPage }: UserTableProps) => {
   const [currentPage, setCurrentPage] = useState(1)
   const totalPages = Math.ceil(data.length / itemsPerPage)
+  const router = useRouter()
+  const pathname = usePathname()
 
-  // Get current items
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem)
@@ -52,7 +54,7 @@ const UserTable = ({ data, itemsPerPage }: UserTableProps) => {
                 <td className="py-4 px-4 whitespace-nowrap">{RenderStatusBadge(user.status)}</td>
                 <td className="py-4 px-4 whitespace-nowrap">
                   <button
-                    // onClick={() => onDelete(user.id)}
+                    onClick={() => router.push(`${pathname}/${user.id}`)}
                     className="w-8 h-8 bg-main rounded-[4px] flex items-center justify-center text-white"
                   >
                     <ActionIcon />
@@ -64,7 +66,6 @@ const UserTable = ({ data, itemsPerPage }: UserTableProps) => {
         </table>
       </div>
 
-      {/* Pagination */}
       <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
 
     </div>

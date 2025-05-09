@@ -21,11 +21,11 @@ const authClient = {
     ApiClient.post(AUTHENDPOINTS.RESEND_OTP, data),
   verifyCode: (data: { verification_code: string }): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.VERIFY_CODE, data),
-  getUser: (): Promise<any> => ApiClient.get(AUTHENDPOINTS.PROFILE),
+  getAdminProfile: (): Promise<any> => ApiClient.get(AUTHENDPOINTS.PROFILE),
   updateProfile: (data: ProfileFormData): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.UPDATE_PROFILE, data),
-  // logout: async (data: any): Promise<any> =>
-  //   ApiClient.post(AUTHENDPOINTS.LOGOUT, data),
+  getUser: (id: string): Promise<any> =>
+    ApiClient.get(AUTHENDPOINTS.GET_USER(id)),
 };
 
 export default authClient;
