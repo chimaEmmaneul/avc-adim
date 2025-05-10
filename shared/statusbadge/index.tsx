@@ -27,3 +27,18 @@ const RenderStatusBadge = (status: UserStatus) => {
 }
 
 export default RenderStatusBadge;
+
+export const StatusBadge: React.FC<{ status: "approved" | "rejected" | "pending" }> = ({ status }) => {
+  const getStatusStyles = () => {
+    switch (status) {
+      case "approved":
+        return "bg-green-100 text-green-600 border-green-200"
+      case "pending":
+        return "bg-amber-100 text-amber-600 border-amber-200"
+      default:
+        return "bg-gray-100 text-gray-600 border-gray-200"
+    }
+  }
+
+  return <span className={`px-3 py-1 rounded-full text-sm capitalize ${getStatusStyles()}`}>{status}</span>
+}

@@ -6,18 +6,21 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import Image from "next/image"
 import { userFormSchema, UserFormValues } from "@/schema/authSchema"
 import { useRouter } from "next/navigation"
-import { useGetUser } from "@/pages/authentication/api/mutations"
+import { useGetAllCountries, useGetUser, useUpdateUsers } from "@/pages/authentication/api/mutations"
+import { showerror } from "@/lib/toasts"
+import { User } from "@/pages/authentication/@types"
 
 
 
 export default function UserProfile({ params }: { params: { id: string } }) {
   const router = useRouter()
   const { isLoading, userProfile } = useGetUser(params.id)
-  const [userStatus, setUserStatus] = useState<"Active" | "Banned">("Active")
-  const [emailVerification, setEmailVerification] = useState<"Verified" | "Unverified">("Verified")
-  const [twoFAVerification, setTwoFAVerification] = useState<"Verified" | "Unverified">("Verified")
-  const [kycVerification, setKYCVerification] = useState<"Verified" | "Unverified">("Unverified")
-
+  const { countries } = useGetAllCountries()
+  const [userStatus, setUserStatus] = useState<"active" | "inactive" | "banned">("active")
+  const [emailVerification, setEmailVerification] = useState(false)
+  const [twoFAVerification, setTwoFAVerification] = useState(false)
+  const [kycVerification, setKYCVerification] = useState(false)
+  const { updateUser, isUpdatingUser } = useUpdateUsers()
   const {
     register,
     handleSubmit,
@@ -42,7 +45,7 @@ export default function UserProfile({ params }: { params: { id: string } }) {
     reset({
       firstName: userProfile?.data?.first_name,
       lastName: userProfile?.data?.last_name,
-      country: userProfile?.data?.country,
+      country: userProfile?.data?.country_id,
       phoneNumber: userProfile?.data?.phone,
       state: userProfile?.data?.state,
       zipCode: userProfile?.data?.zip_code,
@@ -54,24 +57,35 @@ export default function UserProfile({ params }: { params: { id: string } }) {
     return <div>Loading...</div>
   }
 
+  console.log(errors)
+
   const onSubmit = async (data: UserFormValues) => {
-    console.log("Form submitted:", data)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    alert("Profile updated successfully!")
+    console.log("Form submitted:", data,)
+    const updatedData = {
+      id: params.id,
+      first_name: data?.firstName,
+      last_name: data?.lastName,
+      email: data?.email,
+      phone: data?.phoneNumber,
+      country_id: data?.country,
+      state: data?.state,
+      zip_code: data?.zipCode,
+      address: data?.address,
+      status: userStatus,
+      email_verification: emailVerification,
+      two_factor_enabled: twoFAVerification,
+      kyc_verification: kycVerification
+    }
+    try {
+      console.log(updatedData, "updatedData")
+      const response = await updateUser({ id: params.id, values: updatedData })
+      showerror("updated successfully")
+    } catch (error) {
+      console.log(error)
+      showerror("something went wrong")
+    }
   }
 
-  const countries = [
-    "United States",
-    "Canada",
-    "United Kingdom",
-    "Australia",
-    "Germany",
-    "France",
-    "Japan",
-    "India",
-    "Brazil",
-    "South Africa",
-  ]
 
   return (
     <div className=" w-full">
@@ -109,13 +123,13 @@ export default function UserProfile({ params }: { params: { id: string } }) {
               <InfoBar label="username" value="" alignRight />
             </div>
             <div className="w-full xl:ml-4">
-              <InfoBar label="Email" value={userProfile?.data.email || ""} alignRight />
+              <InfoBar label="Email" value={userProfile?.data.email || "N/A"} alignRight />
             </div>
             <div className="w-full xl:ml-2  ">
-              <InfoBar label="Status" value={userProfile?.data.status || ""} alignRight />
+              <InfoBar label="Status" value={userProfile?.data.status || "N/A"} alignRight />
             </div>
             <div className="w-full xl:-ml-2 ">
-              <InfoBar label="Last Login" value={userProfile?.data.last_login || ""} alignRight />
+              <InfoBar label="Last Login" value={userProfile?.data.last_login || "N/A"} alignRight />
             </div>
           </div>
         </div>
@@ -147,15 +161,25 @@ export default function UserProfile({ params }: { params: { id: string } }) {
           </div>
 
           <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email*</label>
+            <input
+              type="email"
+              {...register("email")}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
+          </div>
+
+          <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
             <select
               {...register("country")}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Select Country</option>
-              {countries.map((country) => (
-                <option key={country} value={country}>
-                  {country}
+              {countries?.data?.map((country) => (
+                <option key={country.id} value={country.id}>
+                  {country.name}
                 </option>
               ))}
             </select>
@@ -223,14 +247,14 @@ export default function UserProfile({ params }: { params: { id: string } }) {
             <p className="text-sm font-medium text-gray-700 mb-2">User Status</p>
             <div className="flex space-x-2">
               <StatusButton
-                active={userStatus === "Active"}
-                onClick={() => setUserStatus("Active")}
+                active={userStatus === "active"}
+                onClick={() => setUserStatus("active")}
                 label="Active"
                 color="bg-main"
               />
               <StatusButton
-                active={userStatus === "Banned"}
-                onClick={() => setUserStatus("Banned")}
+                active={userStatus === "banned"}
+                onClick={() => setUserStatus("banned")}
                 label="Banned"
                 color="bg-gray-200 text-gray-700"
               />
@@ -241,14 +265,14 @@ export default function UserProfile({ params }: { params: { id: string } }) {
             <p className="text-sm font-medium text-gray-700 mb-2">Email Verification</p>
             <div className="flex space-x-2">
               <StatusButton
-                active={emailVerification === "Verified"}
-                onClick={() => setEmailVerification("Verified")}
+                active={emailVerification}
+                onClick={() => setEmailVerification(true)}
                 label="Verified"
                 color="bg-main"
               />
               <StatusButton
-                active={emailVerification === "Unverified"}
-                onClick={() => setEmailVerification("Unverified")}
+                active={emailVerification}
+                onClick={() => setEmailVerification(false)}
                 label="Unverified"
                 color="bg-gray-200 text-gray-700"
               />
@@ -259,14 +283,14 @@ export default function UserProfile({ params }: { params: { id: string } }) {
             <p className="text-sm font-medium text-gray-700 mb-2">2FA Verification</p>
             <div className="flex space-x-2">
               <StatusButton
-                active={twoFAVerification === "Verified"}
-                onClick={() => setTwoFAVerification("Verified")}
+                active={twoFAVerification}
+                onClick={() => setTwoFAVerification(true)}
                 label="Verified"
                 color="bg-gray-200 text-gray-700"
               />
               <StatusButton
-                active={twoFAVerification === "Unverified"}
-                onClick={() => setTwoFAVerification("Unverified")}
+                active={twoFAVerification}
+                onClick={() => setTwoFAVerification(false)}
                 label="Unverified"
                 color="bg-main"
               />
@@ -277,14 +301,14 @@ export default function UserProfile({ params }: { params: { id: string } }) {
             <p className="text-sm font-medium text-gray-700 mb-2">KYC Verification</p>
             <div className="flex space-x-2">
               <StatusButton
-                active={kycVerification === "Verified"}
-                onClick={() => setKYCVerification("Verified")}
+                active={kycVerification}
+                onClick={() => setKYCVerification(true)}
                 label="Verified"
                 color="bg-gray-200 text-gray-700"
               />
               <StatusButton
-                active={kycVerification === "Unverified"}
-                onClick={() => setKYCVerification("Unverified")}
+                active={kycVerification}
+                onClick={() => setKYCVerification(false)}
                 label="Unverified"
                 color="bg-main"
               />

@@ -38,7 +38,7 @@ export default function LoginForm() {
       const res = await login(data)
       console.log(res)
       showsuccess("Logged in successfully")
-      Cookies.set('token', res.message.token, { expires: 1 / 24 })
+      Cookies.set('token', res.message.token, { expires: 24 })
       router.push("/overview")
     } catch (error: AxiosError | any) {
       showerror(error.message)

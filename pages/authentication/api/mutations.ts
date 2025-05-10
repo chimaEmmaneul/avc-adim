@@ -6,6 +6,7 @@ import {
   LoginResponse,
   Profile,
   ResetPasswordPayload,
+  User,
   UserResponse,
   VerifyEmailResponse,
 } from "../@types";
@@ -187,5 +188,31 @@ export function useUpadteAdminProfile() {
       isError,
     }),
     [mutateAsync, data, isPending, error, isError]
+  );
+}
+
+export function useUpdateUsers() {
+  const queryClient = new QueryClient();
+  const { mutateAsync, data, isPending, error, isError } = useMutation<
+    UserResponse,
+    AxiosError,
+    { id: string; values: User }
+  >({
+    mutationFn: ({ id, values }: { id: string; values: User }) =>
+      authClient.updateUser(id, values),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["GET_USER_PROFILE"] });
+    },
+  });
+
+  return useMemo(
+    () => ({
+      updateUser: mutateAsync,
+      data,
+      isUpdatingUser: isPending,
+      error,
+      isError,
+    }),
+    [mutateAsync, isPending, error, isError]
   );
 }

@@ -21,3 +21,29 @@ export const decryptEmail = (encryptedEmail: string) => {
   const decryptedEmail = bytes.toString(CryptoJS.enc.Utf8);
   return decryptedEmail;
 };
+
+export function formatDate(dateString: string): string {
+  try {
+    const date = new Date(dateString);
+
+    // Check if the date is valid
+    if (isNaN(date.getTime())) {
+      return "Invalid date";
+    }
+
+    // Format the date
+    return date
+      .toLocaleDateString("en-US", {
+        month: "long",
+        day: "2-digit",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      })
+      .replace(",", ", ");
+  } catch (error) {
+    console.error("Error formatting date:", error);
+    return "Error formatting date";
+  }
+}

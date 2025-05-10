@@ -3,6 +3,8 @@ import { ApiClient } from "@/api";
 import {
   LoginPayload,
   ResetPasswordPayload,
+  User,
+  UserResponse,
   VerifyEmailPayload,
 } from "../@types";
 import { AUTHENDPOINTS } from "./endpoints";
@@ -24,8 +26,10 @@ const authClient = {
   getAdminProfile: (): Promise<any> => ApiClient.get(AUTHENDPOINTS.PROFILE),
   updateProfile: (data: ProfileFormData): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.UPDATE_PROFILE, data),
-  getUser: (id: string): Promise<any> =>
+  getUser: (id: string): Promise<UserResponse> =>
     ApiClient.get(AUTHENDPOINTS.GET_USER(id)),
+  updateUser: (id: string, data: User): Promise<UserResponse> =>
+    ApiClient.post(AUTHENDPOINTS.UPDATAE_USER(id), data),
   getCountries: (): Promise<any> => ApiClient.get(AUTHENDPOINTS.GET_COUNTRIES),
 };
 

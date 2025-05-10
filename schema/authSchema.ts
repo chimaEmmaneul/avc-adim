@@ -35,13 +35,18 @@ export const userFormSchema = z.object({
     .string()
     .min(2, { message: "Last name must be at least 2 characters" }),
   country: z.string().min(1, { message: "Please select a country" }),
+  email: z
+    .string()
+    .email({ message: "Please enter a valid email address" })
+    .optional(),
   phoneNumber: z.string().regex(/^\+?[0-9\s\-()]{7,}$/, {
     message: "Please enter a valid phone number",
   }),
   city: z.string().min(2, { message: "City must be at least 2 characters" }),
   state: z.string().min(2, { message: "State must be at least 2 characters" }),
-  zipCode: z.string().regex(/^[0-9]{5}(-[0-9]{4})?$/, {
-    message: "Please enter a valid zip code (e.g., 12345 or 12345-6789)",
+  zipCode: z.string().regex(/^[A-Za-z0-9\s-]{2,10}$/, {
+    message:
+      "Please enter a valid postal/zip code (2-10 alphanumeric characters, spaces, or hyphens)",
   }),
   address: z
     .string()
@@ -66,7 +71,10 @@ export const profileSchema = z.object({
   last_name: z
     .string()
     .min(2, { message: "Last name must be at least 2 characters" }),
-  email: z.string().email({ message: "Please enter a valid email address" }),
+  email: z
+    .string()
+    .email({ message: "Please enter a valid email address" })
+    .optional(),
   phone_number: z.string().optional(),
   country_id: z.string().min(1, { message: "Please select a country" }),
   state: z.string().min(1, { message: "Please select a state" }),

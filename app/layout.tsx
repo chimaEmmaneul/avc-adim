@@ -16,12 +16,12 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-
 const karla = Karla({
-  subsets: ['latin'],
-  weight: '700',
-  variable: '--font-karla'
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-karla",
 })
+
 
 export const metadata: Metadata = {
   title: "Create Next App",

@@ -47,22 +47,22 @@ export type Profile = {
 };
 
 export type User = {
-  id: number;
+  id: string;
   first_name: string;
   last_name: string;
-  email: string;
+  email?: string;
   phone: string;
   status: string;
-  country: string;
+  country_id: string;
   state: string;
   address: string;
   zip_code: string;
-  kyc_verification: number;
-  two_factor_enabled: number;
-  profile_photo: string;
-  email_verification: string;
-  last_login: string | null;
-  created_at: string;
+  kyc_verification: boolean;
+  two_factor_enabled: boolean;
+  profile_photo?: string;
+  email_verification: boolean;
+  last_login?: string | null;
+  created_at?: string;
 };
 
 export type UserResponse = {
