@@ -20,18 +20,14 @@ const CardRequestActions = ({ requestData, isOpen, setIsOpen }: CardRequestDataP
 
   const CardRequestSteps: Record<string, JSX.Element> = {
     request: <CardRequestDetails requestData={requestData} setStep={setStep} setIsOpen={setIsOpen} />,
-    accept: <AcceptConfirmation />,
-    reject: <RejectConfirmation />
+    approve: <AcceptConfirmation requestData={requestData} setStep={setStep} setIsOpen={setIsOpen} />,
+    reject: <RejectConfirmation requestData={requestData} setStep={setStep} setIsOpen={setIsOpen} />
   }
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader className="flex flex-row items-center justify-between">
-          <DialogTitle className="text-xl font-medium">Request Details</DialogTitle>
-          {/* <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={() => setIsOpen(false)}>
-            <X className="h-4 w-4" />
-            <span className="sr-only">Close</span>
-          </Button> */}
+          <DialogTitle className="text-xl font-medium"></DialogTitle>
         </DialogHeader>
         {CardRequestSteps[steps]}
       </DialogContent>

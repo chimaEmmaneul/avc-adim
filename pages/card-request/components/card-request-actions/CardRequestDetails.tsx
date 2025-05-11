@@ -1,7 +1,9 @@
+"use client"
 import React from 'react'
 import { RequestData } from '../../constants'
 import { StatusBadge } from '@/shared/statusbadge'
 import { Button } from '@/components/ui/button'
+import { useGetRequestDetails } from '../../api/mutations'
 type CardRequestDetailsProps = {
   requestData: RequestData
   setStep: React.Dispatch<React.SetStateAction<string>>
@@ -9,8 +11,13 @@ type CardRequestDetailsProps = {
 }
 
 const CardRequestDetails = ({ requestData, setStep, setIsOpen }: CardRequestDetailsProps) => {
+  const { requestDetails, isLoading } = useGetRequestDetails({ id: requestData.request_id })
+
+  if (isLoading) return <div>Loading...</div>
+  console.log(requestDetails, "requestData");
   return (
     <div className="space-y-4 py-2">
+      <h1>Request Details</h1>
       <div className="grid grid-cols-2 gap-y-4 text-sm">
         <div className="text-muted-foreground">Request ID:</div>
         <div className="font-medium">{requestData.request_id}</div>

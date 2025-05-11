@@ -33,7 +33,8 @@ export type ResetPasswordPayload = {
 export type Profile = {
   data: {
     id: string;
-    name: string;
+    first_name: string;
+    last_name: string;
     email: string;
     phone_number: string;
     country_id: string;

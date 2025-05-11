@@ -30,8 +30,8 @@ export default function ProfileForm() {
   } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      first_name: profile?.data.name,
-      last_name: "",
+      first_name: profile?.data.first_name,
+      last_name: profile?.data.last_name,
       email: profile?.data.email,
       phone_number: profile?.data.phone_number,
       country_id: profile?.data.country_id,
@@ -48,7 +48,8 @@ export default function ProfileForm() {
 
   useEffect(() => {
     reset({
-      first_name: profile?.data.name,
+      first_name: profile?.data.first_name,
+      last_name: profile?.data.last_name,
       email: profile?.data.email,
       phone_number: profile?.data.phone_number,
       country_id: "",
