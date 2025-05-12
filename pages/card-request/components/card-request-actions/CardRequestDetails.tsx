@@ -4,14 +4,15 @@ import { RequestData } from '../../constants'
 import { StatusBadge } from '@/shared/statusbadge'
 import { Button } from '@/components/ui/button'
 import { useGetRequestDetails } from '../../api/mutations'
+import { RequestItem } from '../../@types'
 type CardRequestDetailsProps = {
-  requestData: RequestData
+  requestData: RequestItem
   setStep: React.Dispatch<React.SetStateAction<string>>
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const CardRequestDetails = ({ requestData, setStep, setIsOpen }: CardRequestDetailsProps) => {
-  const { requestDetails, isLoading } = useGetRequestDetails({ id: requestData.request_id })
+  const { requestDetails, isLoading } = useGetRequestDetails({ id: requestData.id })
 
   if (isLoading) return <div>Loading...</div>
   console.log(requestDetails, "requestData");
@@ -20,28 +21,28 @@ const CardRequestDetails = ({ requestData, setStep, setIsOpen }: CardRequestDeta
       <h1>Request Details</h1>
       <div className="grid grid-cols-2 gap-y-4 text-sm">
         <div className="text-muted-foreground">Request ID:</div>
-        <div className="font-medium">{requestData.request_id}</div>
+        <div className="font-medium">{requestData.id}</div>
 
         <div className="text-muted-foreground">User:</div>
-        <div className="font-medium">{`${requestData.first_name} ${requestData.last_name}`}</div>
+        <div className="font-medium">{`${requestData.user.name}`}</div>
 
         <div className="text-muted-foreground">Account Number:</div>
-        <div className="font-medium">{requestData.account_number}</div>
+        <div className="font-medium">{requestData.user.account_number}</div>
 
         <div className="text-muted-foreground">Email:</div>
-        <div className="font-medium">{requestData.email}</div>
+        <div className="font-medium">{requestData.user.email}</div>
 
         <div className="text-muted-foreground">Phone:</div>
-        <div className="font-medium">{requestData.phone_number}</div>
+        <div className="font-medium">{requestData.user.phone}</div>
 
         <div className="text-muted-foreground">Country:</div>
         <div className="font-medium">{requestData.country}</div>
 
         <div className="text-muted-foreground">Pickup Location:</div>
-        <div className="font-medium">{requestData.pickup_location}</div>
+        <div className="font-medium">{requestData.location.address}</div>
 
         <div className="text-muted-foreground">Location Hour:</div>
-        <div className="font-medium">{requestData.location_hour}</div>
+        <div className="font-medium">{requestData.location.service_hour}</div>
 
         <div className="text-muted-foreground">Request Date:</div>
         <div className="font-medium">{requestData.request_date}</div>

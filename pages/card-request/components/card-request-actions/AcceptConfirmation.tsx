@@ -2,19 +2,22 @@ import React from 'react'
 import { RequestData } from '../../constants'
 import { useApproveRequest } from '../../api/mutations'
 import { showerror, showsuccess } from '@/lib/toasts'
+import { RequestItem } from '../../@types'
 
 
 type AcceptConfirmationProps = {
-  requestData: RequestData
+  requestData: RequestItem
   setStep: React.Dispatch<React.SetStateAction<string>>
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+  refetch?: () => void
 }
-const AcceptConfirmation = ({ requestData, setStep, setIsOpen }: AcceptConfirmationProps) => {
+const AcceptConfirmation = ({ requestData, setStep, setIsOpen, refetch }: AcceptConfirmationProps) => {
   const { approveRequest, isPending } = useApproveRequest()
   const handleApprove = async () => {
     try {
-      await approveRequest({ id: requestData.request_id })
+      await approveRequest({ id: requestData.id })
       showsuccess("Request Approved Successfully")
+      refetch?.()
     } catch (error) {
       showerror("something went wrong")
     }
@@ -31,7 +34,7 @@ const AcceptConfirmation = ({ requestData, setStep, setIsOpen }: AcceptConfirmat
 
         <div className="space-y-4 mb-8">
           <p className="text-gray-700">
-            Are you sure you want to approve card pick-up <span className="font-semibold">{requestData.request_id}</span>?
+            Are you sure you want to approve card pick-up <span className="font-semibold">{requestData.id}</span>?
           </p>
           <p className="text-gray-700">
             This will notify the user that their card is ready for pick-up at the selected location

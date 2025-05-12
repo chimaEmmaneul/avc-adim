@@ -4,9 +4,10 @@ import React, { useState } from 'react'
 import { RequestData, sampleData } from '../../constants'
 import { formatDate } from '@/lib/utils'
 import CardRequestActions from '../card-request-actions'
+import { RequestItem } from '../../@types'
 
-const CardRequestTable = () => {
-  const [requestData, setRequestData] = useState<RequestData>();
+const CardRequestTable = ({ requests, refetch }: { requests: RequestItem[], refetch?: () => void }) => {
+  const [requestData, setRequestData] = useState<RequestItem>();
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
@@ -20,16 +21,16 @@ const CardRequestTable = () => {
             </tr>
           </thead>
           <tbody>
-            {sampleData &&
-              sampleData.map((request, index) => (
-                <tr key={`${request.request_id}-${index}`} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                  <td className="py-4 px-6 text-gray-700 whitespace-nowrap">{request.request_id}</td>
+            {requests &&
+              requests.map((request, index) => (
+                <tr key={`${request.id}-${index}`} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                  <td className="py-4 px-6 text-gray-700 whitespace-nowrap">{request.id}</td>
                   <td className="py-4 px-6 whitespace-nowrap">
-                    <div className="text-gray-700 whitespace-nowrap">{`${request.first_name} ${request.last_name}`}</div>
-                    <div className="text-gray-400 text-smwhitespace-nowrap">{request.email}</div>
+                    <div className="text-gray-700 whitespace-nowrap">{`${request.user.name}`}</div>
+                    <div className="text-gray-400 text-smwhitespace-nowrap">{request.user.email}</div>
                   </td>
                   <td className="py-4 px-6 text-gray-700 whitespace-nowrap">{request.country}</td>
-                  <td className="py-4 px-6 text-gray-700 whitespace-nowrap">{request.pickup_location}</td>
+                  <td className="py-4 px-6 text-gray-700 whitespace-nowrap">{request.location.address}</td>
                   <td className="py-4 px-6 text-gray-700 whitespace-nowrap">{formatDate(request.request_date)}</td>
                   <td className="py-4 px-6">
                     <StatusBadge status={request.status} />
@@ -44,7 +45,7 @@ const CardRequestTable = () => {
           </tbody>
         </table>
       </div>
-      <CardRequestActions requestData={requestData as RequestData} isOpen={isOpen} setIsOpen={setIsOpen} />
+      <CardRequestActions requestData={requestData as RequestItem} isOpen={isOpen} setIsOpen={setIsOpen} refetch={refetch} />
     </>
   )
 }

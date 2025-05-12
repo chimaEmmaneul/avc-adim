@@ -4,6 +4,7 @@ import { RequestData } from '../../constants'
 import { Check, ChevronDown, X } from 'lucide-react'
 import { useRejectRequest } from '../../api/mutations'
 import { showerror, showsuccess } from '@/lib/toasts'
+import { RequestItem } from '../../@types'
 
 export interface RejectionFormData {
   reason: string
@@ -19,7 +20,7 @@ const rejectionReasons = [
 ]
 
 type RejectConfirmationProps = {
-  requestData: RequestData
+  requestData: RequestItem
   setStep: React.Dispatch<React.SetStateAction<string>>
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -43,7 +44,7 @@ const RejectConfirmation = ({ requestData, setStep, setIsOpen }: RejectConfirmat
 
   const onSubmit = async (data: RejectionFormData) => {
     try {
-      await rejectRequest({ id: requestData.request_id, data })
+      await rejectRequest({ id: requestData.id, data })
       showsuccess("Request rejected successfully")
     } catch (error) {
       showerror("something went wrong")
@@ -55,7 +56,7 @@ const RejectConfirmation = ({ requestData, setStep, setIsOpen }: RejectConfirmat
       <h2 className="text-xl font-medium mb-2">Confirm Rejection</h2>
 
       <p className="mb-6 text-gray-700">
-        Are you sure you want to reject card pick-up <strong>{requestData.request_id}</strong>?
+        Are you sure you want to reject card pick-up <strong>{requestData.id}</strong>?
       </p>
 
       <form onSubmit={handleSubmit(onSubmit)}>

@@ -3,9 +3,10 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import userManagementClient from ".";
 import { useMemo } from "react";
 import { AxiosError } from "axios";
+import { UsersResponse } from "../@types";
 
 export function useGetAllUsers({ search }: { search: string }) {
-  const { data, isLoading, refetch, isError, error } = useQuery<any>({
+  const { data, isLoading, refetch, isError, error } = useQuery<UsersResponse>({
     queryKey: ["GET_ALL_USERS", search],
     queryFn: ({ queryKey }) => {
       const [, searchTerm] = queryKey as [string, string];
@@ -25,7 +26,7 @@ export function useGetAllUsers({ search }: { search: string }) {
   );
 }
 export function useGetAllActiveUsers({ search }: { search: string }) {
-  const { data, isLoading, refetch, isError, error } = useQuery<any>({
+  const { data, isLoading, refetch, isError, error } = useQuery<UsersResponse>({
     queryKey: ["GET_ALL_ACTIVE_USERS", search],
     queryFn: ({ queryKey }) => {
       const [, searchTerm] = queryKey as [string, string];
@@ -45,7 +46,7 @@ export function useGetAllActiveUsers({ search }: { search: string }) {
   );
 }
 export function useGetAllBannedUsers({ search }: { search: string }) {
-  const { data, isLoading, refetch, isError, error } = useQuery<any>({
+  const { data, isLoading, refetch, isError, error } = useQuery<UsersResponse>({
     queryKey: ["GET_ALL_BANNED_USERS", search],
     queryFn: ({ queryKey }) => {
       const [, searchTerm] = queryKey as [string, string];
@@ -65,7 +66,7 @@ export function useGetAllBannedUsers({ search }: { search: string }) {
   );
 }
 export function useGetAllPendingUser({ search }: { search: string }) {
-  const { data, isLoading, refetch, isError, error } = useQuery<any>({
+  const { data, isLoading, refetch, isError, error } = useQuery<UsersResponse>({
     queryKey: ["GET_ALL_PENDING_USERS", search],
     queryFn: ({ queryKey }) => {
       const [, searchTerm] = queryKey as [string, string];

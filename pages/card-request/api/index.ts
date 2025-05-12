@@ -1,6 +1,9 @@
 import { ApiClient } from "@/api";
+import { CARDREQUESTENDPOINTS } from "./endpoint";
 
 const cardRequestClient = {
+  getAllCardRequest: async (): Promise<any> =>
+    ApiClient.get(CARDREQUESTENDPOINTS.GET_ALL_CARD_REQUEST()),
   viewRequestDetails: async (id: string): Promise<any> =>
     ApiClient.get(`admin/card-request/details/${id}`),
   approveRequest: async (id: string): Promise<any> =>

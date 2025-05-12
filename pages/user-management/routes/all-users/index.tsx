@@ -19,7 +19,7 @@ const Users = () => {
         <h1 className='text-black font-semibold'>All users</h1>
         <Search searchTerm={search} setSearchTerm={setSearch} />
       </div>
-      {isLoading ? <UserTableSkeleton /> : <UserTable data={userData} itemsPerPage={6} />}
+      {isLoading ? <UserTableSkeleton /> : <UserTable data={allUsers?.data?.users ?? []} itemsPerPage={6} />}
     </div>
   )
 }

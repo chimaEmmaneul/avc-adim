@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation"
 import { useGetAllCountries, useGetUser, useUpdateUsers } from "@/pages/authentication/api/mutations"
 import { showerror } from "@/lib/toasts"
 import { User } from "@/pages/authentication/@types"
+import { formatDate, formatDateTime } from "@/lib/utils"
 
 
 
@@ -46,10 +47,12 @@ export default function UserProfile({ params }: { params: { id: string } }) {
       firstName: userProfile?.data?.first_name,
       lastName: userProfile?.data?.last_name,
       country: userProfile?.data?.country_id,
+      email: userProfile?.data?.email,
       phoneNumber: userProfile?.data?.phone,
       state: userProfile?.data?.state,
       zipCode: userProfile?.data?.zip_code,
       address: userProfile?.data?.address,
+
     })
   }, [userProfile])
 
@@ -129,7 +132,7 @@ export default function UserProfile({ params }: { params: { id: string } }) {
               <InfoBar label="Status" value={userProfile?.data.status || "N/A"} alignRight />
             </div>
             <div className="w-full xl:-ml-2 ">
-              <InfoBar label="Last Login" value={userProfile?.data.last_login || "N/A"} alignRight />
+              <InfoBar label="Last Login" value={formatDateTime(userProfile?.data.last_login || "")} alignRight />
             </div>
           </div>
         </div>

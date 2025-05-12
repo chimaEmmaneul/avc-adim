@@ -1,8 +1,28 @@
+"use client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import cardRequestClient from ".";
 import { AxiosError } from "axios";
+import { CardRequestResponse } from "../@types";
 
+export function useGetAllCardRequest() {
+  const { data, isLoading, refetch, isError, error } =
+    useQuery<CardRequestResponse>({
+      queryKey: ["GET_ALL_CARD_REQUEST"],
+      queryFn: () => cardRequestClient.getAllCardRequest(),
+    });
+
+  return useMemo(
+    () => ({
+      allRequest: data,
+      allRequestRefetch: refetch,
+      isLoading,
+      isError,
+      error,
+    }),
+    [data, isLoading, isError, error, refetch]
+  );
+}
 export function useGetRequestDetails({ id }: { id: string }) {
   const { data, isLoading, refetch, isError, error } = useQuery<any>({
     queryKey: ["GET_REQUEST_DETAILS", id],

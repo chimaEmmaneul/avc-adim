@@ -1,12 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import { type User } from "@/@types/users"
 import { UserIcon } from "lucide-react"
 import { ActionIcon } from "@/icon/icon"
 import Pagination from "@/shared/Pagination"
-import RenderStatusBadge from "@/shared/statusbadge"
+import RenderStatusBadge, { StatusBadge } from "@/shared/statusbadge"
 import { usePathname, useRouter } from "next/navigation"
+import { User } from "../../@types"
 
 interface UserTableProps {
   data: User[]
@@ -47,11 +47,11 @@ const UserTable = ({ data, itemsPerPage }: UserTableProps) => {
                   </div>
                 </td>
                 <td className="py-4 px-4  whitespace-nowrap">
-                  {user.username}
+                  {user?.first_name}
                 </td>
                 <td className="py-4 px-4 whitespace-nowrap">{user.email}</td>
                 <td className="py-4 px-4 whitespace-nowrap">{user.phone}</td>
-                <td className="py-4 px-4 whitespace-nowrap">{RenderStatusBadge(user.status)}</td>
+                <td className="py-4 px-4 whitespace-nowrap">{StatusBadge({ status: user.status })}</td>
                 <td className="py-4 px-4 whitespace-nowrap">
                   <button
                     onClick={() => router.push(`${pathname}/${user.id}`)}

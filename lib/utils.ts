@@ -47,3 +47,20 @@ export function formatDate(dateString: string): string {
     return "Error formatting date";
   }
 }
+
+export function formatDateTime(dateTimeStr: string): string {
+  console.log(dateTimeStr, "dat");
+  const date = new Date(dateTimeStr.replace(" ", "T")); // Convert to ISO format
+
+  // Options for readable formatting
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long", // e.g., "May"
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  };
+
+  return date.toLocaleString(undefined, options); // Uses user's locale
+}

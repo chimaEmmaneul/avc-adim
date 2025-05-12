@@ -1,5 +1,7 @@
+"use client"
 import type React from "react"
 import CardRequestTable from "../components/card-request-table"
+import { useGetAllCardRequest } from "../api/mutations"
 
 export type RequestData = {
   request_id: string
@@ -14,9 +16,15 @@ export type RequestData = {
 
 
 export const CardRequest = () => {
+  const { allRequest, isLoading } = useGetAllCardRequest()
+  if (isLoading) {
+    return (
+      <div>Loading...</div>
+    )
+  }
   return (
     <>
-      <CardRequestTable />
+      <CardRequestTable requests={allRequest?.data ?? []} />
     </>
   )
 }

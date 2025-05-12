@@ -1,7 +1,7 @@
 import { UserStatus } from '@/@types/users'
 import React from 'react'
 
-const RenderStatusBadge = (status: UserStatus) => {
+const RenderStatusBadge = (status: string) => {
   switch (status) {
     case UserStatus.ACTIVE:
       return (
@@ -28,7 +28,7 @@ const RenderStatusBadge = (status: UserStatus) => {
 
 export default RenderStatusBadge;
 
-export const StatusBadge: React.FC<{ status: "approved" | "rejected" | "pending" }> = ({ status }) => {
+export const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
   const getStatusStyles = () => {
     switch (status) {
       case "approved":
