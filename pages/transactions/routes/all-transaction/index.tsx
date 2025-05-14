@@ -5,6 +5,7 @@ import Search from '@/shared/Search/Search'
 import { TRANSACTIONS } from '../../constants/transactions'
 import { useDebounce } from 'use-debounce'
 import { useGetAllTransactions } from '../../api/mutations'
+import TransactionTableSkeleton from '@/skeleonloaders/transaction-table'
 
 const AllTransactions = () => {
 
@@ -20,7 +21,7 @@ const AllTransactions = () => {
         <Search searchTerm={search} setSearchTerm={setSearch} />
       </div>
 
-      {isLoading ? "Loading..." : <TransactionTable data={TRANSACTIONS} itemsPerPage={6} />}
+      {isLoading ? <TransactionTableSkeleton /> : <TransactionTable data={TRANSACTIONS} itemsPerPage={6} />}
     </div>
   )
 }

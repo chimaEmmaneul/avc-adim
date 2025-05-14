@@ -1,6 +1,7 @@
 "use client"
 import React, { useState } from 'react'
 import Search from '@/shared/Search/Search'
+import TransactionTableSkeleton from '@/skeleonloaders/transaction-table'
 import { cONFIRMED_TRANSACTIONS } from '../../constants/transactions'
 import TransactionTable from '../../components/transaction-table'
 import { useDebounce } from 'use-debounce'
@@ -19,7 +20,7 @@ const ConfirmedTransaction = () => {
         <Search searchTerm={search} setSearchTerm={setSearch} />
       </div>
 
-      {isLoading ? "loading..." : <TransactionTable data={cONFIRMED_TRANSACTIONS} itemsPerPage={8} />}
+      {isLoading ? <TransactionTableSkeleton /> : <TransactionTable data={cONFIRMED_TRANSACTIONS} itemsPerPage={8} />}
     </div>
   )
 }

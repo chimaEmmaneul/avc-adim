@@ -5,6 +5,7 @@ import { DECLINED_TRANSACTIONS, } from '../../constants/transactions'
 import TransactionTable from '../../components/transaction-table'
 import { useGetAllDeclinedTransactions } from '../../api/mutations'
 import { useDebounce } from 'use-debounce'
+import TransactionTableSkeleton from '@/skeleonloaders/transaction-table'
 
 const DeclinedTransactions = () => {
 
@@ -18,7 +19,7 @@ const DeclinedTransactions = () => {
         <h1 className='text-black font-semibold'>Declined Transaction</h1>
         <Search searchTerm={search} setSearchTerm={setSearch} />
       </div>
-      {isLoading ? "loading..." : <TransactionTable data={DECLINED_TRANSACTIONS} itemsPerPage={8} />}
+      {isLoading ? <TransactionTableSkeleton /> : <TransactionTable data={DECLINED_TRANSACTIONS} itemsPerPage={8} />}
     </div>
   )
 }

@@ -2,6 +2,7 @@
 import type React from "react"
 import CardRequestTable from "../components/card-request-table"
 import { useGetAllCardRequest } from "../api/mutations"
+import RequestTableSkeleton from "@/skeleonloaders/card-request-table"
 
 export type RequestData = {
   request_id: string
@@ -17,14 +18,11 @@ export type RequestData = {
 
 export const CardRequest = () => {
   const { allRequest, isLoading, allRequestRefetch } = useGetAllCardRequest()
-  if (isLoading) {
-    return (
-      <div>Loading...</div>
-    )
-  }
+
+
   return (
     <>
-      <CardRequestTable requests={allRequest?.data ?? []} refetch={allRequestRefetch} />
+      {isLoading ? <RequestTableSkeleton /> : <CardRequestTable requests={allRequest?.data ?? []} refetch={allRequestRefetch} />}
     </>
   )
 }

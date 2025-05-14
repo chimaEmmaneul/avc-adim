@@ -5,6 +5,7 @@ import { StatusBadge } from '@/shared/statusbadge'
 import { Button } from '@/components/ui/button'
 import { useGetRequestDetails } from '../../api/mutations'
 import { RequestItem } from '../../@types'
+import RequestDetailsSkeleton from '@/skeleonloaders/request-details'
 type CardRequestDetailsProps = {
   requestData: RequestItem
   setStep: React.Dispatch<React.SetStateAction<string>>
@@ -12,10 +13,9 @@ type CardRequestDetailsProps = {
 }
 
 const CardRequestDetails = ({ requestData, setStep, setIsOpen }: CardRequestDetailsProps) => {
-  const { requestDetails, isLoading } = useGetRequestDetails({ id: requestData.id })
-
-  if (isLoading) return <div>Loading...</div>
-  console.log(requestDetails, "requestData");
+  const { requestDetails, } = useGetRequestDetails({ id: requestData.id })
+  const isLoading = true
+  if (isLoading) return <RequestDetailsSkeleton />
   return (
     <div className="space-y-4 py-2">
       <h1>Request Details</h1>

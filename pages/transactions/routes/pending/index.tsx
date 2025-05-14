@@ -5,6 +5,7 @@ import { useDebounce } from 'use-debounce'
 import TransactionTable from '../../components/transaction-table'
 import { PENDING_TRANSACTIONS } from '../../constants/transactions'
 import { useGetAllPendingTransactions } from '../../api/mutations'
+import TransactionTableSkeleton from '@/skeleonloaders/transaction-table'
 
 const PendingTransactions = () => {
 
@@ -18,7 +19,7 @@ const PendingTransactions = () => {
         <h1 className='text-black font-semibold'>Pending Transaction</h1>
         <Search searchTerm={search} setSearchTerm={setSearch} />
       </div>
-      {isLoading ? "loading..." : <TransactionTable data={PENDING_TRANSACTIONS} itemsPerPage={8} />}
+      {isLoading ? <TransactionTableSkeleton /> : <TransactionTable data={PENDING_TRANSACTIONS} itemsPerPage={8} />}
     </div>
   )
 }
