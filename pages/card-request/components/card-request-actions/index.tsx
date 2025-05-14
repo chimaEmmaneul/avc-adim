@@ -17,12 +17,12 @@ type CardRequestDataProps = {
   refetch?: () => void
 
 }
-const CardRequestActions = ({ requestData, isOpen, setIsOpen }: CardRequestDataProps) => {
+const CardRequestActions = ({ requestData, isOpen, setIsOpen, refetch }: CardRequestDataProps) => {
   const [steps, setStep] = useState("request")
 
   const CardRequestSteps: Record<string, JSX.Element> = {
     request: <CardRequestDetails requestData={requestData} setStep={setStep} setIsOpen={setIsOpen} />,
-    approve: <AcceptConfirmation requestData={requestData} setStep={setStep} setIsOpen={setIsOpen} />,
+    approve: <AcceptConfirmation requestData={requestData} setStep={setStep} setIsOpen={setIsOpen} refetch={refetch} />,
     reject: <RejectConfirmation requestData={requestData} setStep={setStep} setIsOpen={setIsOpen} />
   }
   return (

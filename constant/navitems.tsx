@@ -46,4 +46,14 @@ export const NAV_ITEMS: NavItem[] = [
     path: "/manage-blogs",
     icon: <Bolt />,
   },
+  {
+    name: "Manage Conent",
+    path: "/manage-content",
+    icon: <BadgeDollarSign />,
+    subItems: [
+      { name: "Testimonials", path: "/manage-content/testimonials" },
+      { name: "Contact Us", path: "/manage-content/contact-us" },
+      { name: "Footer", path: "/manage-content/footer" },
+    ],
+  },
 ]

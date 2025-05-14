@@ -16,7 +16,7 @@ export type RequestData = {
 
 
 export const CardRequest = () => {
-  const { allRequest, isLoading } = useGetAllCardRequest()
+  const { allRequest, isLoading, allRequestRefetch } = useGetAllCardRequest()
   if (isLoading) {
     return (
       <div>Loading...</div>
@@ -24,7 +24,7 @@ export const CardRequest = () => {
   }
   return (
     <>
-      <CardRequestTable requests={allRequest?.data ?? []} />
+      <CardRequestTable requests={allRequest?.data ?? []} refetch={allRequestRefetch} />
     </>
   )
 }
