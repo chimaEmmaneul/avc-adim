@@ -1,10 +1,26 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import RequestChangePassword from "./component/change-password"
+import { useEnable2FA } from "../authentication/api/mutations"
+import { showerror, showsuccess } from "@/lib/toasts"
 
 export default function SettingsPage() {
   const [is2FAEnabled, setIs2FAEnabled] = useState(true)
   const [isOpen, setIsOpen] = useState(false)
+  const { enable2FA, isPending } = useEnable2FA()
+
+  const handle2FA = async () => {
+    try {
+      await enable2FA({ two_factor_enabled: is2FAEnabled })
+      showsuccess("2FA updated successfully")
+    } catch (error) {
+      showerror("something went wrong")
+    }
+  }
+
+  useEffect(() => {
+    handle2FA()
+  }, [is2FAEnabled])
 
   return (
     <>
@@ -21,6 +37,7 @@ export default function SettingsPage() {
                 <div className="w-full sm:w-1/2">
                   <p className="text-sm text-gray-600">Enable / Disable 2FA</p>
                 </div>
+
                 <div className="w-full sm:w-1/4 flex sm:justify-end">
                   <button
                     onClick={() => setIs2FAEnabled(!is2FAEnabled)}

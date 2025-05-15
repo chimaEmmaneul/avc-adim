@@ -216,3 +216,28 @@ export function useUpdateUsers() {
     [mutateAsync, isPending, error, isError]
   );
 }
+export function useEnable2FA() {
+  const queryClient = new QueryClient();
+  const { mutateAsync, data, isPending, error, isError } = useMutation<
+    UserResponse,
+    AxiosError,
+    { two_factor_enabled: boolean }
+  >({
+    mutationFn: ({ two_factor_enabled }: { two_factor_enabled: boolean }) =>
+      authClient.enable2fa({ two_factor_enabled }),
+    onSuccess: () => {
+      // queryClient.invalidateQueries({ queryKey: ["GET_USER_PROFILE"] });
+    },
+  });
+
+  return useMemo(
+    () => ({
+      enable2FA: mutateAsync,
+      data,
+      isPending,
+      error,
+      isError,
+    }),
+    [mutateAsync, isPending, error, isError]
+  );
+}

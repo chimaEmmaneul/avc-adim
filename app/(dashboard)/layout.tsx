@@ -25,7 +25,7 @@ export default function DashboardLayout({
   return (
     <main className=" flex bg-black">
       <SidebarNavigation />
-      <div className="flex flex-col w-full min-h-screen overflow-x-auto py-6 px-8 md:rounded-[36px]  bg-white ">
+      <div className="flex flex-col w-full min-h-screen overflow-x-auto py-6 px-2 sm:px-8 md:rounded-[36px]  bg-white ">
         <Header />
         {children}
       </div>

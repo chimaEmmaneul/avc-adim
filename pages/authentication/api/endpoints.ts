@@ -11,4 +11,5 @@ export const AUTHENDPOINTS = {
   GET_COUNTRIES: "/countries",
   GET_USER: (id: string) => `/admin/users/details/${id}`,
   UPDATAE_USER: (id: string) => `/admin/users/update/${id}`,
+  ENABLE_2_FA: "/admin/enable-2fa",
 };

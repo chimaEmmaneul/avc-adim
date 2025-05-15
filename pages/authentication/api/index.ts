@@ -31,6 +31,8 @@ const authClient = {
   updateUser: (id: string, data: User): Promise<UserResponse> =>
     ApiClient.post(AUTHENDPOINTS.UPDATAE_USER(id), data),
   getCountries: (): Promise<any> => ApiClient.get(AUTHENDPOINTS.GET_COUNTRIES),
+  enable2fa: (data: { two_factor_enabled: boolean }): Promise<any> =>
+    ApiClient.post(AUTHENDPOINTS.ENABLE_2_FA, data),
 };
 
 export default authClient;
