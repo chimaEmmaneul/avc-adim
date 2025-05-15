@@ -33,6 +33,8 @@ const authClient = {
   getCountries: (): Promise<any> => ApiClient.get(AUTHENDPOINTS.GET_COUNTRIES),
   enable2fa: (data: { two_factor_enabled: boolean }): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.ENABLE_2_FA, data),
+  updataPassword: (data: { password: string }): Promise<any> =>
+    ApiClient.post(AUTHENDPOINTS.UPDATE_PASSWORD, data),
 };
 
 export default authClient;

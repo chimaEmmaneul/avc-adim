@@ -8,20 +8,24 @@ import { Eye, EyeOff } from "lucide-react"
 
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { useUpdatePassword } from "@/pages/authentication/api/mutations"
+import { showerror, showsuccess } from "@/lib/toasts"
+import { AxiosError } from "axios"
 
 const passwordSchema = z
   .object({
+    old_password: z.string().min(8, { message: "Password must be at least 8 characters" }),
     password: z
       .string()
       .min(8, { message: "Password must be at least 8 characters" })
       .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
       .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
       .regex(/[0-9]/, { message: "Password must contain at least one number" }),
-    confirmPassword: z.string(),
+    password_confirmation: z.string(),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.password_confirmation, {
     message: "Passwords do not match",
-    path: ["confirmPassword"],
+    path: ["password_confirmation"],
   })
 
 type PasswordFormValues = z.infer<typeof passwordSchema>
@@ -34,7 +38,7 @@ type ResetPasswordProps = {
 export default function ResetPassword({ setStep, setIsOpen }: ResetPasswordProps) {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-
+  const { updatePassword, isPending } = useUpdatePassword()
   const {
     register,
     handleSubmit,
@@ -43,14 +47,22 @@ export default function ResetPassword({ setStep, setIsOpen }: ResetPasswordProps
     resolver: zodResolver(passwordSchema),
     defaultValues: {
       password: "",
-      confirmPassword: "",
+      old_password: "",
+      password_confirmation: "",
     },
   })
 
-  function onSubmit(data: PasswordFormValues) {
+  const onSubmit = async (data: PasswordFormValues) => {
     console.log("Password reset successful", data)
-    setIsOpen(false)
-    setStep(1)
+    try {
+      const res = await updatePassword(data)
+      showsuccess(res.message)
+      setIsOpen(false)
+      setStep(1)
+      console.log(res, "response")
+    } catch (error: AxiosError | any) {
+      showerror(error.message)
+    }
     // Here you would typically call an API to reset the password
   }
 
@@ -64,6 +76,29 @@ export default function ResetPassword({ setStep, setIsOpen }: ResetPasswordProps
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div className="space-y-1">
+          <label htmlFor="password" className="block text-sm font-medium">
+            Enter Old Password:
+          </label>
+          <div className="relative">
+            <Input
+              id="old_password"
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter your password..."
+              className="pr-10 bg-[#EEEEEE] h-14"
+              {...register("old_password")}
+            />
+            <button
+              type="button"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
+          {errors.old_password && <p className="text-red-500 text-sm">{errors.old_password.message}</p>}
+        </div>
+
         <div className="space-y-1">
           <label htmlFor="password" className="block text-sm font-medium">
             Enter New Password:
@@ -97,7 +132,7 @@ export default function ResetPassword({ setStep, setIsOpen }: ResetPasswordProps
               type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirm your password..."
               className="pr-10 bg-[#EEEEEE] h-14"
-              {...register("confirmPassword")}
+              {...register("password_confirmation")}
             />
             <button
               type="button"
@@ -107,7 +142,7 @@ export default function ResetPassword({ setStep, setIsOpen }: ResetPasswordProps
               {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
           </div>
-          {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>}
+          {errors.password_confirmation && <p className="text-red-500 text-sm">{errors.password_confirmation.message}</p>}
         </div>
 
         <div className="flex gap-3 pt-2 mb-4">

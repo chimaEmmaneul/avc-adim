@@ -17,6 +17,7 @@ import {
   OtpSchema,
   ProfileFormData,
 } from "@/schema/authSchema";
+import { updatedPassword } from "@/pages/setting/@types";
 
 export function useLogin() {
   const { mutateAsync, data, isPending, error, isError } = useMutation<
@@ -219,7 +220,7 @@ export function useUpdateUsers() {
 export function useEnable2FA() {
   const queryClient = new QueryClient();
   const { mutateAsync, data, isPending, error, isError } = useMutation<
-    UserResponse,
+    any,
     AxiosError,
     { two_factor_enabled: boolean }
   >({
@@ -233,6 +234,30 @@ export function useEnable2FA() {
   return useMemo(
     () => ({
       enable2FA: mutateAsync,
+      data,
+      isPending,
+      error,
+      isError,
+    }),
+    [mutateAsync, isPending, error, isError]
+  );
+}
+export function useUpdatePassword() {
+  const queryClient = new QueryClient();
+  const { mutateAsync, data, isPending, error, isError } = useMutation<
+    any,
+    AxiosError,
+    updatedPassword
+  >({
+    mutationFn: (values: updatedPassword) => authClient.updataPassword(values),
+    onSuccess: () => {
+      // queryClient.invalidateQueries({ queryKey: ["GET_USER_PROFILE"] });
+    },
+  });
+
+  return useMemo(
+    () => ({
+      updatePassword: mutateAsync,
       data,
       isPending,
       error,
