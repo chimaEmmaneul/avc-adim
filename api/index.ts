@@ -26,52 +26,109 @@ client.interceptors.request.use((config) => {
 client.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
-      redirect("/auth/login");
-    }
     return Promise.reject(error.response.data);
   }
 );
 
 export class ApiClient {
   static async get<T>(url: string, params?: IParams, headers: any = {}) {
-    const response = await client.get<T>(url, {
-      params,
-      headers: {
-        ...client.defaults.headers,
-        ...headers,
-      },
-    });
+    try {
+      const response = await client.get<T>(url, {
+        params,
+        headers: {
+          ...client.defaults.headers,
+          ...headers,
+        },
+      });
 
-    return response.data;
+      return response.data;
+    } catch (error) {
+      return this.handleError(error);
+    }
   }
 
   static async post<T>(url: string, data: unknown, options?: any) {
-    const config = {
-      ...options,
-      headers: {
-        ...client.defaults.headers,
-        ...options?.headers,
-      },
-    };
-    const response = await client.post<T>(url, data, config);
-    return response.data;
+    try {
+      const config = {
+        ...options,
+        headers: {
+          ...client.defaults.headers,
+          ...options?.headers,
+        },
+      };
+      const response = await client.post<T>(url, data, config);
+      return response.data;
+    } catch (error) {
+      return this.handleError(error);
+    }
   }
 
-  static async put<T>(url: string, data: unknown) {
-    const response = await client.put<T>(url, data);
-
-    return response.data;
+  static async put<T>(url: string, data: unknown, options?: any) {
+    try {
+      const config = {
+        ...options,
+        headers: {
+          ...client.defaults.headers,
+          ...options?.headers,
+        },
+      };
+      const response = await client.put<T>(url, data, config);
+      return response.data;
+    } catch (error) {
+      return this.handleError(error);
+    }
   }
 
-  static async patch<T>(url: string, data: unknown) {
-    const response = await client.patch<T>(url, data);
-    return response.data;
+  static async patch<T>(url: string, data: unknown, options?: any) {
+    try {
+      const config = {
+        ...options,
+        headers: {
+          ...client.defaults.headers,
+          ...options?.headers,
+        },
+      };
+      const response = await client.patch<T>(url, data, config);
+      return response.data;
+    } catch (error) {
+      return this.handleError(error);
+    }
   }
 
-  static async delete<T>(url: string) {
-    const response = await client.delete<T>(url);
+  static async delete<T>(url: string, options?: any) {
+    try {
+      const config = {
+        ...options,
+        headers: {
+          ...client.defaults.headers,
+          ...options?.headers,
+        },
+      };
+      const response = await client.delete<T>(url, config);
+      return response.data;
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
 
-    return response.data;
+  private static handleError(error: any): never {
+    if (error.response) {
+      throw {
+        status: error.response.status,
+        data: error.response.data,
+        message: error.response.data?.message || "Server error occurred",
+        originalError: error,
+      };
+    } else if (error.request) {
+      throw {
+        status: 0,
+        message: "No response received from server",
+        originalError: error,
+      };
+    } else {
+      throw {
+        ...error,
+      };
+    }
   }
 }

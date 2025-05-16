@@ -5,11 +5,16 @@ import cardRequestClient from ".";
 import { AxiosError } from "axios";
 import { CardRequestResponse } from "../@types";
 
-export function useGetAllCardRequest() {
+export function useGetAllCardRequest(values: {
+  country: string;
+  status: string;
+  start_date: string;
+  end_date: string;
+}) {
   const { data, isLoading, refetch, isError, error } =
     useQuery<CardRequestResponse>({
-      queryKey: ["GET_ALL_CARD_REQUEST"],
-      queryFn: () => cardRequestClient.getAllCardRequest(),
+      queryKey: ["GET_ALL_CARD_REQUEST", values],
+      queryFn: () => cardRequestClient.getAllCardRequest(values),
     });
 
   return useMemo(

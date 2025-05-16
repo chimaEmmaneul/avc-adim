@@ -35,7 +35,7 @@ const CardRequestTable = ({ requests, refetch }: { requests: RequestItem[], refe
                   <td className="py-4 px-6">
                     <StatusBadge status={request.status} />
                   </td>
-                  <td className="py-4 px-6 whitespace-nowrap">
+                  <td className="py-4 px-6 text-main whitespace-nowrap">
                     <button onClick={() => { setRequestData(request); setIsOpen(true) }}>
                       View details
                     </button>

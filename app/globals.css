@@ -110,3 +110,35 @@ body{
   }
 }
 
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  @keyframes spin-outer {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin-inner {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-spin-outer {
+    animation: spin-outer 2s linear infinite;
+  }
+
+  .animate-spin-inner {
+    animation: spin-inner 1s linear infinite;
+  }
+}

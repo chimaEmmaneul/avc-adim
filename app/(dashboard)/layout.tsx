@@ -4,6 +4,7 @@ import SidebarNavigation from "@/components/common/Sidebar/Sidebar";
 import Header from "@/components/common/Header/Header";
 
 import { useAuth } from "@/hooks/useAuth";
+import Loader from "@/skeleonloaders/loader";
 
 export default function DashboardLayout({
   children
@@ -15,9 +16,7 @@ export default function DashboardLayout({
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
-      </div>
+      <Loader />
     )
   }
 

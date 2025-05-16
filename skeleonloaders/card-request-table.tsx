@@ -6,13 +6,11 @@ const RequestTableSkeleton = () => {
       <table className="w-full border-collapse">
         <thead>
           <tr className="text-left text-gray-500 text-sm uppercase">
-            <th className="py-4 px-6 font-medium">Request ID</th>
-            <th className="py-4 px-6 font-medium">User</th>
-            <th className="py-4 px-6 font-medium">Country</th>
-            <th className="py-4 px-6 font-medium">Pickup Location</th>
-            <th className="py-4 px-6 font-medium">Request Date</th>
-            <th className="py-4 px-6 font-medium">Status</th>
-            <th className="py-4 px-6 font-medium">Action</th>
+            {["Request ID", "User", "Country", "Pickup Location", "Request Date", "Status", "Action"].map((header) => (
+              <th key={header} className="py-4 px-6 font-medium whitespace-nowrap">
+                {header}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>

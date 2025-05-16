@@ -11,16 +11,15 @@ export default function SettingsPage() {
 
   const handle2FA = async () => {
     try {
-      await enable2FA({ two_factor_enabled: is2FAEnabled })
+      setIs2FAEnabled(!is2FAEnabled)
+      await enable2FA({ two_factor_enabled: is2FAEnabled === true ? false : true })
       showsuccess("2FA updated successfully")
     } catch (error) {
       showerror("something went wrong")
     }
   }
 
-  useEffect(() => {
-    handle2FA()
-  }, [is2FAEnabled])
+
 
   return (
     <>
@@ -40,7 +39,8 @@ export default function SettingsPage() {
 
                 <div className="w-full sm:w-1/4 flex sm:justify-end">
                   <button
-                    onClick={() => setIs2FAEnabled(!is2FAEnabled)}
+                    disabled={isPending}
+                    onClick={handle2FA}
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${is2FAEnabled ? "bg-green-500" : "bg-gray-200"}`}
                   >
                     <span

@@ -32,8 +32,6 @@ export default function LoginForm() {
   });
 
   const onSubmit = async (data: LoginSchema) => {
-    console.log("Login Data:", data);
-
     try {
       const res = await login(data)
       console.log(res)
@@ -41,7 +39,8 @@ export default function LoginForm() {
       Cookies.set('token', res.message.token, { expires: 24 })
       router.push("/overview")
     } catch (error: AxiosError | any) {
-      showerror(error.message)
+      console.log(error, "error")
+      showerror(error.errors)
     }
 
   };
