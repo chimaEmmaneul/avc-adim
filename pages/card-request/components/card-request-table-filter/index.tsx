@@ -26,9 +26,9 @@ const TableFilters = ({ country, setCountry, status, setStatus, fromDate, setFro
             <select
               className="appearance-none bg-white border border-gray-300 rounded-md  px-1 py-2  text-[#6E768E] outline-none "
               value={country}
+              defaultValue={"160"}
               onChange={(e) => setCountry(e.target.value)}
             >
-              <option value="All">All</option>
               {countries?.data.map((country) => (
                 <option key={country.id} value={country.id}>
                   {country.name}

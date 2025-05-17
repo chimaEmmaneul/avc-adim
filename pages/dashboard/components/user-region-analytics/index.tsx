@@ -43,7 +43,7 @@ const UserRegionAnalytics = ({ regions }: UserRegionAnalyticsProps) => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg border border-gray-100">
+    <div className="">
       <div className="flex gap-5 items-center mb-6">
         <h2 className="text-lg font-semibold text-gray-800">User Region Analytics</h2>
         <button className="flex items-center text-gray-500 hover:text-gray-700 text-sm">

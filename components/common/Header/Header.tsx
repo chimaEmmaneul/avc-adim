@@ -17,7 +17,6 @@ const Header = () => {
     email: "admin@azany.com",
     avatar: "/placeholder.svg?height=40&width=40",
   }
-  console.log(profile, "profile")
 
 
   const titleHeader = () => {

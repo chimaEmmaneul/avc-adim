@@ -6,6 +6,7 @@ import MetricCard from '../../components/metric-card'
 import UserRegionAnalytics from '../../components/user-region-analytics'
 import { useGetDashboardAnalytics } from '../../api/mutation'
 import { CartIcon, ChartIcon } from '@/icon/icon'
+import ConversionRateSettings from '../../components/conversion-rate-settings'
 
 const Overview = () => {
   const { dashboardData, isLoading } = useGetDashboardAnalytics()
@@ -20,14 +21,13 @@ const Overview = () => {
   // 3. Map through and attach color
   const userAnalyticsWithColor = user_analytics.map((user, index) => ({
     ...user,
-    color: colors[index] || "#000000" // fallback to black if colors run out
+    color: colors[index] || "#000000" 
   }));
 
 
   return (
     <div className='space-y-8'>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* {METRIC.map((metric) => ( */}
         <MetricCard
           title="Total Withdrawals"
           value={dashboardData?.data.withdrawal}
@@ -58,7 +58,10 @@ const Overview = () => {
           />
         {/* ))} */}
       </div>
+      <div className='flex w-full gap-4'>
+        <ConversionRateSettings />
       <UserRegionAnalytics regions={userAnalyticsWithColor} />
+      </div>
       <UsersTable users={DASHBOARD_USERS} />
     </div>
   )
