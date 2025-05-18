@@ -1,5 +1,5 @@
 "use client";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import cardRequestClient from ".";
 import { AxiosError } from "axios";
@@ -49,36 +49,18 @@ export function useGetRequestDetails({ id }: { id: string }) {
   );
 }
 
-// export function useApproveRequest({ id }: { id: string }) {
-//   const { data, isLoading, refetch, isError, error } = useQuery<any>({
-//     queryKey: ["APPROVE_REQUEST", id],
-//     queryFn: ({ queryKey }) => {
-//       const [, id] = queryKey as [string, string];
-//       return cardRequestClient.approveRequest(id);
-//     },
-//   });
-
-//   return useMemo(
-//     () => ({
-//       approveRequest: data,
-//       approveRequestRefetch: refetch,
-//       isLoading,
-//       isError,
-//       error,
-//     }),
-//     [data, isLoading, isError, error, refetch]
-//   );
-// }
-
 export const useApproveRequest = () => {
+  const queryClient = new QueryClient();
   const { mutateAsync, data, isPending, error, isError } = useMutation<
-    any,
+    { message: string },
     AxiosError,
     { id: string }
   >({
     mutationFn: ({ id }: { id: string }) =>
       cardRequestClient.approveRequest(id),
-    onSuccess: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["GET_ALL_CARD_REQUEST"] });
+    },
   });
 
   return useMemo(
@@ -94,8 +76,9 @@ export const useApproveRequest = () => {
 };
 
 export const useRejectRequest = () => {
+  const queryClient = new QueryClient();
   const { mutateAsync, data, isPending, error, isError } = useMutation<
-    any,
+    { message: string },
     AxiosError,
     { id: string; data: { reason: string; other_reason?: string } }
   >({
@@ -106,7 +89,9 @@ export const useRejectRequest = () => {
       id: string;
       data: { reason: string; other_reason?: string };
     }) => cardRequestClient.rejectRequest(id, data),
-    onSuccess: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["GET_ALL_CARD_REQUEST"] });
+    },
   });
 
   return useMemo(

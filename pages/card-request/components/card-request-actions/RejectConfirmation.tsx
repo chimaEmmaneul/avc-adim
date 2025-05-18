@@ -1,10 +1,11 @@
 import React from 'react'
 import { useForm } from "react-hook-form"
 import { RequestData } from '../../constants'
-import { Check, ChevronDown, X } from 'lucide-react'
+import { Check, ChevronDown, Loader, X } from 'lucide-react'
 import { useRejectRequest } from '../../api/mutations'
 import { showerror, showsuccess } from '@/lib/toasts'
 import { RequestItem } from '../../@types'
+import { AxiosError } from 'axios'
 
 export interface RejectionFormData {
   reason: string
@@ -46,8 +47,10 @@ const RejectConfirmation = ({ requestData, setStep, setIsOpen }: RejectConfirmat
     try {
       await rejectRequest({ id: requestData.id, data })
       showsuccess("Request rejected successfully")
-    } catch (error) {
-      showerror("something went wrong")
+      setIsOpen(false)
+      setStep("request")
+    } catch (error: AxiosError | any) {
+      showerror(error.message)
     }
   }
 
@@ -129,7 +132,7 @@ const RejectConfirmation = ({ requestData, setStep, setIsOpen }: RejectConfirmat
             type="submit"
             className="flex-1 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-400 transition-colors flex items-center justify-center"
           >
-            Confirm rejection
+            {isPending ? <Loader className='mx-auto animate-spin' /> : "Confirm rejection"}
           </button>
         </div>
       </form>

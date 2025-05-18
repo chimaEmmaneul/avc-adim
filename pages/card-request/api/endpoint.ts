@@ -13,5 +13,7 @@ export const CARDREQUESTENDPOINTS = {
     end_date: string;
     country: string;
   }) =>
-    `admin/card-request?status=${status}&start_date=${start_date}&end_date=${end_date}&country=${country}`,
+    `admin/card-request?status=${status}&start_date=${start_date}&end_date=${end_date}&${
+      country ? `country=${country}` : ""
+    }`,
 };

@@ -19,7 +19,7 @@ export function useAuth() {
     }
 
     if (isError && !isLoading) {
-      showerror("Unauthenticated")
+      showerror("Unauthenticated, redirecting...")
       Cookies.remove("token")
       redirect("/auth/login")
     }

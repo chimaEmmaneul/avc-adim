@@ -20,17 +20,18 @@ const TableFilters = ({ country, setCountry, status, setStatus, fromDate, setFro
       </div>
 
       <div className="flex flex-nowrap gap-4 mb-4 ">
-        <div className="flex items-center gap-2 whitespace-nowrap">
+        <div className="flex items-center gap-2  truncate">
           <span className="text-sm font-medium text-gray-600">Country</span>
           <div className="relative">
             <select
-              className="appearance-none bg-white border border-gray-300 rounded-md  px-1 py-2  text-[#6E768E] outline-none "
-              value={country}
-              defaultValue={"160"}
+              className="appearance-none w-[150px] truncate bg-white border border-gray-300 rounded-md  px-1 py-2  text-[#6E768E] outline-none "
+              value={country ?? "Nigeria"}
+              defaultValue="160"
               onChange={(e) => setCountry(e.target.value)}
             >
+              <option value="">All</option>
               {countries?.data.map((country) => (
-                <option key={country.id} value={country.id}>
+                <option className='w-[100px] truncate' key={country.id} value={country.id}>
                   {country.name}
                 </option>
               ))}
@@ -48,7 +49,7 @@ const TableFilters = ({ country, setCountry, status, setStatus, fromDate, setFro
           <div className="relative">
             <select
               className="appearance-none bg-white border border-gray-300 rounded-md py-2 px-3 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              value={status}
+              value={status ?? "all"}
               onChange={(e) => setStatus(e.target.value)}
             >
               <option value="all">All</option>

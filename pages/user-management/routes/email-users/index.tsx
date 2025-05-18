@@ -3,10 +3,15 @@
 import { useState } from "react"
 import dynamic from "next/dynamic"
 import "react-quill/dist/quill.snow.css"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, Loader } from "lucide-react"
 import { modules } from "../../constants/config"
 import { useSendEmail } from "../../api/mutations"
 import { showerror, showsuccess } from "@/lib/toasts"
+import striptags from 'striptags';
+
+
+
+
 
 const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
@@ -23,13 +28,19 @@ export default function EmailUsers() {
 
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
+    console.log({
+      type: selectedUser,
+      subject,
+      message: striptags(content),
+    })
     e.preventDefault()
     try {
       const response = await sendEmail({
         type: selectedUser,
         subject,
-        message: content,
+        message: striptags(content),
       })
+      console.log(response, "response")
       showsuccess("Email sent successfully!")
     } catch (error) {
       console.log(error)
@@ -109,7 +120,7 @@ export default function EmailUsers() {
             type="submit"
             className="px-10 py-2 bg-main text-white font-medium rounded-md  focus:outline-none transition-colors"
           >
-            Send Email
+            {isSendingEmail ? <Loader size={25} className="mx-auto animate-spin" /> : "Send Email"}
           </button>
         </div>
       </form>

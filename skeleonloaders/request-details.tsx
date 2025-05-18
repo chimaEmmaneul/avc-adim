@@ -17,7 +17,7 @@ export function RequestDetailsSkeleton() {
   ]
 
   return (
-    <div className="w-full bg-white rounded shadow">
+    <div className="">
       <div className="flex items-center justify-between border-b p-4">
         <h2 className="text-lg font-medium text-gray-800">Request Details</h2>
       </div>

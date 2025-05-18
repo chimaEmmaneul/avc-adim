@@ -21,6 +21,10 @@ const RenderStatusBadge = (status: string) => {
           EMAIL UNVERIFIED
         </span>
       )
+    case "approved":
+      return " text-green-600 border-green-200"
+    case "pending":
+      return " text-amber-600 border-amber-200"
     default:
       return null
   }
@@ -32,11 +36,13 @@ export const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
   const getStatusStyles = () => {
     switch (status) {
       case "approved":
-        return "bg-green-100 text-green-600 border-green-200"
+        return " text-green-600 border border-green-500"
       case "pending":
-        return "bg-amber-100 text-amber-600 border-amber-200"
+        return " text-amber-600 border border-amber-500"
+      case "rejected":
+        return " text-red-600 border border-red-500"
       default:
-        return "bg-gray-100 text-gray-600 border-gray-200"
+        return " text-gray-600 border border-gray-500"
     }
   }
 

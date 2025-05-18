@@ -22,7 +22,7 @@ const CardRequestActions = ({ requestData, isOpen, setIsOpen, refetch }: CardReq
 
   const CardRequestSteps: Record<string, JSX.Element> = {
     request: <CardRequestDetails requestData={requestData} setStep={setStep} setIsOpen={setIsOpen} />,
-    approve: <AcceptConfirmation requestData={requestData} setStep={setStep} setIsOpen={setIsOpen} refetch={refetch} />,
+    approve: <AcceptConfirmation requestData={requestData} setStep={setStep} setIsOpen={setIsOpen} />,
     reject: <RejectConfirmation requestData={requestData} setStep={setStep} setIsOpen={setIsOpen} />
   }
   return (

@@ -13,8 +13,7 @@ type CardRequestDetailsProps = {
 }
 
 const CardRequestDetails = ({ requestData, setStep, setIsOpen }: CardRequestDetailsProps) => {
-  const { requestDetails, } = useGetRequestDetails({ id: requestData.id })
-  const isLoading = true
+  const { requestDetails, isLoading } = useGetRequestDetails({ id: requestData.id })
   if (isLoading) return <RequestDetailsSkeleton />
   return (
     <div className="space-y-4 py-2">

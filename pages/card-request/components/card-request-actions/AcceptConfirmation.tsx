@@ -1,25 +1,26 @@
 import React from 'react'
-import { RequestData } from '../../constants'
 import { useApproveRequest } from '../../api/mutations'
 import { showerror, showsuccess } from '@/lib/toasts'
 import { RequestItem } from '../../@types'
+import { Loader } from 'lucide-react'
+import { AxiosError } from 'axios'
 
 
 type AcceptConfirmationProps = {
   requestData: RequestItem
   setStep: React.Dispatch<React.SetStateAction<string>>
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-  refetch?: () => void
 }
-const AcceptConfirmation = ({ requestData, setStep, setIsOpen, refetch }: AcceptConfirmationProps) => {
+const AcceptConfirmation = ({ requestData, setStep, setIsOpen }: AcceptConfirmationProps) => {
   const { approveRequest, isPending } = useApproveRequest()
   const handleApprove = async () => {
     try {
-      await approveRequest({ id: requestData.id })
-      showsuccess("Request Approved Successfully")
-      refetch?.()
-    } catch (error) {
-      showerror("something went wrong")
+      const response = await approveRequest({ id: requestData.id })
+      showsuccess(response.message)
+      setIsOpen(false)
+      setStep("request")
+    } catch (error: AxiosError | any) {
+      showerror(error.message)
     }
   }
 
@@ -42,11 +43,11 @@ const AcceptConfirmation = ({ requestData, setStep, setIsOpen, refetch }: Accept
         </div>
 
         <div className="flex gap-4">
-          <button onClick={() => { setIsOpen(false); setStep("request") }} className="flex-1 px-4 py-2.5 border border-amber-500 text-amber-500 font-medium rounded-md hover:bg-amber-50 transition-colors">
+          <button onClick={() => { setIsOpen(false); setStep("request") }} className="flex-1 px-4 py-2.5 border border-main text-amber-500 font-medium rounded-md hover:bg-amber-50 transition-colors">
             Cancel
           </button>
-          <button onClick={handleApprove} className="flex-1 px-4 py-2.5 bg-amber-500 text-white font-medium rounded-md hover:bg-amber-600 transition-colors">
-            Confirm Approval
+          <button onClick={handleApprove} className="flex-1 px-4 py-2.5 bg-main text-white font-medium rounded-md hover:bg-amber-600 transition-colors">
+            {isPending ? <Loader className='mx-auto animate-spin' /> : "Confirm Approval"}
           </button>
         </div>
       </div>
