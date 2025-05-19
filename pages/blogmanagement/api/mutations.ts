@@ -19,6 +19,7 @@ export function useGetAllCategory() {
     [data, isLoading, isError, error, refetch]
   );
 }
+
 export function useGetAllBlogs() {
   const { data, isLoading, refetch, isError, error } = useQuery<any>({
     queryKey: ["GET_ALL_BLOGS"],
