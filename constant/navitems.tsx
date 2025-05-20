@@ -1,6 +1,6 @@
 import { NavItem } from "@/@types/navitems";
 // import { DashboardIcon, SettingsIcon, TransactionIcon, UserIcon } from "@/icon/icon";
-import { BadgeDollarSign, Bolt, CreditCard, LayoutGridIcon, UserRoundCog } from "lucide-react";
+import { BadgeDollarSign, Bolt, CreditCard, LayoutGridIcon, LocateIcon, UserRoundCog } from "lucide-react";
 
 export const NAV_ITEMS: NavItem[] = [
   {
@@ -35,6 +35,11 @@ export const NAV_ITEMS: NavItem[] = [
     name: "Card Requessts",
     path: "/card-requests",
     icon: <CreditCard />,
+  },
+  {
+    name: "Card Pickup",
+    path: "/card-pickup-location",
+    icon: <LocateIcon />,
   },
   {
     name: "Settings",
