@@ -31,3 +31,13 @@ export type CardRequestData = {
   request_date: string;
   date_approved: string | null;
 };
+
+export type LocationType = {
+  id: string;
+  name: string;
+  country: string;
+  service_days: string;
+  service_hours: string;
+  address: string;
+  status: string;
+};

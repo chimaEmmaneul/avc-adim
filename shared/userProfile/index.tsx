@@ -7,7 +7,7 @@ import Image from "next/image"
 import { userFormSchema, UserFormValues } from "@/schema/authSchema"
 import { useRouter } from "next/navigation"
 import { useGetAllCountries, useGetUser, useUpdateUsers } from "@/pages/authentication/api/mutations"
-import { showerror } from "@/lib/toasts"
+import { showerror, showsuccess } from "@/lib/toasts"
 import { User } from "@/pages/authentication/@types"
 import { formatDate, formatDateTime } from "@/lib/utils"
 
@@ -60,7 +60,7 @@ export default function UserProfile({ params }: { params: { id: string } }) {
     return <div>Loading...</div>
   }
 
-  console.log(errors)
+  console.log(userProfile?.data.status, "userProfile")
 
   const onSubmit = async (data: UserFormValues) => {
     console.log("Form submitted:", data,)
@@ -82,7 +82,7 @@ export default function UserProfile({ params }: { params: { id: string } }) {
     try {
       console.log(updatedData, "updatedData")
       const response = await updateUser({ id: params.id, values: updatedData })
-      showerror("updated successfully")
+      showsuccess("updated successfully")
     } catch (error) {
       console.log(error)
       showerror("something went wrong")

@@ -51,7 +51,7 @@ const UserTable = ({ data, itemsPerPage }: UserTableProps) => {
                 </td>
                 <td className="py-4 px-4 whitespace-nowrap text-center">{user.email}</td>
                 <td className="py-4 px-4 whitespace-nowrap text-center">{user.phone}</td>
-                <td className="py-4 px-4 whitespace-nowrap text-center">{RenderStatusBadge(user.status)}</td>
+                <td className="py-4 px-4 whitespace-nowrap text-center"><StatusBadge status={user.status?.toLowerCase()} /></td>
                 <td className="py-4 px-4 whitespace-nowrap text-center">
                   <button
                     onClick={() => router.push(`${pathname}/${user.id}`)}

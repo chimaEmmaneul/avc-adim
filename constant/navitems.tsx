@@ -37,7 +37,7 @@ export const NAV_ITEMS: NavItem[] = [
     icon: <CreditCard />,
   },
   {
-    name: "Card Pickup",
+    name: " Pickup Locations",
     path: "/card-pickup-location",
     icon: <LocateIcon />,
   },

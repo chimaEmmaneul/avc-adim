@@ -37,9 +37,13 @@ export const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
     switch (status) {
       case "approved":
         return " text-green-600 border border-green-500"
+      case "active":
+        return " text-green-600 border border-green-600"
       case "pending":
         return " text-amber-600 border border-amber-500"
       case "rejected":
+        return " text-red-600 border border-red-500"
+      case "suspended":
         return " text-red-600 border border-red-500"
       default:
         return " text-gray-600 border border-gray-500"
