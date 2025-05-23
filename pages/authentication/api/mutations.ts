@@ -10,7 +10,7 @@ import {
   UserResponse,
   VerifyEmailResponse,
 } from "../@types";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import authClient from ".";
 import {
   ForgotPasswordSchema,
@@ -75,6 +75,27 @@ export function useVerifyOtp() {
   return useMemo(
     () => ({
       verifyOtp: mutateAsync,
+      data,
+      isOtpverifying: isPending,
+      error,
+      isError,
+    }),
+    [mutateAsync, data, isPending, error, isError]
+  );
+}
+export function useVerifyChangePasswordOtp() {
+  const { mutateAsync, data, isPending, error, isError } = useMutation<
+    VerifyEmailResponse,
+    AxiosError,
+    OtpSchema
+  >({
+    mutationFn: (data) => authClient.verifyOtpCode(data),
+    onSuccess: () => {},
+  });
+
+  return useMemo(
+    () => ({
+      verifyChangePasswordOtp: mutateAsync,
       data,
       isOtpverifying: isPending,
       error,
@@ -168,7 +189,7 @@ export function useGetAllCountries() {
 }
 
 export function useUpadteAdminProfile() {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const { mutateAsync, data, isPending, error, isError } = useMutation<
     ProfileFormData,
     AxiosError,
@@ -193,7 +214,7 @@ export function useUpadteAdminProfile() {
 }
 
 export function useUpdateUsers() {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const { mutateAsync, data, isPending, error, isError } = useMutation<
     UserResponse,
     AxiosError,
@@ -218,7 +239,7 @@ export function useUpdateUsers() {
   );
 }
 export function useEnable2FA() {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const { mutateAsync, data, isPending, error, isError } = useMutation<
     any,
     AxiosError,
@@ -227,7 +248,7 @@ export function useEnable2FA() {
     mutationFn: ({ two_factor_enabled }: { two_factor_enabled: boolean }) =>
       authClient.enable2fa({ two_factor_enabled }),
     onSuccess: () => {
-      // queryClient.invalidateQueries({ queryKey: ["GET_USER_PROFILE"] });
+      queryClient.invalidateQueries({ queryKey: ["GET_USER_PROFILE"] });
     },
   });
 
@@ -242,8 +263,33 @@ export function useEnable2FA() {
     [mutateAsync, isPending, error, isError]
   );
 }
+export function useGetCode() {
+  const queryClient = useQueryClient();
+  const { mutateAsync, data, isPending, error, isError } = useMutation<
+    any,
+    AxiosError,
+    void
+  >({
+    mutationFn: () => authClient.getCode(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["GET_USER_PROFILE"] });
+    },
+  });
+
+  return useMemo(
+    () => ({
+      getCode: mutateAsync,
+      data,
+      isPending,
+      error,
+      isError,
+    }),
+    [mutateAsync, isPending, error, isError]
+  );
+}
+
 export function useUpdatePassword() {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const { mutateAsync, data, isPending, error, isError } = useMutation<
     any,
     AxiosError,
@@ -251,7 +297,7 @@ export function useUpdatePassword() {
   >({
     mutationFn: (values: updatedPassword) => authClient.updataPassword(values),
     onSuccess: () => {
-      // queryClient.invalidateQueries({ queryKey: ["GET_USER_PROFILE"] });
+      queryClient.invalidateQueries({ queryKey: ["GET_USER_PROFILE"] });
     },
   });
 

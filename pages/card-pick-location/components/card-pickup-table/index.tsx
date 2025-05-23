@@ -8,7 +8,7 @@ const CardPickupTable = ({ locations }: { locations: LocationType[] }) => {
       <table className="">
         <thead className="bg-gray-50">
           <tr>
-            {["Location ID", "Location Name", "Country", "Service Days", "Service Hours", "Address", "Status", "Action"].map(
+            {["Location ID", "Location Name", "Country", "Service Days", "Service Hours", "Address", "Action"].map(
               (header) => (
                 <th
                   key={header}
@@ -27,9 +27,9 @@ const CardPickupTable = ({ locations }: { locations: LocationType[] }) => {
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{location.name}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{location.country}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{location.service_days}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{location.service_hours}</td>
-              <td className="px-6 py-4 min-w-[200px]  text-sm text-gray-500">{location.address}</td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{location.service_hour}</td>
+              <td className="px-6 py-4 min-w-[150px]  text-sm text-gray-500">{location.address}</td>
+              {/* <td className="px-6 py-4 whitespace-nowrap">
                 <span
                   className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full`}
                 >
@@ -37,7 +37,7 @@ const CardPickupTable = ({ locations }: { locations: LocationType[] }) => {
                     <StatusBadge status={location.status} />
                   </span>
                 </span>
-              </td>
+              </td> */}
               <td className="px-6 py-4 whitespace-nowrap text-sm">
                 <button
                   className="text-amber-600 hover:text-amber-900 font-medium hover:underline"

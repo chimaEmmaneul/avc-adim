@@ -32,12 +32,38 @@ export type CardRequestData = {
   date_approved: string | null;
 };
 
+// export type LocationType = {
+//   id: string;
+//   name: string;
+//   country: string;
+//   service_days: string;
+//   service_hours: string;
+//   address: string;
+//   status: string;
+// };
+
+
 export type LocationType = {
-  id: string;
-  name: string;
+  id: number;
   country: string;
-  service_days: string;
-  service_hours: string;
+  state: string;
+  name: string;
   address: string;
-  status: string;
+  service_days: string;
+  service_hour: string;
+  created_date: string;
+};
+
+export type Meta = {
+  current_page: number;
+  total: number;
+  per_page: number;
+  last_page: number;
+};
+
+export type LocationResponse = {
+  success: boolean;
+  message: string;
+  data: LocationType[];
+  meta: Meta;
 };

@@ -1,24 +1,23 @@
 "use client"
 import React from 'react'
 import UsersTable from '../../components/dashboard-user-table'
-import { DASHBOARD_USERS, METRIC, REGIONAL_DATA } from '../../constants/user'
+import { DASHBOARD_USERS, } from '../../constants/user'
 import MetricCard from '../../components/metric-card'
 import UserRegionAnalytics from '../../components/user-region-analytics'
-import { useGetDashboardAnalytics } from '../../api/mutation'
+import { useGetDashboardAnalytics, useGetMarkupConfig } from '../../api/mutation'
 import { CartIcon, ChartIcon } from '@/icon/icon'
 import ConversionRateSettings from '../../components/conversion-rate-settings'
 
 const Overview = () => {
   const { dashboardData, isLoading } = useGetDashboardAnalytics()
+  const { markupConfig, isLoading: isLoadingConfig } = useGetMarkupConfig()
+  console.log(markupConfig, "config")
 
-  console.log(dashboardData, "dashboard")
 
   const user_analytics = dashboardData?.data.user_analytics || [];
 
-  // 2. Define your specific colors
   const colors = ["#F9CA24", "#4CAF50", "#6D1A36", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"];
 
-  // 3. Map through and attach color
   const userAnalyticsWithColor = user_analytics.map((user, index) => ({
     ...user,
     color: colors[index] || "#000000" 
@@ -55,12 +54,11 @@ const Overview = () => {
           percentChange={0}
           viewText="View Report"
           icon={<CartIcon />}
-          />
-        {/* ))} */}
+        />
       </div>
-      <div className='flex w-full gap-4'>
-        <ConversionRateSettings />
-      <UserRegionAnalytics regions={userAnalyticsWithColor} />
+      <div className='flex flex-col sm:flex-row w-full gap-4'>
+        <ConversionRateSettings config={markupConfig?.data ?? { markup_percent: 0, card_fee: 0 }} isLoadingConfig={isLoadingConfig} />
+        <UserRegionAnalytics regions={userAnalyticsWithColor} />
       </div>
       <UsersTable users={DASHBOARD_USERS} />
     </div>

@@ -21,7 +21,7 @@ const RequestChangePassword = ({ isOpen, setIsOpen }: RequestChangePasswordProps
 
       <AlertDialogContent >
         {step === 1 && (
-          <Otpform setStep={setStep} />
+          <Otpform setStep={setStep} setIsOpen={setIsOpen} />
         )}
 
         {step === 2 && (

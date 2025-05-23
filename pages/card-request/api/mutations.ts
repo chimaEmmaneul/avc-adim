@@ -1,5 +1,5 @@
 "use client";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
 import cardRequestClient from ".";
 import { AxiosError } from "axios";
@@ -50,7 +50,7 @@ export function useGetRequestDetails({ id }: { id: string }) {
 }
 
 export const useApproveRequest = () => {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const { mutateAsync, data, isPending, error, isError } = useMutation<
     { message: string },
     AxiosError,
@@ -76,7 +76,7 @@ export const useApproveRequest = () => {
 };
 
 export const useRejectRequest = () => {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const { mutateAsync, data, isPending, error, isError } = useMutation<
     { message: string },
     AxiosError,

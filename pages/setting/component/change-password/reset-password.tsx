@@ -53,17 +53,15 @@ export default function ResetPassword({ setStep, setIsOpen }: ResetPasswordProps
   })
 
   const onSubmit = async (data: PasswordFormValues) => {
-    console.log("Password reset successful", data)
     try {
       const res = await updatePassword(data)
-      showsuccess(res.message)
+      showsuccess(res.data)
       setIsOpen(false)
       setStep(1)
       console.log(res, "response")
     } catch (error: AxiosError | any) {
       showerror(error.message)
     }
-    // Here you would typically call an API to reset the password
   }
 
   return (

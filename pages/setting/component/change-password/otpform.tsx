@@ -7,6 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useVerifyChangePasswordOtp } from "@/pages/authentication/api/mutations";
+import { showerror, showsuccess } from "@/lib/toasts";
 
 const otpSchema = z.object({
   otp: z.string().length(4, "OTP required").regex(/^\d+$/, "Only numbers allowed"),
@@ -14,9 +16,10 @@ const otpSchema = z.object({
 
 type OtpVerificationProps = {
   setStep: React.Dispatch<React.SetStateAction<number | null>>;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 
 }
-const Otpform = ({ setStep }: OtpVerificationProps) => {
+const Otpform = ({ setStep, setIsOpen }: OtpVerificationProps) => {
   const [otp, setOtp] = useState("");
   const {
     handleSubmit,
@@ -26,8 +29,17 @@ const Otpform = ({ setStep }: OtpVerificationProps) => {
     resolver: zodResolver(otpSchema),
   });
 
-  const onSubmit = () => {
-    setStep(2)
+  const { verifyChangePasswordOtp, isOtpverifying } = useVerifyChangePasswordOtp()
+
+  const onSubmit = async (data: { otp: string }) => {
+    try {
+      await verifyChangePasswordOtp({ verification_code: data.otp })
+      setStep(2)
+      showsuccess("OTP verified successfully")
+    } catch (error) {
+      console.log(error)
+      showerror("something went wrong")
+    }
   };
 
   return (
@@ -60,9 +72,15 @@ const Otpform = ({ setStep }: OtpVerificationProps) => {
 
           {errors.otp && <p className="text-red-500 text-sm">{errors.otp.message}</p>}
 
-          <Button type="submit" className="w-full h-14  md:w-1/2 max-w-xs">
-            Continue
-          </Button>
+          <div className="flex items-center gap-4">
+            <Button onClick={() => setIsOpen(false)} type="submit" className="w-full h-14 px-4 hover:bg-transparent bg-white text-black border  md:w-1/2 max-w-xs">
+              Cancel
+            </Button>
+
+            <Button type="submit" className="w-full h-14  md:w-1/2 max-w-xs">
+              {isOtpverifying ? "Verifying..." : "Continue"}
+            </Button>
+          </div>
         </form>
 
       </div>

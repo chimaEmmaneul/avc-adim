@@ -13,4 +13,6 @@ export const AUTHENDPOINTS = {
   UPDATAE_USER: (id: string) => `/admin/users/update/${id}`,
   ENABLE_2_FA: "/admin/enable-2fa",
   UPDATE_PASSWORD: "/admin/update-password",
+  GET_CODE: "admin/get-code",
+  VERIFY_OTP_CODE: "admin/verify-code",
 };

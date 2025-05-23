@@ -23,6 +23,8 @@ const authClient = {
     ApiClient.post(AUTHENDPOINTS.RESEND_OTP, data),
   verifyCode: (data: { verification_code: string }): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.VERIFY_CODE, data),
+  verifyOtpCode: (data: { verification_code: string }): Promise<any> =>
+    ApiClient.post(AUTHENDPOINTS.VERIFY_OTP_CODE, data),
   getAdminProfile: (): Promise<any> => ApiClient.get(AUTHENDPOINTS.PROFILE),
   updateProfile: (data: ProfileFormData): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.UPDATE_PROFILE, data),
@@ -33,6 +35,7 @@ const authClient = {
   getCountries: (): Promise<any> => ApiClient.get(AUTHENDPOINTS.GET_COUNTRIES),
   enable2fa: (data: { two_factor_enabled: boolean }): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.ENABLE_2_FA, data),
+  getCode: (): Promise<any> => ApiClient.get(AUTHENDPOINTS.GET_CODE),
   updataPassword: (data: { password: string }): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.UPDATE_PASSWORD, data),
 };

@@ -43,7 +43,7 @@ export type UserRegionAnalyticsProps = {
 export interface UserAnalytics {
   country_name: string;
   total_users: number;
-  percentage: string; // if you prefer it as number, we can cast it
+  percentage: string;
 }
 
 export interface DashboardAnalytics {
@@ -61,3 +61,14 @@ export interface DashboardAnalytics {
 export interface DashboardResponse {
   data: DashboardAnalytics;
 }
+
+export type ConfigData = {
+  markup_percent: number;
+  card_fee: number;
+};
+
+export type ConfigResponse = {
+  success: boolean;
+  message: string;
+  data: ConfigData;
+};

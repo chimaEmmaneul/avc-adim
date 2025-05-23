@@ -1,13 +1,14 @@
 "use client"
 import { useEffect, useState } from "react"
 import RequestChangePassword from "./component/change-password"
-import { useEnable2FA } from "../authentication/api/mutations"
+import { useEnable2FA, useGetCode } from "../authentication/api/mutations"
 import { showerror, showsuccess } from "@/lib/toasts"
 
 export default function SettingsPage() {
   const [is2FAEnabled, setIs2FAEnabled] = useState(true)
   const [isOpen, setIsOpen] = useState(false)
   const { enable2FA, isPending } = useEnable2FA()
+  const { getCode, isPending: isPendingCode } = useGetCode()
 
   const handle2FA = async () => {
     try {
@@ -19,7 +20,13 @@ export default function SettingsPage() {
     }
   }
 
-
+  const getOtpCode = async () => {
+    try {
+      await getCode()
+    } catch (error) {
+      showerror("something went wrong")
+    }
+  }
 
   return (
     <>
@@ -27,7 +34,6 @@ export default function SettingsPage() {
         <div className="bg-white border border-gray-200 rounded-md shadow-sm">
           <div className="p-6">
             <h2 className="text-xl border-b border-gray-200  pb-4  font-medium text-gray-800 mb-6">Security settings</h2>
-
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between space-y-3 sm:space-y-0">
                 <div className="w-full sm:w-1/4">
@@ -36,7 +42,6 @@ export default function SettingsPage() {
                 <div className="w-full sm:w-1/2">
                   <p className="text-sm text-gray-600">Enable / Disable 2FA</p>
                 </div>
-
                 <div className="w-full sm:w-1/4 flex sm:justify-end">
                   <button
                     disabled={isPending}
@@ -58,7 +63,11 @@ export default function SettingsPage() {
                   <p className="text-sm text-gray-600">••••••••••••••••</p>
                 </div>
                 <div className="w-full sm:w-1/4 flex sm:justify-end">
-                  <button onClick={() => setIsOpen(true)} className="text-main  text-sm font-medium">Change Password</button>
+                  <button onClick={() => {
+                    getOtpCode();
+                    setIsOpen(true);
+                  }}
+                    className="text-main  text-sm font-medium">Change Password</button>
                 </div>
               </div>
             </div>
