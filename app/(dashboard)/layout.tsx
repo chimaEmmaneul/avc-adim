@@ -5,6 +5,7 @@ import Header from "@/components/common/Header/Header";
 
 import { useAuth } from "@/hooks/useAuth";
 import Loader from "@/skeleonloaders/loader";
+import useGetCountries from "@/hooks/useGetCountries";
 
 export default function DashboardLayout({
   children
@@ -12,8 +13,8 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
 
+  useGetCountries()
   const { isLoading } = useAuth()
-
   if (isLoading) {
     return (
       <Loader />

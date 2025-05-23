@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import {
   AlertDialog,
@@ -12,6 +12,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { useProfileStore } from "@/zustand/useProfileStore"
+import { useAddNewPickupLocation, useUpdatePickupLocation } from "../../api/mutations"
+import { showerror, showsuccess } from "@/lib/toasts"
+import { AxiosError } from "axios"
+import { LocationType } from "../../@types"
 
 type LocationFormData = {
   name: string
@@ -19,40 +24,94 @@ type LocationFormData = {
   address: string
   openingHour: string
   closingHour: string
-  status: "Active" | "Inactive"
+  openingDay: string;
+  closingDay: string
+  state: string;
 }
 
 interface EditLocationDialogProps {
   isOpen: boolean
   onClose: () => void
-  // onSave: (data: LocationFormData) => void
-  // location?: LocationFormData
+  pickupLocation?: LocationType
 }
 
-export default function AddNewLocationForm({ isOpen, onClose }: EditLocationDialogProps) {
-  console.log(isOpen, "isOpen")
+export default function AddNewLocationForm({ isOpen, onClose, pickupLocation }: EditLocationDialogProps) {
+  const { countries } = useProfileStore()
+  const { addNewPickupLocation, isPending } = useAddNewPickupLocation()
+  const { updatePickupLocation, isPending: isUpdating } = useUpdatePickupLocation()
   const {
     register,
     handleSubmit,
+    reset,
+    watch,
     formState: { errors },
   } = useForm<LocationFormData>({
     defaultValues: {
       name: "",
       country: "",
       address: "",
-      openingHour: "9:00am",
-      closingHour: "5:00pm",
-      status: "Active",
+      openingHour: "",
+      closingHour: "",
+      openingDay: "",
+      closingDay: ""
     },
   })
 
-  const [status, setStatus] = useState<"active" | "Inactive">("active")
 
-  const onSubmit = (data: LocationFormData) => {
-    onClose()
+
+  useEffect(() => {
+    if (pickupLocation) {
+      console.log(pickupLocation.service_days.split("-")[1])
+      reset({
+        name: pickupLocation.name,
+        country: pickupLocation.country,
+        state: pickupLocation.state,
+        address: pickupLocation.address,
+        openingHour: pickupLocation.service_hour.split("-")[0],
+        closingHour: pickupLocation.service_hour.split("-")[1],
+        openingDay: pickupLocation.service_days.split("-")[0],
+        closingDay: pickupLocation.service_days.split("-")[1],
+      })
+    }
+
+  }, [pickupLocation])
+
+
+  const onSubmit = async (data: LocationFormData) => {
+
+    try {
+      if (pickupLocation) {
+        const res = await updatePickupLocation({
+          id: String(pickupLocation.id),
+          data: {
+            name: data.name,
+            country_id: data.country,
+            state: data.state,
+            address: data.address,
+            service_days: `${data.openingDay}-${data.closingDay}`,
+            service_hour: `${data.openingHour}-${data.closingHour}`,
+          },
+        })
+      } else {
+        const res = await addNewPickupLocation({
+          name: data.name,
+          country_id: data.country,
+          state: data.state,
+          address: data.address,
+          service_days: `${data.openingDay}-${data.closingDay}`,
+          service_hour: `${data.openingHour}-${data.closingHour}`,
+        })
+        showsuccess(res.message)
+        reset()
+        onClose()
+      }
+
+    } catch (error: AxiosError | any) {
+      showerror(error.message)
+    }
   }
 
-  const countries = ["Nigeria", "Ghana", "Kenya", "South Africa", "Egypt", "Morocco", "Tanzania"]
+
 
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
@@ -62,7 +121,7 @@ export default function AddNewLocationForm({ isOpen, onClose }: EditLocationDial
           <AlertDialogDescription>Adjust pickup location details below</AlertDialogDescription>
         </AlertDialogHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4 max-h-[60vh] overflow-y-auto">
+        <form className="space-y-4 py-4 max-h-[60vh] overflow-y-auto">
           <div className="space-y-2">
             <label htmlFor="name" className="block font-medium">
               Location Name
@@ -77,25 +136,6 @@ export default function AddNewLocationForm({ isOpen, onClose }: EditLocationDial
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="country" className="block font-medium">
-              Country
-            </label>
-            <select
-              id="country"
-              className="w-full rounded border border-gray-300 px-3 py-2 focus:border-amber-500 focus:outline-none"
-              {...register("country", { required: "Country is required" })}
-            >
-              <option value="">Select one...</option>
-              {countries.map((country) => (
-                <option key={country} value={country}>
-                  {country}
-                </option>
-              ))}
-            </select>
-            {errors.country && <p className="text-sm text-red-500">{errors.country.message}</p>}
-          </div>
-
-          <div className="space-y-2">
             <label htmlFor="address" className="block font-medium">
               Address
             </label>
@@ -106,6 +146,39 @@ export default function AddNewLocationForm({ isOpen, onClose }: EditLocationDial
               {...register("address", { required: "Address is required" })}
             />
             {errors.address && <p className="text-sm text-red-500">{errors.address.message}</p>}
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="state" className="block font-medium">
+              State
+            </label>
+            <input
+              id="state"
+              type="text"
+              className="w-full rounded border border-gray-300 px-3 py-2 focus:border-amber-500 focus:outline-none"
+              {...register("state", { required: "State is required" })}
+            />
+            {errors.state && <p className="text-sm text-red-500">{errors.state.message}</p>}
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="country" className="block font-medium">
+              Country
+            </label>
+            <select
+              id="country"
+              defaultValue={pickupLocation?.country}
+              className="w-full rounded border border-gray-300 px-3 py-2 focus:border-amber-500 focus:outline-none"
+              {...register("country", { required: "Country is required" })}
+            >
+              <option value="">Select one...</option>
+              {countries?.map((country) => (
+                <option key={country.id} value={country.id}>
+                  {country.name}
+                </option>
+              ))}
+            </select>
+            {errors.country && <p className="text-sm text-red-500">{errors.country.message}</p>}
           </div>
 
           <div className="space-y-2">
@@ -148,29 +221,16 @@ export default function AddNewLocationForm({ isOpen, onClose }: EditLocationDial
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="block font-medium">Status</label>
-            <div className="flex space-x-2">
-              <button
-                type="button"
-                className={`rounded border px-4 py-2 ${status === "active"
-                  ? "border-amber-500 bg-white text-black"
-                  : "border-gray-300 bg-white text-gray-700"
-                  }`}
-                onClick={() => setStatus("active")}
-              >
-                Active
-              </button>
-              <button
-                type="button"
-                className={`rounded border px-4 py-2 ${status === "Inactive"
-                  ? "border-amber-500 bg-amber-800 text-white"
-                  : "border-gray-300 bg-white text-gray-700"
-                  }`}
-                onClick={() => setStatus("Inactive")}
-              >
-                Inactive
-              </button>
+          <div>
+            <h1 className="mb-2 font-medium ">Service Days</h1>
+            <div className="flex items-center gap-4">
+              <select {...register("openingDay")} className="w-full py-2 outline-none border border-gray-300 rounded-md" >
+                {["Mondays", "Tuesdays", "Wednesdays", "Thursdays", "Fridays", "Saturdays", "Sundays"].map((day) => (<option key={day} value={day}>{day}</option>))}
+              </select>
+
+              <select {...register("closingDay")} className="w-full py-2 outline-none border border-gray-300 rounded-md" >
+                {["Mondays", "Tuesdays", "Wednesdays", "Thursdays", "Fridays", "Saturdays", "Sundays"].map((day) => (<option key={day} value={day}>{day}</option>))}
+              </select>
             </div>
           </div>
 
@@ -178,17 +238,15 @@ export default function AddNewLocationForm({ isOpen, onClose }: EditLocationDial
         <AlertDialogFooter className="pt-4">
           <AlertDialogCancel asChild>
             <button type="button" className="rounded border border-gray-300 bg-white px-4 py-2 text-black">
-              Back
+              cancel
             </button>
           </AlertDialogCancel>
-          <AlertDialogAction asChild>
             <button
-              type="submit"
+            onClick={handleSubmit(onSubmit)}
               className="rounded bg-amber-500 px-4 py-2 font-medium text-white hover:bg-amber-600"
             >
-              Add Location
-            </button>
-          </AlertDialogAction>
+            {pickupLocation ? isUpdating ? "Updating..." : "Update Location" : isPending ? "Adding..." : " Add Location"}
+          </button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

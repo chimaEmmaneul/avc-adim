@@ -17,15 +17,16 @@ export default function UserProfile({ params }: { params: { id: string } }) {
   const router = useRouter()
   const { isLoading, userProfile } = useGetUser(params.id)
   const { countries } = useGetAllCountries()
-  const [userStatus, setUserStatus] = useState<"active" | "inactive" | "banned">("active")
   const [emailVerification, setEmailVerification] = useState(false)
   const [twoFAVerification, setTwoFAVerification] = useState(false)
   const [kycVerification, setKYCVerification] = useState(false)
+  console.log(twoFAVerification, "towfact", kycVerification, "kyc", emailVerification, "email")
   const { updateUser, isUpdatingUser } = useUpdateUsers()
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<UserFormValues>({
     resolver: zodResolver(userFormSchema),
@@ -36,12 +37,14 @@ export default function UserProfile({ params }: { params: { id: string } }) {
       phoneNumber: "",
       city: "",
       state: "",
+      status: "",
       zipCode: "",
       address: "",
     },
   })
 
-
+  const status = watch('status')
+  console.log(status)
   useEffect(() => {
     reset({
       firstName: userProfile?.data?.first_name,
@@ -49,6 +52,7 @@ export default function UserProfile({ params }: { params: { id: string } }) {
       country: userProfile?.data?.country_id,
       email: userProfile?.data?.email,
       phoneNumber: userProfile?.data?.phone,
+      status: userProfile?.data?.status,
       state: userProfile?.data?.state,
       zipCode: userProfile?.data?.zip_code,
       address: userProfile?.data?.address,
@@ -60,7 +64,6 @@ export default function UserProfile({ params }: { params: { id: string } }) {
     return <div>Loading...</div>
   }
 
-  console.log(userProfile?.data.status, "userProfile")
 
   const onSubmit = async (data: UserFormValues) => {
     console.log("Form submitted:", data,)
@@ -74,7 +77,7 @@ export default function UserProfile({ params }: { params: { id: string } }) {
       state: data?.state,
       zip_code: data?.zipCode,
       address: data?.address,
-      status: userStatus,
+      status: data.status,
       email_verification: emailVerification,
       two_factor_enabled: twoFAVerification,
       kyc_verification: kycVerification
@@ -122,9 +125,6 @@ export default function UserProfile({ params }: { params: { id: string } }) {
           </div>
 
           <div className="flex flex-col order-3 space-y-4 my-4 xl:my-0 xl:-ml-9">
-            <div className="w-full xl:-ml-4  ">
-              <InfoBar label="username" value="" alignRight />
-            </div>
             <div className="w-full xl:ml-4">
               <InfoBar label="Email" value={userProfile?.data.email || "N/A"} alignRight />
             </div>
@@ -248,32 +248,27 @@ export default function UserProfile({ params }: { params: { id: string } }) {
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <div>
             <p className="text-sm font-medium text-gray-700 mb-2">User Status</p>
-            <div className="flex space-x-2">
-              <StatusButton
-                active={userStatus === "active"}
-                onClick={() => setUserStatus("active")}
-                label="Active"
-                color="bg-main"
-              />
-              <StatusButton
-                active={userStatus === "banned"}
-                onClick={() => setUserStatus("banned")}
-                label="Banned"
-                color="bg-gray-200 text-gray-700"
-              />
+            <div className="flex space-x-2 w-full ">
+              <select {...register("status")} className="border border-gray-200 w-full  py-2 px-2 rounded-md outline-none">
+                <option value="active">Active</option>
+                <option value="suspended">Suspended</option>
+                <option value="blocked">Blocked</option>
+              </select>
             </div>
           </div>
 
-          <div>
+          <div className="w-full">
             <p className="text-sm font-medium text-gray-700 mb-2">Email Verification</p>
             <div className="flex space-x-2">
               <StatusButton
+                inactive={emailVerification}
                 active={emailVerification}
                 onClick={() => setEmailVerification(true)}
                 label="Verified"
                 color="bg-main"
               />
               <StatusButton
+                inactive={emailVerification}
                 active={emailVerification}
                 onClick={() => setEmailVerification(false)}
                 label="Unverified"
@@ -286,16 +281,18 @@ export default function UserProfile({ params }: { params: { id: string } }) {
             <p className="text-sm font-medium text-gray-700 mb-2">2FA Verification</p>
             <div className="flex space-x-2">
               <StatusButton
+                inactive={twoFAVerification}
                 active={twoFAVerification}
                 onClick={() => setTwoFAVerification(true)}
                 label="Verified"
-                color="bg-gray-200 text-gray-700"
+                color="bg-main text-gray-700"
               />
               <StatusButton
+                inactive={twoFAVerification}
                 active={twoFAVerification}
                 onClick={() => setTwoFAVerification(false)}
                 label="Unverified"
-                color="bg-main"
+                color="bg-main text-gray-700"
               />
             </div>
           </div>
@@ -304,16 +301,18 @@ export default function UserProfile({ params }: { params: { id: string } }) {
             <p className="text-sm font-medium text-gray-700 mb-2">KYC Verification</p>
             <div className="flex space-x-2">
               <StatusButton
+                inactive={kycVerification}
                 active={kycVerification}
                 onClick={() => setKYCVerification(true)}
                 label="Verified"
-                color="bg-gray-200 text-gray-700"
+                color="bg-main text-gray-700"
               />
               <StatusButton
+                inactive={kycVerification}
                 active={kycVerification}
                 onClick={() => setKYCVerification(false)}
                 label="Unverified"
-                color="bg-main"
+                color="bg-main text-gray-700"
               />
             </div>
           </div>
@@ -356,8 +355,8 @@ function InfoBar({
         <button className="font-medium">{label}</button>
       ) : (
         <div className={`flex whitespace-nowrap justify-center ${alignRight ? "xl:flex-row-reverse xl:justify-end" : "xl:flex-row xl:justify-start"} gap-2`}>
-          <span className={`${alignRight ? "font-normal" : "font-medium"}`}>{label} :</span>
-          <span className={`${alignRight ? "font-medium" : "font-normal"}`}>{value}</span>
+            <span className={`${alignRight ? "font-normal order-2" : "font-medium"}`}>{label} :</span>
+            <span className={`${alignRight ? "font-medium order-1" : "font-normal"}`}>{value}</span>
         </div>
       )}
     </div>
@@ -366,11 +365,13 @@ function InfoBar({
 
 function StatusButton({
   active,
+  inactive,
   onClick,
   label,
   color,
 }: {
   active: boolean
+    inactive: boolean
   onClick: () => void
   label: string
   color: string
@@ -379,8 +380,7 @@ function StatusButton({
     <button
       type="button"
       onClick={onClick}
-      className={`px-4 py-2 rounded-md text-sm font-medium ${active ? color : "bg-gray-100 text-gray-500"
-        } ${color.includes("text") ? "" : active ? "text-white" : ""}`}
+      className={`px-4 py-2 rounded-md text-sm font-medium ${active && color} ${!active && color} "bg-gray-0 text-gray-500"`}
     >
       {label}
     </button>

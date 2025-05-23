@@ -32,15 +32,14 @@ export type CardRequestData = {
   date_approved: string | null;
 };
 
-// export type LocationType = {
-//   id: string;
-//   name: string;
-//   country: string;
-//   service_days: string;
-//   service_hours: string;
-//   address: string;
-//   status: string;
-// };
+export type CreateLocationPayload = {
+  country_id: string;
+  state: string;
+  name: string;
+  address: string;
+  service_days: string;
+  service_hour: string;
+};
 
 
 export type LocationType = {

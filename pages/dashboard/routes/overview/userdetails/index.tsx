@@ -83,9 +83,6 @@ export default function UserProfile() {
           </div>
 
           <div className="flex flex-col order-3 space-y-4 my-4 xl:my-0 xl:-ml-9">
-            <div className="w-full xl:-ml-4  ">
-              <InfoBar label="username" value="@johnnytest" alignRight />
-            </div>
             <div className="w-full xl:ml-4">
               <InfoBar label="Email" value="johnnytest@gmail.com" alignRight />
             </div>

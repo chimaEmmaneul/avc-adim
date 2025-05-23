@@ -15,7 +15,7 @@ const BannedUsers = () => {
   return (
     <div>
       <div className='flex items-center justify-between'>
-        <h1 className='text-black font-semibold'>Email Unverified</h1>
+        <h1 className='text-black font-semibold'>Blocked Users</h1>
         <Search searchTerm={search} setSearchTerm={setSearch} />
       </div>
       {isLoading ? <UserTableSkeleton /> : <UserTable data={bannedUsers?.data.users ?? []} itemsPerPage={6} />}

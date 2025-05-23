@@ -49,7 +49,7 @@ export default function BlogCategories() {
 
   const searchTerm = watch("searchTerm")
 
-  const filteredCategories = allCategory.data.filter((category: any) =>
+  const filteredCategories = allCategory?.data.filter((category: any) =>
     category.title.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
@@ -69,7 +69,7 @@ export default function BlogCategories() {
           Manage Categories
         </Link>
         <Link
-          href="/new-blog"
+          href="/manage-blogs/add-new-category"
           className="px-4 py-2 bg-black text-white font-medium rounded hover:bg-gray-800 transition-colors"
         >
           New Category
@@ -105,7 +105,7 @@ export default function BlogCategories() {
               </tr>
             </thead>
             <tbody>
-              {filteredCategories.map((category: any) => (
+              {filteredCategories?.map((category: any) => (
                 <tr key={category.id} className="border-b border-gray-100 hover:bg-gray-50">
                   <td className="px-6 py-4 text-sm text-gray-500">{category.id}</td>
                   <td className="px-6 py-4 text-sm text-gray-700 w-full flex-1">{category.title}</td>

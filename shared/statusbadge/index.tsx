@@ -43,6 +43,8 @@ export const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
         return " text-amber-600 border border-amber-500"
       case "rejected":
         return " text-red-600 border border-red-500"
+      case "blocked":
+        return " text-red-600 border border-red-500"
       case "suspended":
         return " text-red-600 border border-red-500"
       default:

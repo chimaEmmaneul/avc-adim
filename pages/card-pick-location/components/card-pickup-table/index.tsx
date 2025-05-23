@@ -1,8 +1,12 @@
-import React from 'react'
+"use state"
+import React, { useState } from 'react'
 import { LocationType } from '../../@types'
-import { StatusBadge } from '@/shared/statusbadge'
+import AddNewLocationForm from '../add-new-location/plckup-location-form'
 
 const CardPickupTable = ({ locations }: { locations: LocationType[] }) => {
+  const [isOpen, setIsOpen] = React.useState(false)
+  const [pickupLocation, setPickupLocation] = useState<LocationType | undefined>()
+
   return (
     <div className="overflow-x-auto ">
       <table className="">
@@ -21,7 +25,7 @@ const CardPickupTable = ({ locations }: { locations: LocationType[] }) => {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {locations.map((location, index) => (
+          {locations.map((location: LocationType, index) => (
             <tr key={`${location.id}-${index}`} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{location.id}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{location.name}</td>
@@ -40,6 +44,7 @@ const CardPickupTable = ({ locations }: { locations: LocationType[] }) => {
               </td> */}
               <td className="px-6 py-4 whitespace-nowrap text-sm">
                 <button
+                  onClick={() => { setPickupLocation(location); setIsOpen(true) }}
                   className="text-amber-600 hover:text-amber-900 font-medium hover:underline"
                 >
                   Edit Details
@@ -49,6 +54,8 @@ const CardPickupTable = ({ locations }: { locations: LocationType[] }) => {
           ))}
         </tbody>
       </table>
+
+      <AddNewLocationForm isOpen={isOpen} onClose={() => setIsOpen(false)} pickupLocation={pickupLocation} />
     </div>
   )
 }
