@@ -27,7 +27,11 @@ const authClient = {
     ApiClient.post(AUTHENDPOINTS.VERIFY_OTP_CODE, data),
   getAdminProfile: (): Promise<any> => ApiClient.get(AUTHENDPOINTS.PROFILE),
   updateProfile: (data: ProfileFormData): Promise<any> =>
-    ApiClient.post(AUTHENDPOINTS.UPDATE_PROFILE, data),
+    ApiClient.post(AUTHENDPOINTS.UPDATE_PROFILE, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
   getUser: (id: string): Promise<UserResponse> =>
     ApiClient.get(AUTHENDPOINTS.GET_USER(id)),
   updateUser: (id: string, data: User): Promise<UserResponse> =>

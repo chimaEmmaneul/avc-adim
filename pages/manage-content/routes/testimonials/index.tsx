@@ -2,10 +2,12 @@
 import { Pencil, Plus, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import React, { useState } from 'react'
-import AddTestimonials from '../../components/add-testimonial'
+import AddTestimonials from '../../components/testiminial-form'
+import TestimonialForm from '../../components/testiminial-form'
 
 const Testimonials = () => {
   const [open, setOpen] = useState(false)
+  const [type, setType] = useState('add')
 
   const testimonials = [
     {
@@ -25,6 +27,7 @@ const Testimonials = () => {
       image: "/placeholder.svg?height=40&width=40",
     },
   ]
+
   return (
     <div className="">
       <div className="mb-8">
@@ -58,7 +61,7 @@ const Testimonials = () => {
       </div>
 
       <div className="relative mb-4">
-        <button onClick={() => setOpen(true)} className="absolute right-0 top-0 flex items-center gap-1 bg-main hover:bg-amber-600 text-white px-3 py-2 rounded transition-colors">
+        <button onClick={() => { setType("add"); setOpen(true); }} className="absolute right-0 top-0 flex items-center gap-1 bg-main hover:bg-amber-600 text-white px-3 py-2 rounded transition-colors">
           <Plus size={16} />
           <span>Add Testimonial</span>
         </button>
@@ -90,7 +93,7 @@ const Testimonials = () => {
                 <td className="py-3 text-gray-800">{testimonial.name}</td>
                 <td className="py-3 text-right">
                   <div className="flex justify-end gap-2">
-                    <button className="p-1.5 bg-main hover:bg-amber-200 rounded transition-colors">
+                    <button onClick={() => { setType("edit"); setOpen(true); }} className="p-1.5 bg-main hover:bg-amber-200 rounded transition-colors">
                       <Pencil size={16} className="text-white" />
                     </button>
                     <button className="p-1.5 bg-[#FF060A]  hover:bg-red-200 rounded transition-colors">
@@ -104,7 +107,7 @@ const Testimonials = () => {
         </table>
       </div>
 
-      <AddTestimonials open={open} setOpen={setOpen} />
+      <TestimonialForm open={open} setOpen={setOpen} type={type} />
     </div>
   )
 }
