@@ -51,7 +51,7 @@ export default function ResetPasswordView() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="text-left">
-            <label htmlFor="password" className="font-medium">Enter New Password:</label>
+            <label htmlFor="password" className="font-medium mb-1 inline-block">Enter New Password:</label>
             <Input
               id="password"
               type="password"
@@ -63,7 +63,7 @@ export default function ResetPasswordView() {
           </div>
 
           <div className="text-left">
-            <label htmlFor="confirmPassword" className="font-medium">Confirm Password:</label>
+            <label htmlFor="confirmPassword" className="font-medium mb-1 inline-block">Confirm Password:</label>
             <Input
               id="confirmPassword"
               type="password"

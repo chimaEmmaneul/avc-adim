@@ -11,7 +11,6 @@ const ActiveUsers = () => {
   const [search, setSearch] = useState("")
   const [debouncedValue] = useDebounce(search, 1000);
   const { activeUsers, isLoading } = useGetAllActiveUsers({ search: debouncedValue });
-  console.log(activeUsers, "admindata")
 
   return (
     <div>

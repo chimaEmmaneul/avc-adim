@@ -52,10 +52,9 @@ export function formatDateTime(dateTimeStr: string): string {
   console.log(dateTimeStr, "dat");
   const date = new Date(dateTimeStr.replace(" ", "T")); // Convert to ISO format
 
-  // Options for readable formatting
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric",
-    month: "long", // e.g., "May"
+    month: "long",
     day: "numeric",
     hour: "numeric",
     minute: "2-digit",

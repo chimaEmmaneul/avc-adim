@@ -43,8 +43,6 @@ export default function UserProfile({ params }: { params: { id: string } }) {
     },
   })
 
-  const status = watch('status')
-  console.log(status)
   useEffect(() => {
     reset({
       firstName: userProfile?.data?.first_name,
@@ -66,7 +64,6 @@ export default function UserProfile({ params }: { params: { id: string } }) {
 
 
   const onSubmit = async (data: UserFormValues) => {
-    console.log("Form submitted:", data,)
     const updatedData = {
       id: params.id,
       first_name: data?.firstName,

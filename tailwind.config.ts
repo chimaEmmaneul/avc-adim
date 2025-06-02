@@ -85,6 +85,7 @@ const config: Config = {
         "accordion-up": "accordion-up 0.2s ease-out",
         inner: "spin 0.5s linear infinite",
         outer: "spin 1s linear infinite",
+        "spin-fast": "spin 0.5s linear infinite",
       },
     },
   },
