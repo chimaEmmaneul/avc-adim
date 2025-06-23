@@ -10,9 +10,6 @@ import { showerror, showsuccess } from "@/lib/toasts"
 import striptags from 'striptags';
 
 
-
-
-
 const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
   loading: () => <div className="h-64 border border-gray-300 rounded-md animate-pulse bg-gray-50"></div>,

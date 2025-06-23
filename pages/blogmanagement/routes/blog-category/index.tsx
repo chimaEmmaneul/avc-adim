@@ -7,11 +7,12 @@ import { useForm } from "react-hook-form"
 import BlogNavigation from "../../components/blognavigation"
 import { useRouter } from "next/navigation"
 import { useGetAllCategory } from "../../api/mutations"
+import { Category } from "../../@types"
 
-interface Category {
-  id: number
-  title: string
-}
+// interface Category {
+//   id: number
+//   title: string
+// }
 
 interface SearchFormValues {
   searchTerm: string
@@ -19,17 +20,17 @@ interface SearchFormValues {
 
 export default function BlogCategories() {
   const router = useRouter
-  const [categories, setCategories] = useState<Category[]>([
-    { id: 1, title: "Security" },
-    { id: 2, title: "Security" },
-    { id: 3, title: "Security" },
-    { id: 4, title: "Security" },
-    { id: 5, title: "Security" },
-    { id: 6, title: "Security" },
-    { id: 7, title: "Security" },
-    { id: 8, title: "Security" },
-    { id: 9, title: "Security" },
-  ])
+  // const [categories, setCategories] = useState<Category[]>([
+  //   { id: 1, title: "Security" },
+  //   { id: 2, title: "Security" },
+  //   { id: 3, title: "Security" },
+  //   { id: 4, title: "Security" },
+  //   { id: 5, title: "Security" },
+  //   { id: 6, title: "Security" },
+  //   { id: 7, title: "Security" },
+  //   { id: 8, title: "Security" },
+  //   { id: 9, title: "Security" },
+  // ])
 
 
   const { register, watch } = useForm<SearchFormValues>({
@@ -49,9 +50,11 @@ export default function BlogCategories() {
 
   const searchTerm = watch("searchTerm")
 
-  const filteredCategories = allCategory?.data.filter((category: any) =>
-    category.title.toLowerCase().includes(searchTerm.toLowerCase()),
+  const filteredCategories = allCategory?.data.filter((category: Category) =>
+    category?.name?.toLowerCase().includes(searchTerm.toLowerCase()),
   )
+
+  console.log(filteredCategories, "filter")
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -105,14 +108,15 @@ export default function BlogCategories() {
               </tr>
             </thead>
             <tbody>
-              {filteredCategories?.map((category: any) => (
+              {filteredCategories?.map((category: Category) => (
                 <tr key={category.id} className="border-b border-gray-100 hover:bg-gray-50">
                   <td className="px-6 py-4 text-sm text-gray-500">{category.id}</td>
-                  <td className="px-6 py-4 text-sm text-gray-700 w-full flex-1">{category.title}</td>
+                  <td className="px-6 py-4 text-sm text-gray-700 flex-[2]">{category.name}</td>
+                  <td className="px-6 py-4 text-sm text-gray-700  flex-[2]">{category.slug}</td>
                   <td className="px-6 py-4 text-right">
-                    <div className="flex flex-col items-center justify-end gap-2">
+                    <div className="flex  items-center justify-end gap-2">
                       <button
-                        onClick={() => router}
+                        onClick={() => { }}
                         className="p-1.5 text-cyan-500 bg-cyan-50 hover:bg-cyan-100 rounded-md transition-colors"
                         aria-label="Edit category"
                       >

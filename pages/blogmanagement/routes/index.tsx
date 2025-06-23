@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Pencil, Trash2 } from "lucide-react"
-import { sampleBlogPosts } from "@/pages/blogmanagement/constants"
 import { useRouter } from "next/navigation"
 import BlogNavigation from "../components/blognavigation"
 import { useGetAllBlogs, useGetAllCategory } from "../api/mutations"
@@ -21,7 +20,6 @@ export default function BlogManagement() {
   const router = useRouter()
   const { allBlogs, isLoading } = useGetAllBlogs()
 
-  console.log(allBlogs, "allBlog")
 
   const handleSearch = (value: string) => {
     setSearchTerm(value)
@@ -72,7 +70,7 @@ export default function BlogManagement() {
             </thead>
 
             <tbody>
-              {allBlogs.data.map((post: any) => (
+              {allBlogs?.data.map((post: any) => (
                 <tr key={post.id} className="border-b border-gray-200 text-sm">
                   <td className="py-4 px-4">{post.id}</td>
                   <td className="py-4 px-4">{post.title}</td>
