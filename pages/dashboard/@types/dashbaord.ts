@@ -4,6 +4,7 @@ export type MetricCardProps = {
   percentChange: number | undefined;
   viewText: string;
   icon: React.ReactNode;
+  isMoney?: boolean;
 };
 
 export type MetricData = {
@@ -17,12 +18,12 @@ export type MetricData = {
 
 export type User = {
   id: string;
-  name: string;
-  avatar: string;
-  transferred: number;
-  country: string;
+  first_name: string;
+  total_transferred: number;
+  total_deposited: number;
+  country_name: string;
   email: string;
-  joinDate: string;
+  created_date: string;
 };
 
 export type UsersTableProps = {
@@ -55,8 +56,18 @@ export interface DashboardAnalytics {
   withdrawal_percentage: number;
   total_users: number;
   user_analytics: UserAnalytics[];
-  top_users: any[];
+  top_users: TopUser[];
 }
+
+export type TopUser = {
+  id: string;
+  first_name: string;
+  email: string;
+  created_date: string;
+  country_name: string;
+  total_transferred: number;
+  total_deposited: number;
+};
 
 export interface DashboardResponse {
   data: DashboardAnalytics;

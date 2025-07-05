@@ -21,7 +21,7 @@ const AllTransactions = () => {
         <Search searchTerm={search} setSearchTerm={setSearch} />
       </div>
 
-      {isLoading ? <TransactionTableSkeleton /> : <TransactionTable data={TRANSACTIONS} itemsPerPage={6} />}
+      {isLoading ? <TransactionTableSkeleton /> : <TransactionTable data={allTransactions?.data ?? []} itemsPerPage={10} />}
     </div>
   )
 }

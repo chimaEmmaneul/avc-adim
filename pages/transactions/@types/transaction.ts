@@ -1,11 +1,11 @@
-export type Transaction = {
-  id: string;
-  username: string;
-  transactionType: string;
-  amount: string;
-  paymentMethod: string;
-  status: string;
-};
+// export type Transaction = {
+//   id: string;
+//   username: string;
+//   transactionType: string;
+//   amount: string;
+//   paymentMethod: string;
+//   status: string;
+// };
 
 export type SenderInfo = {
   sendingAmount: string;
@@ -45,4 +45,58 @@ export type TransferDetails = {
     recipientInfo: RecipientInfo;
     transferInfo: TransferInfo;
   };
+};
+
+export type TransactionResponse = {
+  success: boolean;
+  message: string;
+  data: Transaction[];
+};
+export type TransactionDetailsResponse = {
+  success: boolean;
+  message: string;
+  data: Transaction;
+};
+
+export type Transaction = {
+  id: number;
+  transaction_id: string;
+  reference: string;
+  type: "deposit" | "withdrawal" | string;
+  status: "successful" | "pending" | "failed" | string;
+  sending_amount: number;
+  recieved_amount: number;
+  remark: string;
+  currency_code: string;
+  reciever_currency: string | null;
+  reward_point: number;
+  sender: CardHolder;
+  recipient: CardHolder;
+  user: UserInfo;
+  date: string;
+};
+
+export type CardHolder = {
+  id: number;
+  cvv: string;
+  address: string | null;
+  balance: number;
+  user_id: number;
+  zip_code: string | null;
+  card_number: string;
+  expiry_date: string;
+  account_name: string;
+  currency_code: string;
+  account_number: string;
+};
+
+export type UserInfo = {
+  name: string;
+  email: string;
+  phone: string;
+  country: string;
+  account_number: string;
+  address: string;
+  state: string;
+  city: string;
 };

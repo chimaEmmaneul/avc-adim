@@ -19,7 +19,7 @@ const DeclinedTransactions = () => {
         <h1 className='text-black font-semibold'>Declined Transaction</h1>
         <Search searchTerm={search} setSearchTerm={setSearch} />
       </div>
-      {isLoading ? <TransactionTableSkeleton /> : <TransactionTable data={DECLINED_TRANSACTIONS} itemsPerPage={8} />}
+      {isLoading ? <TransactionTableSkeleton /> : <TransactionTable data={declinedTransaction?.data ?? []} itemsPerPage={10} />}
     </div>
   )
 }

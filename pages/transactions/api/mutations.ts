@@ -2,15 +2,21 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import transactionManagementClient from ".";
+import {
+  Transaction,
+  TransactionDetailsResponse,
+  TransactionResponse,
+} from "../@types/transaction";
 
 export function useGetAllTransactions({ search }: { search: string }) {
-  const { data, isLoading, refetch, isError, error } = useQuery<any>({
-    queryKey: ["GET_ALL_TRANSACIONS", search],
-    queryFn: ({ queryKey }) => {
-      const [, searchTerm] = queryKey as [string, string];
-      return transactionManagementClient.getAllTransactions(searchTerm);
-    },
-  });
+  const { data, isLoading, refetch, isError, error } =
+    useQuery<TransactionResponse>({
+      queryKey: ["GET_ALL_TRANSACIONS", search],
+      queryFn: ({ queryKey }) => {
+        const [, searchTerm] = queryKey as [string, string];
+        return transactionManagementClient.getAllTransactions(searchTerm);
+      },
+    });
 
   return useMemo(
     () => ({
@@ -91,14 +97,17 @@ export function useGetTransactionDetails({
 }: {
   transaction_id: string;
 }) {
-  const { data, isLoading, refetch, isError, error } = useQuery<any>({
-    queryKey: ["GET_TRANSACTION_DETAILS", transaction_id],
-    queryFn: ({ queryKey }) => {
-      const [, transaction_id] = queryKey as [string, string];
-      return transactionManagementClient.getTransactionDetails(transaction_id);
-    },
-    enabled: !!transaction_id,
-  });
+  const { data, isLoading, refetch, isError, error } =
+    useQuery<TransactionDetailsResponse>({
+      queryKey: ["GET_TRANSACTION_DETAILS", transaction_id],
+      queryFn: ({ queryKey }) => {
+        const [, transaction_id] = queryKey as [string, string];
+        return transactionManagementClient.getTransactionDetails(
+          transaction_id
+        );
+      },
+      enabled: !!transaction_id,
+    });
 
   return useMemo(
     () => ({

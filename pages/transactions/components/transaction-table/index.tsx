@@ -32,7 +32,7 @@ const TransactionTable = ({ data, itemsPerPage }: UserTableProps) => {
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b">
-              {["TRX ID", "USERNAME", "TRANSACTION TYPE", "AMOUNT/CONVERTION", "PAYMENTETHOD", "STATUS", ""].map((header) => (
+              {["TRX ID", "USERNAME", "TRANSACTION TYPE", "CURRENCY", "AMOUNT/CONVERTION", , "STATUS", ""].map((header) => (
                 <th key={header} className="text-left py-3 px-4 font-semibold whitespace-nowrap text-sm text-[#6E768E]">
                   {header}
                 </th>
@@ -43,16 +43,16 @@ const TransactionTable = ({ data, itemsPerPage }: UserTableProps) => {
             {currentItems.map((transaction) => (
               <tr onClick={() => router.push(`${pathname}/${transaction.id}`)} key={transaction.id} className="border-b border[#DEE2E6] text-[#6E768E] font-medium text-sm even:bg-[#DEE2E6]/30 odd:bg-white">
                 <td className="px-4 py-4">
-                  {transaction.id}
+                  {transaction.transaction_id}
                 </td>
-                <td className="py-4 px-2  ">
-                  {transaction.username}
+                <td className="py-4 px-2  text-center ">
+                  {transaction.user.name}
                 </td>
-                <td className="py-4 px-4 ">{transaction.transactionType}</td>
-                <td className="py-4 px-4 ">{transaction.amount}</td>
-                <td className="py-4 px-4 ">{transaction.paymentMethod}</td>
-                <td className="py-4 px-4 ">{transaction.status}</td>
-                <td className="py-4 px-4 ">
+                <td className="py-4 px-4 text-center ">{transaction.type}</td>
+                <td className="py-4 px-4 text-center ">{transaction.currency_code}</td>
+                <td className="py-4 px-4 text-center ">{transaction.sending_amount}</td>
+                <td className="py-4 px-4 text-center ">{transaction.status}</td>
+                <td className="py-4 px-4 text-center ">
                   <button
                     className="w-8 h-8 bg-main rounded-[4px] flex items-center justify-center text-white  "
                   >

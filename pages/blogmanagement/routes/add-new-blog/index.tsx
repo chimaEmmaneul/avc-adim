@@ -18,10 +18,10 @@ type FormData = {
   category: string
   description: string
 }
-const ReactQuill = dynamic(() => import("react-quill"), {
-  ssr: false,
-  loading: () => <div className="h-64 border border-gray-300 rounded-md animate-pulse bg-gray-50"></div>,
-})
+// const ReactQuill = dynamic(() => import("react-quill"), {
+//   ssr: false,
+//   loading: () => <div className="h-64 border border-gray-300 rounded-md animate-pulse bg-gray-50"></div>,
+// })
 
 export default function AddNewBlog() {
   const {
@@ -94,18 +94,20 @@ export default function AddNewBlog() {
           <label htmlFor="category" className="text-sm font-medium">
             Category <span className="text-red-500">*</span>
           </label>
-          <select
-            id="category"
-            className="w-full p-2 border border-gray-300 rounded"
-            {...register("category", { required: true })}
-          >
-            {allCategory?.data?.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-          {errors.category && <span className="text-red-500">Category is required</span>}
+          <div>
+            <select
+              id="category"
+              className="w-full p-2 border border-gray-300 rounded"
+              {...register("category", { required: true })}
+            >
+              {allCategory?.data?.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+            {errors.category && <span className="text-red-500">Category is required</span>}
+          </div>
         </div>
 
 
@@ -141,30 +143,15 @@ export default function AddNewBlog() {
           </label>
           <div>
             <textarea
-            id="shortDescription"
-            rows={4}
-            className="w-full p-2 border border-gray-300 rounded"
-            {...register("description", { required: true })}
-          ></textarea>
+              id="shortDescription"
+              rows={4}
+              className="w-full p-2 border border-gray-300 rounded"
+              {...register("description", { required: true })}
+            ></textarea>
             {errors.description && <span className="text-red-500">Description is required</span>}
           </div>
         </div>
 
-        {/* <div className="grid grid-cols-1 lg:grid-cols-[150px_1fr] items-center gap-4">
-          <label htmlFor="description" className="text-sm font-medium pt-2">
-            Description
-          </label>
-          <div className="border border-gray-300 rounded">
-            <ReactQuill
-              theme="snow"
-              value={editorContent}
-              onChange={setEditorContent}
-              modules={modules}
-              placeholder="Type Here..."
-              className=""
-            />
-          </div>
-        </div> */}
         <div className="flex justify-center sm:justify-end">
           <button
             type="submit"

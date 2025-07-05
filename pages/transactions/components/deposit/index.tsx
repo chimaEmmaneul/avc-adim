@@ -1,19 +1,14 @@
-"use client"
-import React from 'react'
 import { Button } from '@/components/ui/button'
-import { Copy, Download } from 'lucide-react'
-import { TRANSACTION_DETAILS } from '@/pages/transactions/constants/transactions'
 import { WithdrawalIcon } from '@/icon/icon'
-import { useGetTransactionDetails } from '@/pages/transactions/api/mutations'
-import { usePathname } from 'next/navigation'
+import { Copy, Download } from 'lucide-react'
+import React from 'react'
+import { Transaction } from '../../@types/transaction'
 
+type DepositeTypes = {
+  depositeInfo: Transaction | undefined
+}
 
-const ConfirmedTransactionDetails = () => {
-  const { transferDetails: { transferInfo } } = TRANSACTION_DETAILS
-  const pathname = usePathname()
-  const transaction_id = pathname?.split("/").pop()!
-  const { transactionDetails, isLoading } = useGetTransactionDetails({ transaction_id })
-  console.log(transactionDetails, "trasacitnodeta")
+const Deposite = ({ depositeInfo }: DepositeTypes) => {
   return (
     <div>
       <div className="mt-10 border border-[#EEEEEE] rounded-sm p-4">
@@ -30,7 +25,7 @@ const ConfirmedTransactionDetails = () => {
               <span className="text-[#363333]">•</span>
               <span className="uppercase text-sm font-medium">TRANSACTION ID</span>
             </div>
-            <span className="text-right">{transferInfo.transactionId}</span>
+            <span className="text-right">{depositeInfo?.transaction_id}</span>
           </div>
 
           <div className="flex justify-between items-center py-2 border-b border-[#EEEEEE]">
@@ -38,7 +33,7 @@ const ConfirmedTransactionDetails = () => {
               <span className="text-[#363333]">•</span>
               <span className="uppercase text-sm font-medium">TRANSACTION TYPE</span>
             </div>
-            <span className="text-right">{transferInfo.transactionType}</span>
+            <span className="text-right">{depositeInfo?.type}</span>
           </div>
 
           <div className="flex justify-between items-center py-2 border-b border-[#EEEEEE]">
@@ -46,7 +41,7 @@ const ConfirmedTransactionDetails = () => {
               <span className="text-[#363333]">•</span>
               <span className="uppercase text-sm font-medium">BANK NAME</span>
             </div>
-            <span className="text-right text-[#6C7176]">{transferInfo.bankName}</span>
+            <span className="text-right text-[#6C7176]">{depositeInfo?.recipient.account_name}</span>
           </div>
 
           <div className="flex justify-between items-center py-2 border-b border-[#EEEEEE]">
@@ -54,7 +49,7 @@ const ConfirmedTransactionDetails = () => {
               <span className="text-[#363333]">•</span>
               <span className="uppercase text-sm font-medium">ACCOUNT NUMBER</span>
             </div>
-            <span className="text-right text-[#6C7176]">{transferInfo.accountNumber}</span>
+            <span className="text-right text-[#6C7176]">{depositeInfo?.recipient.account_number}</span>
           </div>
 
           <div className="flex justify-between items-center py-2 border-b border-[#EEEEEE]">
@@ -62,7 +57,7 @@ const ConfirmedTransactionDetails = () => {
               <span className="text-[#363333]">•</span>
               <span className="uppercase text-sm font-medium">PAYMENT METHOD</span>
             </div>
-            <span className="text-right text-[#6C7176]">{transferInfo.paymentMethod}</span>
+            <span className="text-right text-[#6C7176]">{"N/A"}</span>
           </div>
 
           <div className="flex justify-between items-center py-2 border-b border-[#EEEEEE]">
@@ -70,7 +65,7 @@ const ConfirmedTransactionDetails = () => {
               <span className="text-[#363333]">•</span>
               <span className="uppercase text-sm font-medium">EXCHANGE RATE</span>
             </div>
-            <span className="text-right text-[#6C7176]">{transferInfo.exchangeRate}</span>
+            <span className="text-right text-[#6C7176]">{"N/A"}</span>
           </div>
 
           <div className="flex justify-between items-center py-2 border-b border-[#EEEEEE]">
@@ -78,7 +73,7 @@ const ConfirmedTransactionDetails = () => {
               <span className="text-[#363333]">•</span>
               <span className="uppercase text-sm font-medium">PAYABLE AMOUNT</span>
             </div>
-            <span className="text-right text-[#6C7176]">{transferInfo.payableAmount}</span>
+            <span className="text-right text-[#6C7176]">{depositeInfo?.recieved_amount}</span>
           </div>
 
           <div className="flex justify-between items-center py-2 border-b border-[#EEEEEE]">
@@ -86,7 +81,7 @@ const ConfirmedTransactionDetails = () => {
               <span className="text-[#363333]">•</span>
               <span className="uppercase text-sm font-medium">PAYMENT STATUS</span>
             </div>
-            <span className="text-right text-[#6C7176]">{transferInfo.paymentStatus}</span>
+            <span className="text-right text-[#6C7176]">{depositeInfo?.status}</span>
           </div>
 
           <div className="flex justify-between items-center py-2 border-b border-[#EEEEEE]">
@@ -94,7 +89,7 @@ const ConfirmedTransactionDetails = () => {
               <span className="text-[#363333]">•</span>
               <span className="uppercase text-sm font-medium">REMARK</span>
             </div>
-            <span className="text-right text-[#6C7176]">{transferInfo.remark}</span>
+            <span className="text-right text-[#6C7176]">{depositeInfo?.remark}</span>
           </div>
 
           <div className="flex justify-between items-center py-2 border-b border-[#EEEEEE]">
@@ -102,7 +97,7 @@ const ConfirmedTransactionDetails = () => {
               <span className="text-[#363333]">•</span>
               <span className="uppercase text-sm font-medium">DATE</span>
             </div>
-            <span className="text-right text-[#6C7176]">{transferInfo.date}</span>
+            <span className="text-right text-[#6C7176]">{depositeInfo?.date}</span>
           </div>
         </div>
       </div>
@@ -125,4 +120,4 @@ const ConfirmedTransactionDetails = () => {
   )
 }
 
-export default ConfirmedTransactionDetails
+export default Deposite

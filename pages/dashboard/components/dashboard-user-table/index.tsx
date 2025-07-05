@@ -54,24 +54,25 @@ export default function UsersTable({ users }: UsersTableProps) {
           <tbody>
             {users.map((user) => (
               <tr key={user.id} className="bg-white hover:bg-gray-50">
-                <td className=" border-t border-b border-l pl-4 border-[#EBE8FF] rounded-l-lg whitespace-nowrap">  <div className="relative h-10 w-10 overflow-hidden rounded-[50%]">
-                  <Image src={user.avatar || "/placeholder.svg"} alt={user.name} fill className="object-cover" />
+                <td className=" border-t border-b border-l pl-4 border-[#EBE8FF] rounded-l-lg whitespace-nowrap">
+                  <div className="relative h-10 w-10 overflow-hidden rounded-[50%]">
+                    <Image src={user?.avatar || "/placeholder.svg"} alt={user.first_name} fill className="object-cover" />
                 </div>
                 </td>
                 <td className="px-4 py-2  border-t border-b  border-[#EBE8FF]  whitespace-nowrap">
-                  {user.name}
+                  {user.first_name}
                 </td>
                 <td className="px-4 py-3 border-t border-b border-[#EBE8FF] font-medium whitespace-nowrap">
-                  {formatCurrency(user.transferred)}
+                  {formatCurrency(user.total_transferred)}
                 </td>
                 <td className="px-4 py-3 border-t border-b border-[#EBE8FF] text-gray-400 whitespace-nowrap">
-                  {user.country}
+                  {user.country_name}
                 </td>
                 <td className="px-4 py-3 border-t border-b border-[#EBE8FF] text-gray-400 whitespace-nowrap">
                   {user.email}
                 </td>
                 <td className="px-4 py-3 border-t border-b border-[#EBE8FF] text-gray-700 whitespace-nowrap">
-                  {user.joinDate}
+                  {user.created_date}
                 </td>
                 <td className="px-4 py-3 border-t border-b border-r border-[#EBE8FF] rounded-r-lg text-right whitespace-nowrap">
                   <div className="relative inline-block" ref={menuRef}>

@@ -1,4 +1,5 @@
 import { IParams } from "@/@types/client";
+import { showerror } from "@/lib/toasts";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { redirect } from "next/navigation";
@@ -26,6 +27,11 @@ client.interceptors.request.use((config) => {
 client.interceptors.response.use(
   (response) => response,
   (error) => {
+    if (error.response.status === 401) {
+      Cookies.remove("token");
+      showerror("Unauthenticated, redirecting...");
+      window.location.href = "/auth/login";
+    }
     return Promise.reject(error.response.data);
   }
 );

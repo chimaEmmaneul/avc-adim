@@ -64,6 +64,7 @@ export default function UserProfile({ params }: { params: { id: string } }) {
 
 
   const onSubmit = async (data: UserFormValues) => {
+    console.log("ciekce")
     const updatedData = {
       id: params.id,
       first_name: data?.firstName,
@@ -258,18 +259,18 @@ export default function UserProfile({ params }: { params: { id: string } }) {
             <p className="text-sm font-medium text-gray-700 mb-2">Email Verification</p>
             <div className="flex space-x-2">
               <StatusButton
-                inactive={emailVerification}
-                active={emailVerification}
+                active={emailVerification === true}
                 onClick={() => setEmailVerification(true)}
                 label="Verified"
-                color="bg-main"
+                color="bg-main text-white"
               />
+
               <StatusButton
-                inactive={emailVerification}
-                active={emailVerification}
+                active={emailVerification === false}
                 onClick={() => setEmailVerification(false)}
                 label="Unverified"
-                color="bg-gray-200 text-gray-700"
+                color="bg-main text-white"
+
               />
             </div>
           </div>
@@ -278,18 +279,17 @@ export default function UserProfile({ params }: { params: { id: string } }) {
             <p className="text-sm font-medium text-gray-700 mb-2">2FA Verification</p>
             <div className="flex space-x-2">
               <StatusButton
-                inactive={twoFAVerification}
-                active={twoFAVerification}
+                active={twoFAVerification === true}
                 onClick={() => setTwoFAVerification(true)}
                 label="Verified"
-                color="bg-main text-gray-700"
+                color="bg-main text-white"
               />
               <StatusButton
-                inactive={twoFAVerification}
-                active={twoFAVerification}
+                active={twoFAVerification === false}
                 onClick={() => setTwoFAVerification(false)}
                 label="Unverified"
-                color="bg-main text-gray-700"
+                color="bg-main text-white"
+
               />
             </div>
           </div>
@@ -298,18 +298,16 @@ export default function UserProfile({ params }: { params: { id: string } }) {
             <p className="text-sm font-medium text-gray-700 mb-2">KYC Verification</p>
             <div className="flex space-x-2">
               <StatusButton
-                inactive={kycVerification}
-                active={kycVerification}
+                active={kycVerification === true}
                 onClick={() => setKYCVerification(true)}
                 label="Verified"
-                color="bg-main text-gray-700"
+                color="bg-main text-white"
               />
               <StatusButton
-                inactive={kycVerification}
-                active={kycVerification}
+                active={kycVerification === false}
                 onClick={() => setKYCVerification(false)}
                 label="Unverified"
-                color="bg-main text-gray-700"
+                color="bg-main text-white"
               />
             </div>
           </div>
@@ -362,13 +360,11 @@ function InfoBar({
 
 function StatusButton({
   active,
-  inactive,
   onClick,
   label,
   color,
 }: {
-  active: boolean
-    inactive: boolean
+    active: boolean
   onClick: () => void
   label: string
   color: string
@@ -377,7 +373,7 @@ function StatusButton({
     <button
       type="button"
       onClick={onClick}
-      className={`px-4 py-2 rounded-md text-sm font-medium ${active && color} ${!active && color} "bg-gray-0 text-gray-500"`}
+      className={`px-4 py-2 rounded-md text-sm font-medium ${active ? color : " text-black border rounded-md"}`}
     >
       {label}
     </button>

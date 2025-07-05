@@ -1,8 +1,11 @@
 import { SenderIcon } from '@/icon/icon'
-import { SenderInfo } from '@/pages/transactions/@types/transaction'
+import { SenderInfo, Transaction } from '@/pages/transactions/@types/transaction'
 import React from 'react'
 
-const Sender = (senderInfo: SenderInfo) => {
+type SenderTypes = {
+  senderInfo: Transaction | undefined
+}
+const Sender = ({ senderInfo }: SenderTypes) => {
   return (
     <div className="space-y-4 border border-[#EEEEEE] rounded-sm p-4">
       <div className="flex items-center gap-2 mb-4">
@@ -16,7 +19,7 @@ const Sender = (senderInfo: SenderInfo) => {
             <span className="text-gray-700">•</span>
             <span className="uppercase text-sm font-medium">SENDING AMOUNT</span>
           </div>
-          <span className="text-right">{senderInfo.sendingAmount}</span>
+          <span className="text-right">{senderInfo?.sending_amount}</span>
         </div>
 
         <div className="flex justify-between items-center py-2 border-b border-gray-200">
@@ -24,7 +27,7 @@ const Sender = (senderInfo: SenderInfo) => {
             <span className="text-gray-700">•</span>
             <span className="uppercase text-sm font-medium">EXCHANGE RATE</span>
           </div>
-          <span className="text-right">{senderInfo.exchangeRate}</span>
+          <span className="text-right">{"N/A"}</span>
         </div>
 
         <div className="flex justify-between items-center py-2 border-b border-gray-200">
@@ -32,7 +35,7 @@ const Sender = (senderInfo: SenderInfo) => {
             <span className="text-gray-700">•</span>
             <span className="uppercase text-sm font-medium">TOTAL FEES & CHARGES</span>
           </div>
-          <span className="text-right">{senderInfo.totalFees}</span>
+          <span className="text-right">{"N/A"}</span>
         </div>
 
         <div className="flex justify-between items-center py-2 border-b border-gray-200">
@@ -40,7 +43,7 @@ const Sender = (senderInfo: SenderInfo) => {
             <span className="text-gray-700">•</span>
             <span className="uppercase text-sm font-medium">AMOUNT WE&apos;LL CONVERT</span>
           </div>
-          <span className="text-right">{senderInfo.amountToConvert}</span>
+          <span className="text-right">{senderInfo?.sending_amount}</span>
         </div>
 
         <div className="flex justify-between items-center py-2 border-b border-gray-200">
@@ -48,7 +51,7 @@ const Sender = (senderInfo: SenderInfo) => {
             <span className="text-gray-700">•</span>
             <span className="uppercase text-sm font-medium">WILL GET AMOUNT</span>
           </div>
-          <span className="text-right">{senderInfo.willGetAmount}</span>
+          <span className="text-right">{senderInfo?.sending_amount}</span>
         </div>
 
         <div className="flex justify-between items-center py-2 border-b border-gray-200">
@@ -56,7 +59,7 @@ const Sender = (senderInfo: SenderInfo) => {
             <span className="text-gray-700">•</span>
             <span className="uppercase text-sm font-medium">SENDING PURPOSE</span>
           </div>
-          <span className="text-right">{senderInfo.sendingPurpose}</span>
+          <span className="text-right">{senderInfo?.remark}</span>
         </div>
       </div>
     </div>

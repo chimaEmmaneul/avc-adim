@@ -22,7 +22,7 @@ export default function ConversionRateSettings({ config, isLoadingConfig }: { co
   return (
     <div className="">
       <h1 className="text font-semibold text-[#1C2A53] mb-8">Conversion Rate Settings</h1>
-      <div className="flex flex-wrap gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="border border-[#1e3a8a] rounded-xl p-3 min-w-[150px]">
           <div className="text-gray-500 mb-2">Conversion Rate Markup</div>
           <div className="flex items-center justify-between">

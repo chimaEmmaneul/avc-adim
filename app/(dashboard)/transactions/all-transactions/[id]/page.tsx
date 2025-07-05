@@ -1,10 +1,10 @@
-import React from 'react'
 import TransactionDetails from '@/pages/transactions/components/transactiondetails'
+import React from 'react'
 
-const PendingTransactionDetailsPage = () => {
+const AlltransactionDetails = () => {
   return (
     <TransactionDetails />
   )
 }
 
-export default PendingTransactionDetailsPage
+export default AlltransactionDetails

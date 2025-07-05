@@ -51,50 +51,12 @@ const UserRegionAnalytics = ({ regions }: UserRegionAnalyticsProps) => {
         </button>
       </div>
 
-      <div className="flex flex-col md:flex-row items-center">
-        <div className="w-48 h-48 relative mb-6 md:mb-0">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={regions}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={80}
-                paddingAngle={0}
-                dataKey="total_users"
-                nameKey="country_name"
-                onMouseEnter={onPieEnter}
-                onMouseLeave={onPieLeave}
-                animationDuration={800}
-              >
-                {regions.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={entry.color}
-                    stroke={activeIndex === index ? "#fff" : "none"}
-                    strokeWidth={activeIndex === index ? 2 : 0}
-                  />
-                ))}
-              </Pie>
-              <Tooltip
-                formatter={formatTooltipValue}
-                content={<CustomTooltip />}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center">
-              <p className="text-xl font-bold">100%</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="md:ml-10 space-y-4 w-full md:w-auto">
+      <div className="w-full items-center justify-center">
+        <div className=" space-y-4 w-full">
           {regions.map((region, index) => (
             <div
               key={index}
-              className="flex items-center justify-between gap-12 p-2 rounded-md transition-colors"
+              className="w-full flex items-center justify-between gap-12 p-2 rounded-md transition-colors"
               style={{
                 backgroundColor: activeIndex === index ? `${region.color}15` : "transparent",
                 cursor: "pointer",
@@ -102,7 +64,7 @@ const UserRegionAnalytics = ({ regions }: UserRegionAnalyticsProps) => {
               onMouseEnter={() => setActiveIndex(index)}
               onMouseLeave={() => setActiveIndex(null)}
             >
-              <div className="flex items-center">
+              <div className="w-full flex items-center ">
                 <span className="h-3 w-3 rounded-full mr-2" style={{ backgroundColor: region.color }}></span>
                 <span className="text-gray-600">{region.country_name}</span>
               </div>

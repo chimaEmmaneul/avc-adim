@@ -1,6 +1,6 @@
 import { NavItem } from "@/@types/navitems";
 // import { DashboardIcon, SettingsIcon, TransactionIcon, UserIcon } from "@/icon/icon";
-import { BadgeDollarSign, Bolt, CreditCard, LayoutGridIcon, LocateIcon, UserRoundCog } from "lucide-react";
+import { BadgeDollarSign, Bolt, BookType, CreditCard, FileText, LayoutGridIcon, LocateIcon, UserRoundCog } from "lucide-react";
 
 export const NAV_ITEMS: NavItem[] = [
   {
@@ -49,12 +49,12 @@ export const NAV_ITEMS: NavItem[] = [
   {
     name: "Manage Blogs",
     path: "/manage-blogs",
-    icon: <Bolt />,
+    icon: <FileText />,
   },
   {
     name: "Manage Conent",
     path: "/manage-content",
-    icon: <BadgeDollarSign />,
+    icon: <BookType />,
     subItems: [
       { name: "Testimonials", path: "/manage-content/testimonials" },
       { name: "Contact Us", path: "/manage-content/contact-us" },

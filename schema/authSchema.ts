@@ -43,7 +43,7 @@ export const userFormSchema = z.object({
   phoneNumber: z.string().regex(/^\+?[0-9\s\-()]{7,}$/, {
     message: "Please enter a valid phone number",
   }),
-  city: z.string().min(2, { message: "City must be at least 2 characters" }),
+  city: z.string().optional(),
   state: z.string().min(2, { message: "State must be at least 2 characters" }),
   zipCode: z.string().regex(/^[A-Za-z0-9\s-]{2,10}$/, {
     message:

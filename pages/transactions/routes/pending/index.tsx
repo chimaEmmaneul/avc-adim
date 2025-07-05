@@ -19,7 +19,7 @@ const PendingTransactions = () => {
         <h1 className='text-black font-semibold'>Pending Transaction</h1>
         <Search searchTerm={search} setSearchTerm={setSearch} />
       </div>
-      {isLoading ? <TransactionTableSkeleton /> : <TransactionTable data={PENDING_TRANSACTIONS} itemsPerPage={8} />}
+      {isLoading ? <TransactionTableSkeleton /> : <TransactionTable data={pendingTransaction?.data ?? []} itemsPerPage={10} />}
     </div>
   )
 }

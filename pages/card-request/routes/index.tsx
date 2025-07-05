@@ -22,8 +22,19 @@ export const CardRequest = () => {
 
   return (
     <>
-      <TableFilters country={country} setCountry={setCountry} status={status} setStatus={setStatus} fromDate={fromDate} setFromDate={setFromDate} toDate={toDate} setToDate={setToDate} />
-      {isLoading ? <RequestTableSkeleton /> : <CardRequestTable requests={allRequest?.data ?? []} refetch={allRequestRefetch} itemsPerPage={10} />}
+      <TableFilters
+        country={country}
+        setCountry={setCountry}
+        status={status}
+        setStatus={setStatus}
+        fromDate={fromDate}
+        setFromDate={setFromDate}
+        toDate={toDate}
+        setToDate={setToDate}
+      />
+      {isLoading ?
+        <RequestTableSkeleton /> :
+        <CardRequestTable requests={allRequest?.data ?? []} refetch={allRequestRefetch} itemsPerPage={10} />}
     </>
   )
 }

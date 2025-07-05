@@ -15,6 +15,8 @@ type CardRequestDetailsProps = {
 const CardRequestDetails = ({ requestData, setStep, setIsOpen }: CardRequestDetailsProps) => {
   const { requestDetails, isLoading } = useGetRequestDetails({ id: requestData.id })
   if (isLoading) return <RequestDetailsSkeleton />
+
+  console.log(requestDetails.data.status, "details")
   return (
     <div className="space-y-4 py-2">
       <h1>Request Details</h1>
@@ -68,10 +70,13 @@ const CardRequestDetails = ({ requestData, setStep, setIsOpen }: CardRequestDeta
         >
           Cancel
         </Button>
+
+        {requestDetails?.data?.status == "pending" &&
         <div className="flex gap-2">
           <Button onClick={() => setStep("approve")} className="bg-main hover:bg-amber-600 text-white">Approve</Button>
           <Button onClick={() => setStep("reject")} className="bg-red-500 hover:bg-red-600 text-white">Reject</Button>
         </div>
+        }
       </div>
     </div>
   )

@@ -1,10 +1,10 @@
 
 "use client"
-
 import type React from "react"
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { useForm, useFieldArray } from "react-hook-form"
 import Image from "next/image"
+import { useGetContactUsDetails, useUpdateContactUs } from "../../api/mutatoins"
 
 type FormValues = {
   title: string
@@ -12,6 +12,8 @@ type FormValues = {
   phone: string
   address: string
   email: string
+  mission: string
+  vision: string
   schedules: {
     time: string
   }[]
@@ -19,25 +21,28 @@ type FormValues = {
 
 const ContactUs = () => {
 
-  const [imagePreview, setImagePreview] = useState<string>(
-    "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-As5ob1CKRDRsOIFmb30GV5G6L5C5m8.png",
-  )
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [imageFile, setImageFile] = useState<File | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-
+  const { contactUs, isLoading, isError, error } = useGetContactUsDetails()
+  const { updateContactUs, isPending } = useUpdateContactUs()
+  console.log(contactUs, "contactus")
   const {
     register,
     control,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      title: "CONTACT US",
-      description: "Get In Touch With Us",
-      phone: "(+) - 23355 - 9624",
-      address: "255 5th Ave, New York, NY 10000, USA",
-      email: "hello@example.com",
-      schedules: [{ time: "Monday - Friday: 9:00 - 20:00" }, { time: "Sunday & Saturday: 9:00 - 22:00" }],
+      title: "",
+      description: "",
+      phone: "",
+      vision: "",
+      mission: "",
+      address: "",
+      email: "",
+      schedules: []
     },
   })
 
@@ -46,7 +51,23 @@ const ContactUs = () => {
     name: "schedules",
   })
 
+  useEffect(() => {
+    if (contactUs) {
+      reset({
+        title: contactUs?.data.title,
+        description: contactUs?.data.description,
+        phone: contactUs?.data.phone,
+        address: contactUs?.data.address,
+        email: contactUs?.data.email,
+        mission: contactUs?.data.mission,
+        vision: contactUs?.data.vision,
+        schedules: [{ time: contactUs?.data.operation_hour }]
+      })
+    }
+  }, [contactUs])
+
   const handleImageClick = () => {
+    console.log("clicked")
     fileInputRef.current?.click()
   }
 
@@ -63,31 +84,29 @@ const ContactUs = () => {
   }
 
   const onSubmit = async (data: FormValues) => {
-    // Create a FormData object to handle the file upload
     const formData = new FormData()
-
-    // Append all form fields
+    console.log(data.schedules[0].time)
     formData.append("title", data.title)
     formData.append("description", data.description)
     formData.append("phone", data.phone)
     formData.append("address", data.address)
     formData.append("email", data.email)
-
-    // Append schedules as JSON
-    formData.append("schedules", JSON.stringify(data.schedules))
-
-    // Append the image file if it exists
+    formData.append("mission", data.mission)
+    formData.append("vision", data.vision)
+    formData.append("operation_hour", data.schedules[0].time)
+    // formData.append("opening_hours", data.schedules[1].time)
     if (imageFile) {
-      formData.append("image", imageFile)
+      formData.append("site_logo", imageFile)
     }
-
     // Here you would normally send the formData to your API
     console.log("Form submitted with data:", data)
     console.log("Image file:", imageFile)
 
-
-
-    alert("Form submitted successfully!")
+    try {
+      const res = await updateContactUs(formData)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -101,13 +120,17 @@ const ContactUs = () => {
             className="rounded-md p-2 cursor-pointer  transition-colors"
             onClick={handleImageClick}
           >
-            <div className="relative mx-auto border border-gray-200 w-48 h-48 md:h-64 bg-white rounded-md overflow-hidden">
-              <Image src={"/placeholder.svg"} alt="Contact image" fill className="object-contain" />
-              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 hover:bg-opacity-10 transition-all">
-                <span className="text-transparent hover:text-white text-sm font-medium">Click to upload image</span>
+            {(contactUs?.data.site_logo || imagePreview) ?
+              <div className="relative mx-auto border border-gray-200 w-72 h-48 md:h-64 bg-white rounded-md overflow-hidden">
+                <Image src={contactUs?.data.site_logo || imagePreview} alt="Contact image" fill className="object-cover" />
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 hover:bg-opacity-10 transition-all">
+                  <span className="text-transparent hover:text-white text-sm font-medium">Click to upload image</span>
+                </div>
+              </div> :
+              <div className="flex items-center justify-center">
+                <p className="mt-2 text-center border flex items-center justify-center text-sm text-gray-500 w-72 h-48 md:h-64">Click to upload an image</p>
               </div>
-            </div>
-            <p className="mt-2 text-center text-sm text-gray-500">Click to upload an image</p>
+            }
             <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
           </div>
         </div>
@@ -136,6 +159,32 @@ const ContactUs = () => {
             className="w-full p-2 border border-gray-300 rounded-md"
           />
           {errors.description && <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="mission" className="block text-sm font-medium mb-1">
+            Mission<span className="text-red-500">*</span>
+          </label>
+          <input
+            id="mission"
+            type="text"
+            {...register("mission", { required: "mission is required" })}
+            className="w-full p-2 border border-gray-300 rounded-md"
+          />
+          {errors.mission && <p className="mt-1 text-sm text-red-600">{errors.mission.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="vision" className="block text-sm font-medium mb-1">
+            Vission<span className="text-red-500">*</span>
+          </label>
+          <input
+            id="vision"
+            type="text"
+            {...register("vision", { required: "vision is required" })}
+            className="w-full p-2 border border-gray-300 rounded-md"
+          />
+          {errors.vision && <p className="mt-1 text-sm text-red-600">{errors.vision.message}</p>}
         </div>
 
         <div>

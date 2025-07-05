@@ -1,8 +1,12 @@
 import React from 'react'
-import { RecipientInfo } from '@/pages/transactions/@types/transaction'
+import { RecipientInfo, Transaction } from '@/pages/transactions/@types/transaction'
 import { ReceipientIcon } from '@/icon/icon'
 
-const Recipient = (recipientInfo: RecipientInfo) => {
+type ReciepientTypes = {
+  recipientInfo: Transaction | undefined
+}
+
+const Recipient = ({ recipientInfo }: ReciepientTypes) => {
   return (
     <div className="space-y-4 border border-[#EEEEEE] rounded-sm p-4">
       <div className="flex items-center gap-2 mb-4">
@@ -16,7 +20,7 @@ const Recipient = (recipientInfo: RecipientInfo) => {
             <span className="text-gray-700">•</span>
             <span className="uppercase text-sm font-medium">RECIPIENT NAME</span>
           </div>
-          <span className="text-right">{recipientInfo.name}</span>
+          <span className="text-right">{recipientInfo?.recipient.account_name}</span>
         </div>
 
         <div className="flex justify-between items-center py-2 border-b border-gray-200">
@@ -24,7 +28,7 @@ const Recipient = (recipientInfo: RecipientInfo) => {
             <span className="text-gray-700">•</span>
             <span className="uppercase text-sm font-medium">RECIPIENT EMAIL</span>
           </div>
-          <span className="text-right">{recipientInfo.email}</span>
+          <span className="text-right">{"N/A"}</span>
         </div>
 
         <div className="flex justify-between items-center py-2 border-b border-gray-200">
@@ -32,7 +36,7 @@ const Recipient = (recipientInfo: RecipientInfo) => {
             <span className="text-gray-700">•</span>
             <span className="uppercase text-sm font-medium">PHONE NUMBER</span>
           </div>
-          <span className="text-right">{recipientInfo.phoneNumber}</span>
+          <span className="text-right">{"N/A"}</span>
         </div>
 
         <div className="flex justify-between items-center py-2 border-b border-gray-200">
@@ -40,7 +44,7 @@ const Recipient = (recipientInfo: RecipientInfo) => {
             <span className="text-gray-700">•</span>
             <span className="uppercase text-sm font-medium">COUNTRY</span>
           </div>
-          <span className="text-right">{recipientInfo.country}</span>
+          <span className="text-right">{"N/A"}</span>
         </div>
 
         <div className="flex justify-between items-center py-2 border-b border-gray-200">
@@ -48,7 +52,7 @@ const Recipient = (recipientInfo: RecipientInfo) => {
             <span className="text-gray-700">•</span>
             <span className="uppercase text-sm font-medium">STATE & CITY</span>
           </div>
-          <span className="text-right">{recipientInfo.stateCity}</span>
+          <span className="text-right">{recipientInfo?.recipient.address}</span>
         </div>
 
         <div className="flex justify-between items-center py-2 border-b border-gray-200">
@@ -56,7 +60,7 @@ const Recipient = (recipientInfo: RecipientInfo) => {
             <span className="text-gray-700">•</span>
             <span className="uppercase text-sm font-medium">ZIP CODE</span>
           </div>
-          <span className="text-right">{recipientInfo.zipCode}</span>
+          <span className="text-right">{recipientInfo?.recipient.zip_code}</span>
         </div>
 
         <div className="flex justify-between items-center py-2 border-b border-gray-200">
@@ -64,7 +68,8 @@ const Recipient = (recipientInfo: RecipientInfo) => {
             <span className="text-gray-700">•</span>
             <span className="uppercase text-sm font-medium">ADDRESS</span>
           </div>
-          <span className="text-right">{recipientInfo.address}</span>
+          <span className="text-right">{recipientInfo?.recipient.address}</span>
+
         </div>
       </div>
     </div>

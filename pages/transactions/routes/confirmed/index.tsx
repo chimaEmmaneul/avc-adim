@@ -20,7 +20,7 @@ const ConfirmedTransaction = () => {
         <Search searchTerm={search} setSearchTerm={setSearch} />
       </div>
 
-      {isLoading ? <TransactionTableSkeleton /> : <TransactionTable data={cONFIRMED_TRANSACTIONS} itemsPerPage={8} />}
+      {isLoading ? <TransactionTableSkeleton /> : <TransactionTable data={confirmedTransactions?.data ?? []} itemsPerPage={8} />}
     </div>
   )
 }
