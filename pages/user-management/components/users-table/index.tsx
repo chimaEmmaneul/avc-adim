@@ -4,7 +4,7 @@ import { useState } from "react"
 import { UserIcon } from "lucide-react"
 import { ActionIcon } from "@/icon/icon"
 import Pagination from "@/shared/Pagination"
-import RenderStatusBadge, { StatusBadge } from "@/shared/statusbadge"
+import { StatusBadge } from "@/shared/statusbadge"
 import { usePathname, useRouter } from "next/navigation"
 import { User } from "../../@types"
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { RecipientInfo, Transaction } from '@/pages/transactions/@types/transaction'
+import { Transaction } from '@/pages/transactions/@types/transaction'
 import { ReceipientIcon } from '@/icon/icon'
 
 type ReciepientTypes = {

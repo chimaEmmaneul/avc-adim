@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import RequestChangePassword from "./component/change-password"
 import { useEnable2FA, useGetCode } from "../authentication/api/mutations"
 import { showerror, showsuccess } from "@/lib/toasts"
@@ -8,7 +8,7 @@ export default function SettingsPage() {
   const [is2FAEnabled, setIs2FAEnabled] = useState(true)
   const [isOpen, setIsOpen] = useState(false)
   const { enable2FA, isPending } = useEnable2FA()
-  const { getCode, isPending: isPendingCode } = useGetCode()
+  const { getCode, } = useGetCode()
 
   const handle2FA = async () => {
     try {
@@ -16,14 +16,17 @@ export default function SettingsPage() {
       await enable2FA({ two_factor_enabled: is2FAEnabled === true ? false : true })
       showsuccess("2FA updated successfully")
     } catch (error) {
+      console.log(error)
       showerror("something went wrong")
     }
   }
 
   const getOtpCode = async () => {
     try {
-      await getCode()
+      const res = await getCode()
+      showsuccess(res.message)
     } catch (error) {
+      console.log(error)
       showerror("something went wrong")
     }
   }

@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import transactionManagementClient from ".";
 import {
-  Transaction,
   TransactionDetailsResponse,
   TransactionResponse,
 } from "../@types/transaction";
@@ -95,7 +94,7 @@ export function useGetAllDeclinedTransactions({ search }: { search: string }) {
 export function useGetTransactionDetails({
   transaction_id,
 }: {
-  transaction_id: string;
+  transaction_id: string | undefined;
 }) {
   const { data, isLoading, refetch, isError, error } =
     useQuery<TransactionDetailsResponse>({

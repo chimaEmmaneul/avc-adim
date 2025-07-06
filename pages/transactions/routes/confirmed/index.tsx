@@ -2,7 +2,6 @@
 import React, { useState } from 'react'
 import Search from '@/shared/Search/Search'
 import TransactionTableSkeleton from '@/skeleonloaders/transaction-table'
-import { cONFIRMED_TRANSACTIONS } from '../../constants/transactions'
 import TransactionTable from '../../components/transaction-table'
 import { useDebounce } from 'use-debounce'
 import { useGetAllConfirmedTransactions } from '../../api/mutations'

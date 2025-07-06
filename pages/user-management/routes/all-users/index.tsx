@@ -1,7 +1,6 @@
 "use client"
 import React, { useState } from 'react'
 
-import { userData } from '@/constant/Users'
 import Search from '@/shared/Search/Search'
 import UserTable from '@/pages/user-management/components/users-table'
 import { useGetAllUsers } from '../../api/mutations'

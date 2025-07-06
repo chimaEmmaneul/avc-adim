@@ -1,7 +1,6 @@
 "use client"
 import React, { useState } from 'react'
 import Search from '@/shared/Search/Search'
-import { DECLINED_TRANSACTIONS, } from '../../constants/transactions'
 import TransactionTable from '../../components/transaction-table'
 import { useGetAllDeclinedTransactions } from '../../api/mutations'
 import { useDebounce } from 'use-debounce'

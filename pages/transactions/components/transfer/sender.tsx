@@ -1,5 +1,5 @@
 import { SenderIcon } from '@/icon/icon'
-import { SenderInfo, Transaction } from '@/pages/transactions/@types/transaction'
+import { Transaction } from '@/pages/transactions/@types/transaction'
 import React from 'react'
 
 type SenderTypes = {

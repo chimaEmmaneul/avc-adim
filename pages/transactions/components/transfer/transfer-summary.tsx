@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
-import { Transaction, TransferInfo } from '@/pages/transactions/@types/transaction'
+import { Transaction } from '@/pages/transactions/@types/transaction'
 import { Copy, Download } from 'lucide-react'
 import { TransactionDetailsIcon } from '@/icon/icon'
 

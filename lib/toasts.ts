@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { toast } from "sonner";
 
 export const showerror = (message: string, options: any = {}) => {

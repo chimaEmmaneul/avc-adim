@@ -1,7 +1,6 @@
 "use client"
 
-import { modules } from "@/pages/user-management/constants/config"
-import dynamic from "next/dynamic"
+
 import type React from "react"
 import "react-quill/dist/quill.snow.css"
 
@@ -18,10 +17,6 @@ type FormData = {
   category: string
   description: string
 }
-// const ReactQuill = dynamic(() => import("react-quill"), {
-//   ssr: false,
-//   loading: () => <div className="h-64 border border-gray-300 rounded-md animate-pulse bg-gray-50"></div>,
-// })
 
 export default function AddNewBlog() {
   const {
@@ -36,7 +31,6 @@ export default function AddNewBlog() {
   const [editorContent, setEditorContent] = useState("")
 
   const bannerInputRef = useRef<HTMLInputElement>(null)
-  const metaImageInputRef = useRef<HTMLInputElement>(null)
   const { allCategory, isLoading } = useGetAllCategory()
   const { createNewBlog, isPending } = useAddNewBlog()
 

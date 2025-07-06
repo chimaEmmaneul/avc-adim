@@ -2,15 +2,13 @@
 import { usePathname } from 'next/navigation'
 import React from 'react'
 import { useGetTransactionDetails } from '../../api/mutations'
-import { TRANSACTION_DETAILS } from '../../constants/transactions'
 import Deposite from '../deposit'
 import WithDrawal from '../withdrawal'
 import Transfer from '../transfer'
 
 const TransactionDetails = () => {
-  const { transferDetails: { transferInfo } } = TRANSACTION_DETAILS
   const pathname = usePathname()
-  const transaction_id = pathname?.split("/").pop()!
+  const transaction_id = pathname?.split("/").pop()
   const { transactionDetails, isLoading } = useGetTransactionDetails({ transaction_id })
   console.log(transactionDetails, "trasacitnodeta")
 

@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import Search from '@/shared/Search/Search'
 import { useDebounce } from 'use-debounce'
 import TransactionTable from '../../components/transaction-table'
-import { PENDING_TRANSACTIONS } from '../../constants/transactions'
 import { useGetAllPendingTransactions } from '../../api/mutations'
 import TransactionTableSkeleton from '@/skeleonloaders/transaction-table'
 

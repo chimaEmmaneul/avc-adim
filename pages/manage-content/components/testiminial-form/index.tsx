@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import React from 'react'
 import { useState, useRef } from "react"
@@ -5,16 +6,13 @@ import { useForm } from "react-hook-form"
 import { Upload } from "lucide-react"
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { useAddNewTestimonial } from '../../api/mutatoins'
 import { showerror } from '@/lib/toasts'
-import { AxiosError } from 'axios'
 
 type FormData = {
   name: string
@@ -52,7 +50,7 @@ const TestimonialForm = ({ open, setOpen, type }: AddTestimonialProps) => {
 
       const res = await createTestimonial(formData)
       console.log(res, "res")
-    } catch (error: AxiosError | any) {
+    } catch (error: any) {
       console.log(error, "error")
       showerror(error.message)
     }

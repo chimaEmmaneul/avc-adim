@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from "react"
 import { useForm, useFieldArray } from "react-hook-form"
 import Image from "next/image"
 import { useGetContactUsDetails, useUpdateContactUs } from "../../api/mutatoins"
+import { showsuccess } from "@/lib/toasts"
 
 type FormValues = {
   title: string
@@ -21,7 +22,7 @@ type FormValues = {
 
 const ContactUs = () => {
 
-  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [imagePreview, setImagePreview] = useState<string>("")
   const [imageFile, setImageFile] = useState<File | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { contactUs, isLoading, isError, error } = useGetContactUsDetails()
@@ -104,9 +105,15 @@ const ContactUs = () => {
 
     try {
       const res = await updateContactUs(formData)
+      showsuccess(res.message)
     } catch (error) {
       console.log(error)
     }
+  }
+  if (isPending) {
+    return (
+      <div>Loading...</div>
+    )
   }
 
   return (
@@ -267,7 +274,7 @@ const ContactUs = () => {
           type="submit"
           className="w-full py-3 bg-amber-500 text-white font-medium rounded-md hover:bg-amber-600 transition-colors"
         >
-          Submit
+          {isLoading ? "Loading..." : "Submit"}
         </button>
       </form>
     </div>

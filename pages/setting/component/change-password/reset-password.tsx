@@ -1,4 +1,5 @@
 "use client"
+/* eslint-disable   @typescript-eslint/no-explicit-any */
 
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -148,7 +149,7 @@ export default function ResetPassword({ setStep, setIsOpen }: ResetPasswordProps
             Cancel
           </Button>
           <Button type="submit" className="flex-1 bg-gray-900 hover:bg-gray-800 h-12">
-            Create new password
+            {isPending ? "Loading..." : " Create new password"}
           </Button>
         </div>
       </form>

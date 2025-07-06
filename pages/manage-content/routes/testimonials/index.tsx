@@ -2,7 +2,6 @@
 import { Pencil, Plus, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import React, { useState } from 'react'
-import AddTestimonials from '../../components/testiminial-form'
 import TestimonialForm from '../../components/testiminial-form'
 
 const Testimonials = () => {

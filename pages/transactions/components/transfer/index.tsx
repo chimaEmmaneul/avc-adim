@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button"
 import Sender from "./sender"
 import Recipient from "./receiver"
 import TransferSummary from "./transfer-summary"
-import TransactionProgress from "@/pages/transactions/components/transaction-progress"
 
 import { Transaction } from "../../@types/transaction"
 

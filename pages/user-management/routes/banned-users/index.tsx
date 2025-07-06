@@ -2,7 +2,6 @@
 import React, { useState } from 'react'
 
 import Search from '@/shared/Search/Search'
-import { bannedUserData } from '@/constant/Users'
 import UserTable from '@/pages/user-management/components/users-table'
 import { useDebounce } from 'use-debounce'
 import { useGetAllBannedUsers } from '../../api/mutations'

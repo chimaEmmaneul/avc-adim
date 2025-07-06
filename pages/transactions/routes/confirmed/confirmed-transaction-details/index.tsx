@@ -11,9 +11,9 @@ import { usePathname } from 'next/navigation'
 const ConfirmedTransactionDetails = () => {
   const { transferDetails: { transferInfo } } = TRANSACTION_DETAILS
   const pathname = usePathname()
-  const transaction_id = pathname?.split("/").pop()!
+  const transaction_id = pathname?.split("/").pop()
   const { transactionDetails, isLoading } = useGetTransactionDetails({ transaction_id })
-  console.log(transactionDetails, "trasacitnodeta")
+  console.log(transactionDetails, isLoading, "trasacitnodeta")
   return (
     <div>
       <div className="mt-10 border border-[#EEEEEE] rounded-sm p-4">

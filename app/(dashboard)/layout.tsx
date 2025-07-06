@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect } from "react";
+import React from "react";
 import SidebarNavigation from "@/components/common/Sidebar/Sidebar";
 import Header from "@/components/common/Header/Header";
 
