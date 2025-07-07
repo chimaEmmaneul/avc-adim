@@ -1,6 +1,7 @@
 import React from 'react'
-import { Transaction } from '@/pages/transactions/@types/transaction'
+// import { Transaction } from '@/pages/transactions/@types/transaction'
 import { ReceipientIcon } from '@/icon/icon'
+import { Transaction } from '../../@types/transaction'
 
 type ReciepientTypes = {
   recipientInfo: Transaction | undefined
