@@ -1,4 +1,5 @@
-import EditCategory from '@/pages/blogmanagement/routes/blog-category/edit-category'
+// import EditCategory from '@/pages/blogmanagement/routes/blog-category/edit-category'
+import EditCategory from '@/modules/blogmanagement/routes/blog-category/edit-category'
 import React from 'react'
 
 const EditCategoryPage = ({ params }: { params: { id: string } }) => {

@@ -6,10 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import Image from "next/image"
 import { userFormSchema, UserFormValues } from "@/schema/authSchema"
 import { useRouter } from "next/navigation"
-import { useGetAllCountries, useGetUser, useUpdateUsers } from "@/pages/authentication/api/mutations"
 import { showerror, showsuccess } from "@/lib/toasts"
-import { User } from "@/pages/authentication/@types"
 import { formatDate, formatDateTime } from "@/lib/utils"
+import { useGetAllCountries, useGetUser, useUpdateUsers } from "@/modules/authentication/api/mutations"
 
 
 
