@@ -1,4 +1,5 @@
-import { Country, Profile } from "@/pages/authentication/@types";
+// import { Country, Profile } from "@/pages/authentication/@types";
+import { Country, Profile } from "@/modules/authentication/@types";
 import { create } from "zustand";
 interface ProfileState {
   profile: Profile | null;
