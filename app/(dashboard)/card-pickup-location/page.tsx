@@ -1,4 +1,5 @@
-import CardPickupLocation from '@/pages/card-pick-location/routes'
+// import CardPickupLocation from '@/pages/card-pick-location/routes'
+import CardPickupLocation from '@/modules/card-pick-location/routes'
 import React from 'react'
 
 const CardPickupLocationPage = () => {

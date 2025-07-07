@@ -1,4 +1,5 @@
-import { CardRequest } from '@/pages/card-request/routes'
+// import { CardRequest } from '@/pages/card-request/routes'
+import { CardRequest } from '@/modules/card-request/routes'
 import React from 'react'
 
 const CardRequestPage = () => {

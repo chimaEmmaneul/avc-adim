@@ -2,11 +2,12 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useGetAdmin } from "@/pages/authentication/api/mutations"
+// import { useGetAdmin } from "@/pages/authentication/api/mutations"
 import { useProfileStore } from "@/zustand/useProfileStore"
 import { showerror } from "@/lib/toasts"
 import { redirect, useRouter } from "next/navigation"
 import Cookies from "js-cookie"
+import { useGetAdmin } from '@/modules/authentication/api/mutations'
 
 export function useAuth() {
   const router = useRouter()

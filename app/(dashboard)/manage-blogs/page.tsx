@@ -1,4 +1,4 @@
-import BlogManagement from '@/pages/blogmanagement/routes'
+import BlogManagement from '@/modules/blogmanagement/routes'
 import React from 'react'
 
 const BlogManagementPage = () => {

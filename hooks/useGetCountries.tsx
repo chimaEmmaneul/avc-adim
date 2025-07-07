@@ -1,4 +1,4 @@
-import { useGetAllCountries } from '@/pages/authentication/api/mutations'
+import { useGetAllCountries } from '@/modules/authentication/api/mutations'
 import { useProfileStore } from '@/zustand/useProfileStore'
 import React, { useEffect } from 'react'
 

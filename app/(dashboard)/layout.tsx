@@ -17,7 +17,49 @@ export default function DashboardLayout({
   const { isLoading } = useAuth()
   if (isLoading) {
     return (
-      <Loader />
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="relative w-40 h-40">
+          {/* Outer semicircle with rounded edges */}
+          <svg
+            className="absolute inset-0 w-full h-full"
+            style={{ animation: "spin 2s linear infinite" }}
+            viewBox="0 0 160 160"
+          >
+            <circle
+              cx="80"
+              cy="80"
+              r="72.5"
+              fill="none"
+              stroke="#d97706"
+              strokeWidth="15"
+              strokeLinecap="round"
+              strokeDasharray="227.77 227.77"
+              strokeDashoffset="113.885"
+              transform="rotate(-90 80 80)"
+            />
+          </svg>
+
+          {/* Inner semicircle with rounded edges */}
+          <svg
+            className="absolute inset-0 w-full h-full"
+            style={{ animation: "spin 1s linear infinite" }}
+            viewBox="0 0 160 160"
+          >
+            <circle
+              cx="80"
+              cy="80"
+              r="42.5"
+              fill="none"
+              stroke="#9ca3af"
+              strokeWidth="15"
+              strokeLinecap="round"
+              strokeDasharray="133.52 133.52"
+              strokeDashoffset="66.76"
+              transform="rotate(-90 80 80)"
+            />
+          </svg>
+        </div>
+      </div>
     )
   }
 
