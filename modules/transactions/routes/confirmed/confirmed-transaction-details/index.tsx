@@ -2,10 +2,12 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
 import { Copy, Download } from 'lucide-react'
-import { TRANSACTION_DETAILS } from '@/pages/transactions/constants/transactions'
+// import { TRANSACTION_DETAILS } from '@/pages/transactions/constants/transactions'
 import { WithdrawalIcon } from '@/icon/icon'
-import { useGetTransactionDetails } from '@/pages/transactions/api/mutations'
+// import { useGetTransactionDetails } from '@/pages/transactions/api/mutations'
 import { usePathname } from 'next/navigation'
+import { useGetTransactionDetails } from '@/modules/transactions/api/mutations'
+import { TRANSACTION_DETAILS } from '@/modules/transactions/constants/transactions'
 
 
 const ConfirmedTransactionDetails = () => {
