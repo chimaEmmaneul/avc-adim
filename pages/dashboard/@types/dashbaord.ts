@@ -24,6 +24,7 @@ export type User = {
   country_name: string;
   email: string;
   created_date: string;
+  profile_photo: string;
 };
 
 export type UsersTableProps = {
@@ -67,6 +68,7 @@ export type TopUser = {
   country_name: string;
   total_transferred: number;
   total_deposited: number;
+  profile_photo: string;
 };
 
 export interface DashboardResponse {

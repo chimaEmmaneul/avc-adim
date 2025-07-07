@@ -56,7 +56,7 @@ export default function UsersTable({ users }: UsersTableProps) {
               <tr key={user.id} className="bg-white hover:bg-gray-50">
                 <td className=" border-t border-b border-l pl-4 border-[#EBE8FF] rounded-l-lg whitespace-nowrap">
                   <div className="relative h-10 w-10 overflow-hidden rounded-[50%]">
-                    <Image src={user?.avatar || "/placeholder.svg"} alt={user.first_name} fill className="object-cover" />
+                    <Image src={user?.profile_photo || "/placeholder.svg"} alt={user.first_name} fill className="object-cover" />
                 </div>
                 </td>
                 <td className="px-4 py-2  border-t border-b  border-[#EBE8FF]  whitespace-nowrap">
