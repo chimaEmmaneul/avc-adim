@@ -27,11 +27,16 @@ client.interceptors.request.use((config) => {
 client.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response.status === 401) {
-      Cookies.remove("token");
-      showerror("Unauthenticated, redirecting...");
-      window.location.href = "/auth/login";
-    }
+  if (
+    error.response?.status === 401 &&
+    window.location.pathname !== "/auth/login"
+  ) {
+    Cookies.remove("token");
+    showerror("Unauthenticated, redirecting...");
+    window.location.href = "/auth/login";
+    return;
+  }
+
     return Promise.reject(error.response.data);
   }
 );
