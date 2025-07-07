@@ -7,9 +7,10 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import Image from "next/image"
 import { showerror, showsuccess } from "@/lib/toasts"
 import { ProfileFormData, profileSchema } from "@/schema/authSchema"
-import { useGetAllCountries, useUpadteAdminProfile } from "@/pages/authentication/api/mutations"
+// import { useGetAllCountries, useUpadteAdminProfile } from "@/pages/authentication/api/mutations"
 import { Loader, UploadCloud } from "lucide-react"
 import { useProfileStore } from "@/zustand/useProfileStore"
+import { useGetAllCountries, useUpadteAdminProfile } from "@/modules/authentication/api/mutations"
 
 
 

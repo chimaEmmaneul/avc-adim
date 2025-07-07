@@ -1,4 +1,5 @@
-import BlogCategoryForm from '@/pages/blogmanagement/components/blogcategoryform'
+// import BlogCategoryForm from '@/pages/blogmanagement/components/blogcategoryform'
+import BlogCategoryForm from '@/modules/blogmanagement/components/blogcategoryform'
 import Link from 'next/link'
 import React from 'react'
 
