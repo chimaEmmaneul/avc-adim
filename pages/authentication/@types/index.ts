@@ -47,6 +47,25 @@ export type Profile = {
   };
 };
 
+export type UserData = {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email?: string;
+  phone: string;
+  status: string;
+  country_id: string;
+  country?: string;
+  state: string;
+  address: string;
+  zip_code: string;
+  kyc_verification: number;
+  two_factor_enabled: number;
+  profile_photo?: string;
+  email_verification: number;
+  last_login?: string | null;
+  created_at?: string;
+};
 export type User = {
   id: string;
   first_name: string;
@@ -55,6 +74,7 @@ export type User = {
   phone: string;
   status: string;
   country_id: string;
+  country?: string;
   state: string;
   address: string;
   zip_code: string;
@@ -69,7 +89,7 @@ export type User = {
 export type UserResponse = {
   success: boolean;
   message: string;
-  data: User;
+  data: UserData;
 };
 
 export type Country = {

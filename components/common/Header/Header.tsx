@@ -29,7 +29,7 @@ const Header = () => {
         <Bell />
         <div onClick={() => router.push("/profile")} className="relative cursor-pointer">
           <Avatar className="h-14 w-14">
-            <AvatarImage src="https://ik.imagekit.io/0xy9wqmrh/user?updatedAt=1740845569228" alt={profile?.data.first_name} />
+            <AvatarImage src={String(profile?.data.profile_photo)} alt={profile?.data.first_name} />
             <AvatarFallback>{profile?.data.first_name?.charAt(0)}</AvatarFallback>
           </Avatar>
           <div className="absolute bottom-0 right-0 h-3 w-3">

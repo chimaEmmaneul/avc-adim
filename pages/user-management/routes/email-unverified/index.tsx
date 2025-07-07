@@ -17,7 +17,7 @@ const EmailUnverified = () => {
         <Search searchTerm={search} setSearchTerm={setSearch} />
       </div>
 
-      {isLoading ? <UserTableSkeleton /> : <UserTable data={pendingUsers?.data.users ?? []} itemsPerPage={6} />}
+      {isLoading ? <UserTableSkeleton /> : <UserTable data={pendingUsers?.data.users.data ?? []} itemsPerPage={6} />}
     </div>
   )
 }

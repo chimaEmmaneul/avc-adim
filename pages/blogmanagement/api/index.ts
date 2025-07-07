@@ -15,6 +15,17 @@ const blognManagementClient = {
         "Content-Type": "multipart/form-data",
       },
     }),
+  getBlogDetails: async (id: string): Promise<any> =>
+    ApiClient.get(BLOGMANAGEMENTENDPOINTS.GET_BLOG_DETAILS(id)),
+  deleteBlog: async (id: string): Promise<any> =>
+    ApiClient.delete(BLOGMANAGEMENTENDPOINTS.DELETE_BLOG(id)),
+
+  updateBlog: (id: string, data: FormData) =>
+    ApiClient.post(BLOGMANAGEMENTENDPOINTS.UPDATE_BLOG(id), data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
 };
 
 export default blognManagementClient;

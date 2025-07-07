@@ -7,6 +7,7 @@ import {
   Profile,
   ResetPasswordPayload,
   User,
+  UserData,
   UserResponse,
   VerifyEmailResponse,
 } from "../@types";

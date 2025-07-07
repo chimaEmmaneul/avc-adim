@@ -14,7 +14,7 @@ export function useAddNewTestimonial() {
   >({
     mutationFn: (data: FormData) => ManageContentClient.addTestimonial(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["GET_ALL_CATEGORY"] });
+      queryClient.invalidateQueries({ queryKey: ["GET_ALL_TESTIMONIALS"] });
     },
   });
   return useMemo(
@@ -80,7 +80,7 @@ export function useDeleteTestimonial() {
   >({
     mutationFn: (id: string) => ManageContentClient.deleteTestimonial(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["GET_ALL_TESTIMINIALS"] });
+      queryClient.invalidateQueries({ queryKey: ["GET_ALL_TESTIMONIALS"] });
     },
   });
   return useMemo(
@@ -104,7 +104,7 @@ export function useUpdateTestimonial() {
     mutationFn: ({ id, data }: { id: string; data: FormData }) =>
       ManageContentClient.updateTestimonial(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["GET_ALL_TESTIMINIALS"] });
+      queryClient.invalidateQueries({ queryKey: ["GET_ALL_TESTIMONIALS"] });
     },
   });
   return useMemo(

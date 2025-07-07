@@ -17,7 +17,7 @@ const ActiveUsers = () => {
         <h1 className='text-black font-semibold'>Active users</h1>
         <Search searchTerm={search} setSearchTerm={setSearch} />
       </div>
-      {isLoading ? <UserTableSkeleton /> : <UserTable data={activeUsers?.data.users ?? []} itemsPerPage={10} />}
+      {isLoading ? <UserTableSkeleton /> : <UserTable data={activeUsers?.data.users.data ?? []} itemsPerPage={10} />}
 
     </div>
   )

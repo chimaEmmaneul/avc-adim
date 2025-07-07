@@ -117,6 +117,25 @@ export default function AdminProfile() {
           >
             {profile?.data.profile_photo ? (
               <div className="relative w-32 h-32 mb-2">
+                <img
+                  src={previewImage || String(profile?.data.profile_photo) || "/placeholder.svg"}
+                  alt="Profile preview"
+
+                  className="object-cover rounded-full h-32 w-32"
+                />
+              </div>
+            ) : (
+              <div className="text-amber-500 mb-2">
+                <UploadCloud />
+              </div>
+            )}
+            <p className="text-sm text-center">
+              Drop your file or <span className="underline text-amber-600">click</span> to select
+            </p>
+            <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleImageUpload} />
+            <input type="hidden" {...register("profile_photo")} />
+            {/* {profile?.data.profile_photo ? (
+              <div className="relative w-32 h-32 mb-2">
                 <Image
                   src={previewImage || String(profile?.data.profile_photo) || "/placeholder.svg"}
                   alt="Profile preview"
@@ -133,7 +152,7 @@ export default function AdminProfile() {
               Drop your file or <span className="underline text-amber-600">click</span> to select
             </p>
             <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleImageUpload} />
-            <input type="hidden" {...register("profile_photo")} />
+            <input type="hidden" {...register("profile_photo")} /> */}
           </div>
         </div>
 

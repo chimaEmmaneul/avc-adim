@@ -13,7 +13,7 @@ export default function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <div className="h-screen sticky top-0 left-0 hidden   w-[340px] bg-black md:flex flex-col overflow-y-auto">
+    <div className="h-screen sticky top-0 left-0 hidden   w-[340px] bg-black lg:flex flex-col overflow-y-auto">
       <div className="p-6">
         <Image src="/img/avclogo.png" alt="AZANYPAY" width={190} height={85} className="mx-auto" />
       </div>

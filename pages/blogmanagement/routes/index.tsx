@@ -5,6 +5,7 @@ import { Pencil, Trash2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import BlogNavigation from "../components/blognavigation"
 import { useGetAllBlogs, useGetAllCategory } from "../api/mutations"
+import DeleteBlog from "../components/deleteblog/page"
 
 interface BlogPost {
   id: number
@@ -17,6 +18,8 @@ interface BlogPost {
 export default function BlogManagement() {
   const [activeTab, setActiveTab] = useState<"blogs" | "categories">("blogs")
   const [searchTerm, setSearchTerm] = useState("")
+  const [isOpen, setIsOpen] = useState(false)
+  const [id, setId] = useState<string>("")
   const router = useRouter()
   const { allBlogs, isLoading } = useGetAllBlogs()
 
@@ -70,7 +73,7 @@ export default function BlogManagement() {
             </thead>
 
             <tbody>
-              {allBlogs?.data.map((post: any) => (
+              {allBlogs?.data.map((post) => (
                 <tr key={post.id} className="border-b border-gray-200 text-sm">
                   <td className="py-4 px-4">{post.id}</td>
                   <td className="py-4 px-4">{post.title}</td>
@@ -81,12 +84,13 @@ export default function BlogManagement() {
                   <td className="py-4 px-4">
                     <div className="flex flex-col gap-3">
                       <button
-                        onClick={() => router.push("/manage-blogs/add-new-blog")}
+                        onClick={() => router.push("/manage-blogs/edit-blog/" + post.id)}
                         className="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-[50%] text-blue-500 hover:bg-blue-200"
                       >
                         <Pencil size={16} />
                       </button>
                       <button
+                        onClick={() => { setIsOpen(true); setId(String(post.id)) }} 
                         className="w-8 h-8 flex items-center justify-center bg-red-100 rounded-[50%] text-red-500 hover:bg-red-200"
                       >
                         <Trash2 size={16} />
@@ -99,6 +103,7 @@ export default function BlogManagement() {
           </table>
         </div>
       </div>
+      <DeleteBlog id={id} open={isOpen} setOpen={setIsOpen} />
     </div>
   )
 }

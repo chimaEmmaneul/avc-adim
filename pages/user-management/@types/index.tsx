@@ -1,7 +1,24 @@
 export interface UsersResponse {
   success: boolean;
   message: string;
-  data: UsersData;
+  data: {
+    users_count: number;
+    active: string;
+    banned: string;
+    users: {
+      success: boolean;
+      message: string;
+      data: User[];
+      meta: PaginationMeta;
+    };
+  };
+}
+
+export interface PaginationMeta {
+  current_page: number;
+  total: number;
+  per_page: number;
+  last_page: number;
 }
 
 export interface UsersData {

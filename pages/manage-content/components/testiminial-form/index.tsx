@@ -1,18 +1,21 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState, useRef } from "react"
 import { useForm } from "react-hook-form"
-import { Upload } from "lucide-react"
+import { Loader2, Upload } from "lucide-react"
 import {
   AlertDialog,
+  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { useAddNewTestimonial } from '../../api/mutatoins'
-import { showerror } from '@/lib/toasts'
+import { useAddNewTestimonial, useGetTestimonial, useUpdateTestimonial } from '../../api/mutatoins'
+import { showerror, showsuccess } from '@/lib/toasts'
+import { AxiosError } from 'axios'
+import { TestimonialData } from '../../@types/testimoinals'
 
 type FormData = {
   name: string
@@ -25,39 +28,76 @@ type AddTestimonialProps = {
   open: boolean
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
   type: string
+  testimonialData: TestimonialData | null
+  setTestimonialData: React.Dispatch<React.SetStateAction<TestimonialData | null>>
 }
 
-const TestimonialForm = ({ open, setOpen, type }: AddTestimonialProps) => {
+const TestimonialForm = ({ open, setOpen, type, testimonialData, setTestimonialData }: AddTestimonialProps) => {
   const [previewImage, setPreviewImage] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { createTestimonial, isPending } = useAddNewTestimonial()
-
+  const { updateTestimonial, isPending: updatePending } = useUpdateTestimonial()
   const {
     register,
     handleSubmit,
     reset,
     setValue,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<FormData>()
+
+  console.log(type, "testtype")
+  useEffect(() => {
+    if (testimonialData && type === "edit") {
+      reset({
+        name: testimonialData.name,
+        designation: testimonialData.post,
+        comment: testimonialData.note,
+      })
+    }
+    else {
+      reset({
+        name: "",
+        designation: "",
+        comment: "",
+      })
+    };
+
+  }, [testimonialData, type])
 
   const onSubmit = async (data: FormData) => {
     try {
-      const formData = new FormData()
-      formData.append("name", data.name)
-      formData.append("post", data.designation)
-      formData.append("note", data.comment)
-      formData.append("user_image", data.image)
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("post", data.designation);
+      formData.append("note", data.comment);
+      if (data.image) {
+        formData.append("user_image", data.image);
+      }
 
-      const res = await createTestimonial(formData)
-      console.log(res, "res")
-    } catch (error: any) {
-      console.log(error, "error")
-      showerror(error.message)
+      const res =
+        type === "add"
+          ? await createTestimonial(formData)
+          : await updateTestimonial({
+            id: String(testimonialData?.id),
+            data: formData,
+          });
+
+      console.log("API Response:", res);
+
+
+      showsuccess(res?.message);
+
+
+      setPreviewImage(null);
+      setOpen(false);
+      reset();
+    } catch (error: AxiosError | any) {
+      console.log(error, "error");
+      showerror(error.message || "Unexpected error occurred");
     }
-    // Reset form and close dialog
-    // reset()
-    // setPreviewImage(null)
-  }
+  };
+
+
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -79,13 +119,14 @@ const TestimonialForm = ({ open, setOpen, type }: AddTestimonialProps) => {
     reset()
     setPreviewImage(null)
     setOpen(false)
+    setTestimonialData(null)
   }
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogContent className="max-w-md max-h-[95vh] overflow-y-auto">
+      <AlertDialogContent className="max-w-xl max-h-[95vh] overflow-y-auto">
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-lg font-medium border-b">Add Testimonial</AlertDialogTitle>
+          <AlertDialogTitle className="text-lg font-medium border-b capitalize">{`${type}`} Testimonial</AlertDialogTitle>
         </AlertDialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="mt-4 space-y-4">
@@ -136,9 +177,9 @@ const TestimonialForm = ({ open, setOpen, type }: AddTestimonialProps) => {
               onClick={handleImageAreaClick}
               className="border-2 border-dashed border-gray-300 rounded p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors"
             >
-              {previewImage ? (
+              {(previewImage || testimonialData?.user_image) ? (
                 <img
-                  src={previewImage || "/placeholder.svg"}
+                  src={testimonialData?.user_image || previewImage || "/placeholder.svg"}
                   alt="Preview"
                   className="w-40 h-40 object-cover"
                 />
@@ -164,12 +205,12 @@ const TestimonialForm = ({ open, setOpen, type }: AddTestimonialProps) => {
             <AlertDialogCancel
               type="button"
               onClick={handleDialogClose}
-              className="bg-black text-white hover:bg-gray-800 px-4 py-2 rounded"
+              className="bg-black text-white px-4 py-2 rounded"
             >
               Cancel
             </AlertDialogCancel>
             <button type="submit" className="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded">
-              {isPending ? "Adding..." : "Add "}
+              {isPending || updatePending ? <Loader2 className='animate-spin mx-auto' /> : type}
             </button>
           </div>
         </form>

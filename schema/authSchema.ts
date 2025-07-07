@@ -34,7 +34,7 @@ export const userFormSchema = z.object({
   lastName: z
     .string()
     .min(2, { message: "Last name must be at least 2 characters" }),
-  country: z.string().min(1, { message: "Please select a country" }),
+  country_id: z.string().min(1, { message: "Please select a country" }),
   status: z.string().min(1, { message: "Please select a status" }),
   email: z
     .string()

@@ -129,7 +129,7 @@ const ContactUs = () => {
           >
             {(contactUs?.data.site_logo || imagePreview) ?
               <div className="relative mx-auto border border-gray-200 w-72 h-48 md:h-64 bg-white rounded-md overflow-hidden">
-                <Image src={contactUs?.data.site_logo || imagePreview} alt="Contact image" fill className="object-cover" />
+                <img src={contactUs?.data.site_logo || imagePreview} alt="Contact image" className="object-cover w-full h-full" />
                 <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 hover:bg-opacity-10 transition-all">
                   <span className="text-transparent hover:text-white text-sm font-medium">Click to upload image</span>
                 </div>

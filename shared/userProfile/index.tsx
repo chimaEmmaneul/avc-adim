@@ -26,6 +26,7 @@ export default function UserProfile({ params }: { params: { id: string } }) {
     register,
     handleSubmit,
     reset,
+    setValue,
     watch,
     formState: { errors, isSubmitting },
   } = useForm<UserFormValues>({
@@ -33,7 +34,7 @@ export default function UserProfile({ params }: { params: { id: string } }) {
     defaultValues: {
       firstName: "",
       lastName: "",
-      country: "",
+      country_id: "",
       phoneNumber: "",
       city: "",
       state: "",
@@ -44,34 +45,52 @@ export default function UserProfile({ params }: { params: { id: string } }) {
   })
 
   useEffect(() => {
-    reset({
-      firstName: userProfile?.data?.first_name,
-      lastName: userProfile?.data?.last_name,
-      country: userProfile?.data?.country_id,
-      email: userProfile?.data?.email,
-      phoneNumber: userProfile?.data?.phone,
-      status: userProfile?.data?.status,
-      state: userProfile?.data?.state,
-      zipCode: userProfile?.data?.zip_code,
-      address: userProfile?.data?.address,
+    if (userProfile) {
+      reset({
+        firstName: userProfile?.data?.first_name,
+        lastName: userProfile?.data?.last_name,
+        country_id: userProfile?.data?.country_id,
+        email: userProfile?.data?.email,
+        phoneNumber: userProfile?.data?.phone,
+        status: userProfile?.data?.status,
+        state: userProfile?.data?.state,
+        zipCode: userProfile?.data?.zip_code,
+        address: userProfile?.data?.address,
 
-    })
+      })
+      setEmailVerification(userProfile.data.email_verification === 1);
+      setKYCVerification(userProfile.data.kyc_verification === 1)
+      setTwoFAVerification(userProfile.data.two_factor_enabled === 1)
+    }
   }, [userProfile])
+
+
+  useEffect(() => {
+    if (countries?.data && userProfile?.data?.country) {
+      const matchedCountry = countries.data.find(
+        (c) => c.name === userProfile.data.country
+      );
+
+      if (matchedCountry) {
+        setValue("country_id", String(matchedCountry.id));
+      }
+    }
+  }, [countries?.data, userProfile?.data?.country]);
 
   if (isLoading) {
     return <div>Loading...</div>
   }
+  console.log(userProfile?.data?.status, "status")
 
 
   const onSubmit = async (data: UserFormValues) => {
-    console.log("ciekce")
     const updatedData = {
       id: params.id,
       first_name: data?.firstName,
       last_name: data?.lastName,
       email: data?.email,
       phone: data?.phoneNumber,
-      country_id: data?.country,
+      country_id: data?.country_id,
       state: data?.state,
       zip_code: data?.zipCode,
       address: data?.address,
@@ -174,7 +193,7 @@ export default function UserProfile({ params }: { params: { id: string } }) {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
             <select
-              {...register("country")}
+              {...register("country_id")}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Select Country</option>
@@ -184,7 +203,7 @@ export default function UserProfile({ params }: { params: { id: string } }) {
                 </option>
               ))}
             </select>
-            {errors.country && <p className="mt-1 text-sm text-red-600">{errors.country.message}</p>}
+            {errors.country_id && <p className="mt-1 text-sm text-red-600">{errors.country_id.message}</p>}
           </div>
 
           <div>
@@ -251,6 +270,7 @@ export default function UserProfile({ params }: { params: { id: string } }) {
                 <option value="active">Active</option>
                 <option value="suspended">Suspended</option>
                 <option value="blocked">Blocked</option>
+                <option value="pending">Pending</option>
               </select>
             </div>
           </div>
