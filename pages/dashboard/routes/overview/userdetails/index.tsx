@@ -23,7 +23,7 @@ export default function UserProfile() {
     defaultValues: {
       firstName: "Saif",
       lastName: "Ahmed",
-      country: "",
+      country_id: "",
       phoneNumber: "",
       city: "",
       state: "",
@@ -124,7 +124,7 @@ export default function UserProfile() {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
             <select
-              {...register("country")}
+              {...register("country_id")}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Select Country</option>
@@ -134,7 +134,7 @@ export default function UserProfile() {
                 </option>
               ))}
             </select>
-            {errors.country && <p className="mt-1 text-sm text-red-600">{errors.country.message}</p>}
+            {errors.country_id && <p className="mt-1 text-sm text-red-600">{errors.country_id.message}</p>}
           </div>
 
           <div>
