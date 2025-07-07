@@ -13,8 +13,9 @@ import { useSearchParams } from "next/navigation";
 import { decryptEmail } from "@/lib/utils";
 import { showerror, showsuccess } from "@/lib/toasts";
 import { AxiosError } from "axios";
+import { Suspense } from "react";
 
-export default function ResetPasswordView() {
+export function ResetPasswordView() {
   const {
     register,
     handleSubmit,
@@ -90,4 +91,14 @@ export default function ResetPasswordView() {
       </div>
     </div>
   );
+}
+
+export default function Page() {
+  return (
+    <>
+      <Suspense>
+        <ResetPasswordView />
+      </Suspense>
+    </>
+  )
 }

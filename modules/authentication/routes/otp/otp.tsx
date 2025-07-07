@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -81,4 +81,13 @@ const Otpform = () => {
 
   );
 }
-export default Otpform;
+
+export default function Page() {
+  return (
+    <>
+      <Suspense>
+        <Otpform />
+      </Suspense>
+    </>
+  )
+}
