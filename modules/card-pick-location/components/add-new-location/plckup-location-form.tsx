@@ -238,7 +238,7 @@ export default function AddNewLocationForm({ isOpen, onClose, pickupLocation }: 
         <AlertDialogFooter className="pt-4">
           <AlertDialogCancel asChild>
             <button type="button" className="rounded border border-gray-300 bg-white px-4 py-2 text-black">
-              cancel
+              Cancel
             </button>
           </AlertDialogCancel>
             <button

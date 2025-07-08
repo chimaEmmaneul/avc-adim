@@ -14,17 +14,17 @@ type TableFiltersProps = {
 const TableFilters = ({ country, setCountry, status, setStatus, fromDate, setFromDate, toDate, setToDate }: TableFiltersProps) => {
   const { countries, isLoading } = useGetAllCountries()
   return (
-    <div className="w-full flex items-center justify-between overflow-x-auto gap-4">
+    <div className="w-full flex items-center justify-center lg:justify-between overflow-x-auto gap-4">
       <div className="mb-4">
-        <h2 className=" text-[#343A40] font-medium whitespace-nowrap">All Transactions</h2>
+        <h2 className="hidden lg:block text-[#343A40] font-medium whitespace-nowrap">Card Request</h2>
       </div>
 
-      <div className="flex flex-nowrap gap-4 mb-4 ">
+      <div className="flex flex-wrap gap-4 mb-4 ">
         <div className="flex items-center gap-2  truncate">
           <span className="text-sm font-medium text-gray-600">Country</span>
-          <div className="relative">
+          <div className="relative max-lg:flex-1 ">
             <select
-              className="appearance-none w-[150px] truncate bg-white border border-gray-300 rounded-md  px-1 py-2  text-[#6E768E] outline-none "
+              className="appearance-none  lg:w-[150px] truncate bg-white border border-gray-300 rounded-md  px-1 py-2  text-[#6E768E] outline-none "
               value={country ?? "Nigeria"}
               defaultValue="160"
               onChange={(e) => setCountry(e.target.value)}
@@ -44,11 +44,11 @@ const TableFilters = ({ country, setCountry, status, setStatus, fromDate, setFro
           </div>
         </div>
 
-        <div className="flex items-center gap-2 whitespace-nowrap">
+        <div className="flex flex-1  items-center gap-2 whitespace-nowrap">
           <span className="text-sm font-medium text-gray-600">Status</span>
-          <div className="relative">
+          <div className="relative ">
             <select
-              className="appearance-none bg-white border border-gray-300 rounded-md py-2 px-3 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="appearance-non w-full bg-white border border-gray-300 rounded-md py-2 px-3 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               value={status ?? "all"}
               onChange={(e) => setStatus(e.target.value)}
             >

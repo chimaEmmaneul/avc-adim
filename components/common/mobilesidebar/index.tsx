@@ -14,6 +14,7 @@ import {
 
 import { cn } from "@/lib/utils"
 import { NAV_ITEMS } from "@/constant/navitems"
+import { LogOutIcon } from "lucide-react"
 
 type MobileSidebarProps = {
   open: boolean;
@@ -63,6 +64,7 @@ export default function MobileSidebar({ open, setIsOpen }: MobileSidebarProps) {
                                 return (
                                   <li key={subItem.name}>
                                     <Link
+                                      onClick={() => setIsOpen(false)}
                                       href={subItem.path}
                                       className={cn(
                                         "flex items-center gap-2 py-1 transition-colors  text-main",
@@ -82,6 +84,7 @@ export default function MobileSidebar({ open, setIsOpen }: MobileSidebarProps) {
                     ) : (
                       <Link
                         href={item.path}
+                          onClick={() => setIsOpen(false)}
                         className={cn(
                           "flex items-center gap-4 px-6 py-3 text-gray-400 hover:text-white whitespace-nowrap transition-colors",
                           isActive && "text-white",
@@ -95,6 +98,12 @@ export default function MobileSidebar({ open, setIsOpen }: MobileSidebarProps) {
                 )
               })}
             </ul>
+          </div>
+          <div className=" text-center  mx-4 px-4">
+            <button className="flex items-center justify-center gap-2 text-white">
+              <LogOutIcon />
+              Log Out
+            </button>
           </div>
         </div>
       </SheetContent>

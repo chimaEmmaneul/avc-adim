@@ -22,7 +22,7 @@ const Testimonials = () => {
 
 
   return (
-    <div className="">
+    <div className="overflow-x-auto">
       <div className="mb-8">
         <div className="mb-4">
           <label htmlFor="sectionTitle" className="block text-sm font-medium text-gray-700 mb-1">
@@ -53,8 +53,8 @@ const Testimonials = () => {
         </button>
       </div>
 
-      <div className="relative mb-4">
-        <button onClick={() => { setType("add"); setOpen(true); }} className="absolute right-0 top-0 flex items-center gap-1 bg-main  text-white px-3 py-2 rounded transition-colors">
+      <div className="mb-8 flex items-center justify-end">
+        <button onClick={() => { setType("add"); setOpen(true); }} className=" flex items-center gap-1 bg-main  text-white px-3 py-2 rounded transition-colors">
           <Plus size={16} />
           <span>Add Testimonial</span>
         </button>
@@ -63,14 +63,14 @@ const Testimonials = () => {
       {isLoading ? (
         <TestimonialSkeletonLoader />
       ) :
-      <div className="overflow-x-auto mt-12">
-        <table className="w-full">
+        <div className="overflow-x-auto mt-12 mb-4">
+          <table className="w-full ">
           <thead>
             <tr className="text-left">
-              <th className="pb-4 font-medium text-gray-600">IMAGE</th>
-              <th className="pb-4 font-medium text-gray-600">NAME</th>
-                <th className="pb-4 font-medium text-gray-600">POST</th>
-                <th className="pb-4 font-medium text-gray-600">NOTE</th>
+                <th className="pb-4 px-4  font-medium text-gray-600">IMAGE</th>
+                <th className="pb-4  px-4 font-medium text-gray-600">NAME</th>
+                <th className="pb-4 px-4  font-medium text-gray-600">POST</th>
+                <th className="pb-4 px-4  font-medium text-gray-600">NOTE</th>
               <th className="pb-4"></th>
             </tr>
           </thead>
@@ -88,10 +88,10 @@ const Testimonials = () => {
                     />
                   </div>
                 </td>
-                <td className="py-3 text-gray-800">{testimonial.name}</td>
-                  <td className="py-3 text-gray-800">{testimonial.post}</td>
-                  <td className="py-3 text-gray-800 max-w-[250px] line-clamp-3 overflow-hidden leading-[2.2]">{testimonial.note}</td>
-                <td className="py-3 text-right">
+                  <td className="py-3 px-4 text-gray-800">{testimonial.name}</td>
+                  <td className="py-3 px-4 text-gray-800">{testimonial.post}</td>
+                  <td className="py-3 px-4 text-gray-800 min-w-[250px] line-clamp-3 overflow-hidden leading-[2.2]">{testimonial.note}</td>
+                  <td className="py-3  px-4text-right">
                   <div className="flex justify-end gap-2">
                       <button onClick={() => { setType("edit"); setTestimonialData(testimonial); setOpen(true); }} className="p-1.5 bg-main  rounded transition-colors">
                       <Pencil size={16} className="text-white" />
@@ -104,10 +104,10 @@ const Testimonials = () => {
               </tr>
             ))}
           </tbody>
-        </table>
-          <Pagination currentPage={page} setCurrentPage={setPage} totalPages={Number(testimonials?.meta.last_page)} />
+          </table>
       </div>
       }
+      <Pagination currentPage={page} setCurrentPage={setPage} totalPages={Number(testimonials?.meta.last_page)} />
       <TestimonialForm open={open} setOpen={setOpen} type={type} testimonialData={testimonialData} setTestimonialData={setTestimonialData} />
       <DeleteTestimonial id={id} open={isOpen} setOpen={setIsOpen} />
     </div>

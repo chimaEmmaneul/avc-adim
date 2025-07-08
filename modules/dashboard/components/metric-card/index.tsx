@@ -1,5 +1,6 @@
 import type React from "react"
 import { MetricCardProps } from "../../@types/dashbaord"
+import { formatMoney } from "@/lib/utils";
 
 export default function MetricCard({ title, value, percentChange, viewText, icon, isMoney = true }: MetricCardProps) {
   let isPositive;
@@ -14,7 +15,7 @@ export default function MetricCard({ title, value, percentChange, viewText, icon
         <div className="text-gray-700">{icon}</div>
       </div>
 
-      <div className="text-3xl text-[#04103B] font-bold mb-5">{isMoney ? `$${value}` : value}</div>
+      <div className="text-3xl text-[#04103B] font-bold mb-5">{isMoney ? `${formatMoney(value as number)}` : value}</div>
 
       <div className="flex justify-between items-center">
         <div className={`flex items-center rounded-full ${isPositive ? "bg-green-100" : "bg-red-100"} px-2 py-0.5`}>

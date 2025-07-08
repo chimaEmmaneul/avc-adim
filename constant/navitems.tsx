@@ -58,7 +58,7 @@ export const NAV_ITEMS: NavItem[] = [
     subItems: [
       { name: "Testimonials", path: "/manage-content/testimonials" },
       { name: "Contact Us", path: "/manage-content/contact-us" },
-      { name: "Footer", path: "/manage-content/footer" },
+      // { name: "Footer", path: "/manage-content/footer" },
     ],
   },
 ]

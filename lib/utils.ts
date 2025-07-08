@@ -63,3 +63,17 @@ export function formatDateTime(dateTimeStr: string): string {
 
   return date.toLocaleString(undefined, options); // Uses user's locale
 }
+
+
+export function formatMoney(
+  amount: number,
+  currency: string = "USD",
+  locale: string = "en-US"
+): string {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(amount);
+}

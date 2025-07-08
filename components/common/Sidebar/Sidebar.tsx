@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { NAV_ITEMS } from "@/constant/navitems"
+import { LogOutIcon } from "lucide-react"
 
 
 
@@ -81,6 +82,12 @@ export default function Sidebar() {
             )
           })}
         </ul>
+      </div>
+      <div className=" text-center py-4 mx-4 px-4">
+        <button className="flex items-center justify-center text-white">
+          <LogOutIcon />
+          Log Out
+        </button>
       </div>
     </div>
   )

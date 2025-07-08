@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
-import { MoreVertical } from "lucide-react"
+import { MoreVertical, UserIcon } from "lucide-react"
 import { UsersTableProps } from "../../@types/dashbaord"
 import { useRouter } from "next/navigation"
 
@@ -55,9 +55,15 @@ export default function UsersTable({ users }: UsersTableProps) {
             {users.map((user) => (
               <tr key={user.id} className="bg-white hover:bg-gray-50">
                 <td className=" border-t border-b border-l pl-4 border-[#EBE8FF] rounded-l-lg whitespace-nowrap">
+                  {user.profile_photo ? 
                   <div className="relative h-10 w-10 overflow-hidden rounded-[50%]">
                     <Image src={user?.profile_photo || "/placeholder.svg"} alt={user.first_name} fill className="object-cover" />
-                </div>
+                    </div>
+                    :
+                    <div className="w-10 h-10 rounded-[50%] bg-gray-200  flex items-center justify-center">
+                      <UserIcon size={16} className="text-gray-600 mx-auto" />
+                    </div>
+                  }
                 </td>
                 <td className="px-4 py-2  border-t border-b  border-[#EBE8FF]  whitespace-nowrap">
                   {user.first_name}
