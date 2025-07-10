@@ -45,6 +45,11 @@ export const NAV_ITEMS: NavItem[] = [
     name: "Settings",
     path: "/settings",
     icon: <Bolt />,
+    subItems: [
+      { name: "Countries", path: "/settings/countries" },
+      { name: "Points Conversion", path: "/settings/point-conversion" },
+      { name: "Security", path: "/settings/security" },
+    ],
   },
   {
     name: "Manage Blogs",

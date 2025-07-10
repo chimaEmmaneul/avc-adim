@@ -27,7 +27,7 @@ const Pagination = ({ currentPage, setCurrentPage, totalPages }: PaginationProps
     setCurrentPage(page)
   }
   return (
-    <div className="flex justify-end items-center mt-5 gap-1">
+    <div className="flex justify-end items-center mt-10 gap-1">
       <button
         onClick={handlePrevPage}
         disabled={currentPage === 1}

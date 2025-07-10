@@ -23,6 +23,8 @@ const authClient = {
     ApiClient.post(AUTHENDPOINTS.RESEND_OTP, data),
   verifyCode: (data: { verification_code: string }): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.VERIFY_CODE, data),
+  verify2fa: (data: { verification_code: string }): Promise<any> =>
+    ApiClient.post(AUTHENDPOINTS.VERIFY_2FA, data),
   verifyOtpCode: (data: { verification_code: string }): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.VERIFY_OTP_CODE, data),
   getAdminProfile: (): Promise<any> => ApiClient.get(AUTHENDPOINTS.PROFILE),

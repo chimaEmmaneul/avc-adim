@@ -5,6 +5,7 @@ export const AUTHENDPOINTS = {
   RESET_PASSWORD: "/admin/connect/reset-password",
   RESEND_OTP: "/admin/connect/resend-code",
   VERIFY_CODE: "/admin/connect/verify-code",
+  VERIFY_2FA: "/admin/connect/verify-2fa",
   VERIFY_EMAIL: "/admin/connect/verify-email",
   PROFILE: "/admin/profile",
   UPDATE_PROFILE: "/admin/update-profile",

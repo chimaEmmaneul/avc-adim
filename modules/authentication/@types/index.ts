@@ -10,12 +10,14 @@ interface Message {
   expires_at: string | null;
 }
 
-export type LoginResponse = {
-  success: boolean;
-  message: Message;
-  data: any[];
-};
+// export type LoginResponse = {
+//   success: boolean;
+//   message: Message;
+//   data: any[];
+// };
 export type VerifyEmailResponse = {
+  token:string;
+  expires_at:string;
   success: boolean;
   message: string;
   data: any[];
@@ -106,4 +108,12 @@ export type CountryResponse = {
   data: Country[];
 };
 
-
+export type LoginResponse = {
+  success: true;
+  message: {
+    id: number;
+    token:string;
+    "2fa_required": true;
+  };
+  data: string;
+};

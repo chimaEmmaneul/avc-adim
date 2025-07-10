@@ -84,6 +84,27 @@ export function useVerifyOtp() {
     [mutateAsync, data, isPending, error, isError]
   );
 }
+export function useVerify2fa() {
+  const { mutateAsync, data, isPending, error, isError } = useMutation<
+    VerifyEmailResponse,
+    AxiosError,
+    OtpSchema
+  >({
+    mutationFn: (data) => authClient.verify2fa(data),
+    onSuccess: () => {},
+  });
+
+  return useMemo(
+    () => ({
+      verify2fa: mutateAsync,
+      data,
+      isOtpverifying2fa: isPending,
+      error,
+      isError,
+    }),
+    [mutateAsync, data, isPending, error, isError]
+  );
+}
 export function useVerifyChangePasswordOtp() {
   const { mutateAsync, data, isPending, error, isError } = useMutation<
     VerifyEmailResponse,

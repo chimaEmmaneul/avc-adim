@@ -35,9 +35,15 @@ export default function LoginForm() {
     try {
       const res = await login(data)
       console.log(res)
-      showsuccess("Logged in successfully")
-      Cookies.set('token', res.message.token, { expires: 24 })
-      router.push("/overview")
+      if (res.message["2fa_required"]) {
+        showsuccess(res.data)
+        router.push("/auth/verifyotp?tag=2fa")
+        return
+      } else {
+        showsuccess("Logged in successfully")
+        Cookies.set('token', res.message.token, { expires: 24 })
+        router.push("/overview")
+      }
     } catch (error: AxiosError | any) {
       console.log(error, "error")
       showerror(error.errors)

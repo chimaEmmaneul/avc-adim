@@ -2,13 +2,13 @@
 
 import { Suspense, useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import Cookies from 'js-cookie';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { OtpSchema, otpSchema } from "@/schema/authSchema";
-import { useVerifyOtp } from "../../api/mutations";
+import { useVerify2fa, useVerifyOtp } from "../../api/mutations";
 import { showerror, showsuccess } from "@/lib/toasts";
 import { AxiosError } from "axios";
 import { Loader } from "lucide-react";
@@ -21,6 +21,7 @@ const Otpform = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const email = searchParams?.get("email")
+  const tag = searchParams?.get("tag")
   const {
     handleSubmit,
     setValue,
@@ -29,12 +30,20 @@ const Otpform = () => {
     resolver: zodResolver(otpSchema),
   });
   const { verifyOtp, isOtpverifying } = useVerifyOtp()
+  const { verify2fa, isOtpverifying2fa } = useVerify2fa()
   const onSubmit = async (data: OtpSchema) => {
-
     try {
-      const response = await verifyOtp(data);
-      showsuccess(response.message)
-      router.push(`/auth/reset-password?email=${encodeURIComponent(email!)}`)
+      if (tag === "2fa") {
+        const response = await verify2fa(data);
+        const expiresAt = new Date(response.expires_at);
+        Cookies.set('token', response.token, { expires: 24 })
+        showsuccess("Logged in successfully")
+        router.push("/overview")
+      } else {
+        const response = await verifyOtp(data);
+        router.push(`/auth/reset-password?email=${encodeURIComponent(email!)}`)
+        showsuccess(response.message)
+      }
     } catch (error: AxiosError | any) {
       console.log(error)
       showerror(error.message)
@@ -72,7 +81,7 @@ const Otpform = () => {
           {errors.verification_code && <p className="text-red-500 text-sm">{errors.verification_code.message}</p>}
 
           <Button type="submit" className="w-full h-14  md:w-1/2 max-w-xs">
-            {isOtpverifying ? <Loader size={30} className="animate-spin" /> : "Continue"}
+            {isOtpverifying || isOtpverifying2fa ? <Loader size={30} className="animate-spin" /> : "Continue"}
           </Button>
         </form>
       </div>
