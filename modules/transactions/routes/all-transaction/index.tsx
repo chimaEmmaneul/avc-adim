@@ -5,13 +5,14 @@ import Search from '@/shared/Search/Search'
 import { useDebounce } from 'use-debounce'
 import { useGetAllTransactions } from '../../api/mutations'
 import TransactionTableSkeleton from '@/skeleonloaders/transaction-table'
+import Pagination from '@/shared/Pagination'
 
 const AllTransactions = () => {
 
   const [search, setSearch] = useState("")
+  const [page, setPage] = useState(1)
   const [debouncedValue] = useDebounce(search, 1000);
-  const { allTransactions, isLoading } = useGetAllTransactions({ search: debouncedValue })
-  console.log(allTransactions)
+  const { allTransactions, isLoading } = useGetAllTransactions({ search: debouncedValue, page });
 
   return (
     <div>
@@ -21,6 +22,9 @@ const AllTransactions = () => {
       </div>
 
       {isLoading ? <TransactionTableSkeleton /> : <TransactionTable data={allTransactions?.data ?? []} itemsPerPage={10} />}
+      {(allTransactions?.data?.length ?? 0) > 0 && (
+        <Pagination currentPage={page} setCurrentPage={setPage} totalPages={allTransactions?.meta.last_page as number} />
+      )}
     </div>
   )
 }

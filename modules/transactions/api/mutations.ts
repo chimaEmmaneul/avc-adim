@@ -3,18 +3,16 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import transactionManagementClient from ".";
 import {
+  Request,
   TransactionDetailsResponse,
   TransactionResponse,
 } from "../@types/transaction";
 
-export function useGetAllTransactions({ search }: { search: string }) {
+export function useGetAllTransactions(request: Request) {
   const { data, isLoading, refetch, isError, error } =
     useQuery<TransactionResponse>({
-      queryKey: ["GET_ALL_TRANSACIONS", search],
-      queryFn: ({ queryKey }) => {
-        const [, searchTerm] = queryKey as [string, string];
-        return transactionManagementClient.getAllTransactions(searchTerm);
-      },
+      queryKey: ["GET_ALL_TRANSACIONS", request.page, request.search],
+      queryFn: () => transactionManagementClient.getAllTransactions(request),
     });
 
   return useMemo(
@@ -28,15 +26,11 @@ export function useGetAllTransactions({ search }: { search: string }) {
     [data, isLoading, isError, error, refetch]
   );
 }
-export function useGetAllConfirmedTransactions({ search }: { search: string }) {
+export function useGetAllConfirmedTransactions(request: Request) {
   const { data, isLoading, refetch, isError, error } = useQuery<any>({
-    queryKey: ["GET_ALL_CONFIRMED_TRANSACTIONS", search],
-    queryFn: ({ queryKey }) => {
-      const [, searchTerm] = queryKey as [string, string];
-      return transactionManagementClient.getAllConfirmedTransactions(
-        searchTerm
-      );
-    },
+    queryKey: ["GET_ALL_CONFIRMED_TRANSACTIONS", request.page, request.search],
+    queryFn: () =>
+      transactionManagementClient.getAllConfirmedTransactions(request),
   });
 
   return useMemo(
@@ -50,13 +44,11 @@ export function useGetAllConfirmedTransactions({ search }: { search: string }) {
     [data, isLoading, isError, error, refetch]
   );
 }
-export function useGetAllPendingTransactions({ search }: { search: string }) {
+export function useGetAllPendingTransactions(request: Request) {
   const { data, isLoading, refetch, isError, error } = useQuery<any>({
-    queryKey: ["GET_ALL_PENDING_TRANSACTIONS", search],
-    queryFn: ({ queryKey }) => {
-      const [, searchTerm] = queryKey as [string, string];
-      return transactionManagementClient.getAllPendingTransactions(searchTerm);
-    },
+    queryKey: ["GET_ALL_PENDING_TRANSACTIONS", request.page, request.search],
+    queryFn: () =>
+      transactionManagementClient.getAllPendingTransactions(request),
   });
 
   return useMemo(
@@ -71,13 +63,11 @@ export function useGetAllPendingTransactions({ search }: { search: string }) {
   );
 }
 
-export function useGetAllDeclinedTransactions({ search }: { search: string }) {
+export function useGetAllDeclinedTransactions(request: Request) {
   const { data, isLoading, refetch, isError, error } = useQuery<any>({
-    queryKey: ["GET_ALL_DECLINED_TRANSACTIONS", search],
-    queryFn: ({ queryKey }) => {
-      const [, searchTerm] = queryKey as [string, string];
-      return transactionManagementClient.getAllPendingTransactions(searchTerm);
-    },
+    queryKey: ["GET_ALL_DECLINED_TRANSACTIONS", request.page, request.search],
+    queryFn: () =>
+      transactionManagementClient.getAllPendingTransactions(request),
   });
 
   return useMemo(

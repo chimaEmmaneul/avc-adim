@@ -47,10 +47,15 @@ export type TransferDetails = {
   };
 };
 
+export type Request = {
+  search: string;
+  page: number;
+};
 export type TransactionResponse = {
   success: boolean;
   message: string;
   data: Transaction[];
+  meta: PaginationMeta;
 };
 export type TransactionDetailsResponse = {
   success: boolean;
@@ -58,6 +63,12 @@ export type TransactionDetailsResponse = {
   data: Transaction;
 };
 
+export interface PaginationMeta {
+  current_page: number;
+  total: number;
+  per_page: number;
+  last_page: number;
+}
 export type Transaction = {
   id: number;
   transaction_id: string;

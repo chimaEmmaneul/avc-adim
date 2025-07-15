@@ -17,14 +17,6 @@ interface UserTableProps {
 const TransactionTable = ({ data, itemsPerPage }: UserTableProps) => {
   const router = useRouter()
   const pathname = usePathname()
-  const [currentPage, setCurrentPage] = useState(1)
-  const totalPages = Math.ceil(TRANSACTIONS.length / itemsPerPage)
-
-
-
-  const indexOfLastItem = currentPage * itemsPerPage
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem)
 
 
   return (
@@ -41,15 +33,15 @@ const TransactionTable = ({ data, itemsPerPage }: UserTableProps) => {
             </tr>
           </thead>
           <tbody>
-            {currentItems.length === 0 && (
+            {data.length === 0 && (
               <tr>
                 <td colSpan={7} className="text-center py-4">
                   <EmptyState />
                 </td>
               </tr>
             )}
-            {currentItems.map((transaction) => (
-              <tr onClick={() => router.push(`${pathname}/${transaction.id}`)} key={transaction.id} className="border-b border[#DEE2E6] text-[#6E768E] font-medium text-sm even:bg-[#DEE2E6]/30 odd:bg-white">
+            {data.map((transaction) => (
+              <tr onClick={() => router.push(`${pathname}/${transaction.id}`)} key={transaction.id} className="border-b border[#DEE2E6] text-[#6E768E] font-medium text-sm ">
                 <td className="px-4 py-4">
                   {transaction.transaction_id}
                 </td>
@@ -73,9 +65,6 @@ const TransactionTable = ({ data, itemsPerPage }: UserTableProps) => {
         </table>
       </div>
 
-      {currentItems.length > 0 && (
-      <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
-      )}
     </div>
   )
 }
