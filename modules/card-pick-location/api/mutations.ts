@@ -51,7 +51,7 @@ export function useAddNewPickupLocation() {
 export function useUpdatePickupLocation() {
   const queryClient = useQueryClient();
   const { mutateAsync, data, isPending, error, isError } = useMutation<
-    CreateLocationPayload,
+    any,
     AxiosError,
     { data: CreateLocationPayload; id: string }
   >({

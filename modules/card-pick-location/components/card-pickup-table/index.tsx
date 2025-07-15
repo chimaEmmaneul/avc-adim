@@ -9,11 +9,11 @@ const CardPickupTable = ({ locations }: { locations: LocationType[] }) => {
   const [pickupLocation, setPickupLocation] = useState<LocationType | undefined>()
 
   return (
-    <div className="overflow-x-auto ">
-      <table className="">
+    <div className="overflow-x-auto w-full ">
+      <table className="w-full">
         <thead className="bg-gray-50">
           <tr>
-            {["Location ID", "Location Name", "Country", "Service Days", "Service Hours", "Address", "Action"].map(
+            {["Location Name", "Country", "Service Days", "Service Hours", "Address", "Action"].map(
               (header) => (
                 <th
                   key={header}
@@ -28,7 +28,6 @@ const CardPickupTable = ({ locations }: { locations: LocationType[] }) => {
         <tbody className="bg-white divide-y divide-gray-200">
           {locations.map((location: LocationType, index) => (
             <tr key={`${location.id}-${index}`} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{location.id}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{location.name}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{location.country}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{location.service_days}</td>

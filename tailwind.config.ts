@@ -9,7 +9,18 @@ const config: Config = {
     "./modules/**/*.{js,ts,jsx,tsx,mdx}",
     "./node_modules/rizzui/dist/*.{js,ts,jsx,tsx}",
   ],
-  safelist: ["bg-main"],
+  safelist: [
+    "bg-main",
+    "focus:outline-none",
+    "focus:ring-0",
+    "w-48",
+    "h-48",
+    "bg-gray-300",
+    "bg-gray-200",
+    "bg-yellow-200",
+    "w-32",
+    "w-24",
+  ],
 
   theme: {
     extend: {

@@ -25,6 +25,7 @@ const Otpform = () => {
   const {
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(otpSchema),
@@ -38,6 +39,7 @@ const Otpform = () => {
         const expiresAt = new Date(response.expires_at);
         Cookies.set('token', response.token, { expires: 24 })
         showsuccess("Logged in successfully")
+        reset()
         router.push("/overview")
       } else {
         const response = await verifyOtp(data);

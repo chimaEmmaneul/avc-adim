@@ -7,6 +7,7 @@ import Pagination from "@/shared/Pagination"
 import { StatusBadge } from "@/shared/statusbadge"
 import { usePathname, useRouter } from "next/navigation"
 import { User } from "../../@types"
+import EmptyState from "@/components/common/emptystate"
 
 interface UserTableProps {
   data: User[]
@@ -39,6 +40,14 @@ const UserTable = ({ data, itemsPerPage }: UserTableProps) => {
             </tr>
           </thead>
           <tbody>
+
+            {currentItems.length === 0 && (
+              <tr>
+                <td colSpan={7} className="text-center py-4">
+                  <EmptyState />
+                </td>
+              </tr>
+            )}
             {currentItems.map((user) => (
               <tr key={user.id} className="border-b border[#DEE2E6] text-[#6E768E] font-medium text-sm">
                 <td>
@@ -66,7 +75,9 @@ const UserTable = ({ data, itemsPerPage }: UserTableProps) => {
         </table>
       </div>
 
+      {currentItems.length > 0 && (
       <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
+      )}
 
     </div>
   )

@@ -4,14 +4,31 @@ import Link from "next/link"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
-import { usePathname } from "next/navigation"
+import { redirect, usePathname } from "next/navigation"
 import { NAV_ITEMS } from "@/constant/navitems"
 import { LogOutIcon } from "lucide-react"
+import { useLogOut } from "@/modules/authentication/api/mutations"
+import { showerror, showsuccess } from "@/lib/toasts"
+import Cookies from "js-cookie"
+import { useRouter } from "next-nprogress-bar"
 
 
 
 export default function Sidebar() {
   const pathname = usePathname()
+  const router = useRouter()
+  const { logout, isLoggingOut } = useLogOut()
+
+  const handleLogOut = async () => {
+    try {
+      const res = await logout()
+      Cookies.remove("token")
+      showsuccess("Logged out successfully")
+      router.push("/auth/login")
+    } catch (error) {
+      showerror("something went wrong")
+    }
+  }
 
   return (
     <div className="h-screen sticky top-0 left-0 hidden   w-[340px] bg-black lg:flex flex-col overflow-y-auto">
@@ -84,7 +101,7 @@ export default function Sidebar() {
         </ul>
       </div>
       <div className=" text-center py-4 mx-4 px-4">
-        <button className="flex items-center justify-center text-white">
+        <button onClick={handleLogOut} className="flex items-center justify-center text-white gap-2">
           <LogOutIcon />
           Log Out
         </button>

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,6 +17,7 @@ import { useAddNewPickupLocation, useUpdatePickupLocation } from "../../api/muta
 import { showerror, showsuccess } from "@/lib/toasts"
 import { AxiosError } from "axios"
 import { LocationType } from "../../@types"
+import { SearchableDropdown } from "@/shared/searchabledropdown"
 
 type LocationFormData = {
   name: string
@@ -43,6 +44,8 @@ export default function AddNewLocationForm({ isOpen, onClose, pickupLocation }: 
     register,
     handleSubmit,
     reset,
+    setValue,
+    control,
     watch,
     formState: { errors },
   } = useForm<LocationFormData>({
@@ -56,7 +59,6 @@ export default function AddNewLocationForm({ isOpen, onClose, pickupLocation }: 
       closingDay: ""
     },
   })
-
 
 
   useEffect(() => {
@@ -77,6 +79,9 @@ export default function AddNewLocationForm({ isOpen, onClose, pickupLocation }: 
   }, [pickupLocation])
 
 
+
+
+
   const onSubmit = async (data: LocationFormData) => {
 
     try {
@@ -92,6 +97,8 @@ export default function AddNewLocationForm({ isOpen, onClose, pickupLocation }: 
             service_hour: `${data.openingHour}-${data.closingHour}`,
           },
         })
+        showsuccess(res.message)
+        onClose()
       } else {
         const res = await addNewPickupLocation({
           name: data.name,
@@ -165,33 +172,32 @@ export default function AddNewLocationForm({ isOpen, onClose, pickupLocation }: 
             <label htmlFor="country" className="block font-medium">
               Country
             </label>
-            <select
-              id="country"
-              defaultValue={pickupLocation?.country}
-              className="w-full rounded border border-gray-300 px-3 py-2 focus:border-amber-500 focus:outline-none"
-              {...register("country", { required: "Country is required" })}
-            >
-              <option value="">Select one...</option>
-              {countries?.map((country) => (
-                <option key={country.id} value={country.id}>
-                  {country.name}
-                </option>
-              ))}
-            </select>
-            {errors.country && <p className="text-sm text-red-500">{errors.country.message}</p>}
+            <Controller
+              control={control}
+              name="country"
+              rules={{ required: "Country is required" }}
+              render={({ field }) => (
+                <div>
+                  <SearchableDropdown
+                    options={countries}
+                    placeholder="Select country name"
+                    onChange={(input) => {
+                      setValue("country", input, { shouldTouch: true })
+                    }}
+                    defaultOption={pickupLocation?.country as string}
+                  />
+                  {errors.country && <p className="text-sm text-red-500">{errors.country.message}</p>}
+                </div>
+              )}
+            />
           </div>
 
           <div className="space-y-2">
             <label className="block font-medium">Service Hours</label>
             <div className="flex space-x-2">
               <div className="flex-1">
-                <div className="flex">
-                  <select
-                    className="w-24 rounded-l border border-gray-300 px-3 py-2 focus:border-amber-500 focus:outline-none"
-                    defaultValue="Open"
-                  >
-                    <option>Open</option>
-                  </select>
+                <div className="flex items-center space-x-2">
+                  <label>Open</label>
                   <input
                     type="text"
                     className="flex-1 rounded-r border border-gray-300 px-3 py-2 focus:border-amber-500 focus:outline-none"
@@ -203,13 +209,8 @@ export default function AddNewLocationForm({ isOpen, onClose, pickupLocation }: 
             </div>
             <div className="flex space-x-2">
               <div className="flex-1">
-                <div className="flex">
-                  <select
-                    className="w-24 rounded-l border border-gray-300 px-3 py-2 focus:border-amber-500 focus:outline-none"
-                    defaultValue="Close"
-                  >
-                    <option>Close</option>
-                  </select>
+                <div className="flex items-center space-x-2">
+                  <label>Close</label>
                   <input
                     type="text"
                     className="flex-1 rounded-r border border-gray-300 px-3 py-2 focus:border-amber-500 focus:outline-none"

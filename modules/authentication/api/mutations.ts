@@ -41,6 +41,26 @@ export function useLogin() {
     [mutateAsync, data, isPending, error, isError]
   );
 }
+export function useLogOut() {
+  const { mutateAsync, data, isPending, error, isError } = useMutation<
+    LoginResponse,
+    AxiosError
+  >({
+    mutationFn: () => authClient.logout(),
+    onSuccess: () => {},
+  });
+
+  return useMemo(
+    () => ({
+      logout: mutateAsync,
+      data,
+      isLoggingOut: isPending,
+      error,
+      isError,
+    }),
+    [mutateAsync, data, isPending, error, isError]
+  );
+}
 
 export function useForgotPassword() {
   const { mutateAsync, data, isPending, error, isError } = useMutation<

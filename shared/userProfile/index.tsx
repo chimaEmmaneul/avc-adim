@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Image from "next/image"
 import { userFormSchema, UserFormValues } from "@/schema/authSchema"
@@ -9,23 +9,26 @@ import { useRouter } from "next/navigation"
 import { showerror, showsuccess } from "@/lib/toasts"
 import { formatDate, formatDateTime } from "@/lib/utils"
 import { useGetAllCountries, useGetUser, useUpdateUsers } from "@/modules/authentication/api/mutations"
+import { SearchableDropdown } from "../searchabledropdown"
+import { useProfileStore } from "@/zustand/useProfileStore"
+import ProfileLoadingSkeleton from "@/skeleonloaders/profiledetailsSkeleton"
 
 
 
 export default function UserProfile({ params }: { params: { id: string } }) {
   const router = useRouter()
   const { isLoading, userProfile } = useGetUser(params.id)
-  const { countries } = useGetAllCountries()
+  const { countries } = useProfileStore()
   const [emailVerification, setEmailVerification] = useState(false)
   const [twoFAVerification, setTwoFAVerification] = useState(false)
   const [kycVerification, setKYCVerification] = useState(false)
-  console.log(twoFAVerification, "towfact", kycVerification, "kyc", emailVerification, "email")
   const { updateUser, isUpdatingUser } = useUpdateUsers()
   const {
     register,
     handleSubmit,
     reset,
     setValue,
+    control,
     watch,
     formState: { errors, isSubmitting },
   } = useForm<UserFormValues>({
@@ -57,29 +60,27 @@ export default function UserProfile({ params }: { params: { id: string } }) {
         address: userProfile?.data?.address,
 
       })
-      setEmailVerification(userProfile.data.email_verification === 1);
-      setKYCVerification(userProfile.data.kyc_verification === 1)
-      setTwoFAVerification(userProfile.data.two_factor_enabled === 1)
+      setEmailVerification(userProfile.data.email_verification);
+      setKYCVerification(userProfile.data.kyc_verification)
+      setTwoFAVerification(userProfile.data.two_factor_enabled)
     }
   }, [userProfile])
 
 
-  useEffect(() => {
-    if (countries?.data && userProfile?.data?.country) {
-      const matchedCountry = countries.data.find(
-        (c) => c.name === userProfile.data.country
-      );
+  // useEffect(() => {
+  //   if (countries?.data && userProfile?.data?.country) {
+  //     const matchedCountry = countries.data.find(
+  //       (c) => c.name === userProfile.data.country
+  //     );
 
-      if (matchedCountry) {
-        setValue("country_id", String(matchedCountry.id));
-      }
-    }
-  }, [countries?.data, userProfile?.data?.country]);
-
+  //     if (matchedCountry) {
+  //       setValue("country_id", String(matchedCountry.id));
+  //     }
+  //   }
+  // }, [countries?.data, userProfile?.data?.country]);
   if (isLoading) {
-    return <div>Loading...</div>
+    return <ProfileLoadingSkeleton />
   }
-  console.log(userProfile?.data?.status, "status")
 
 
   const onSubmit = async (data: UserFormValues) => {
@@ -111,13 +112,13 @@ export default function UserProfile({ params }: { params: { id: string } }) {
 
   return (
     <div className=" w-full">
-      <div className="flex justify-end">
+      <div className="flex justify-start">
         <button onClick={() => router.back()} className="bg-main text-white px-4 py-2 rounded-md font-medium">Go Back</button>
       </div>
 
       <div className="relative h-fit  w-full grid  place-items-center ">
         <div className="flex flex-col xl:flex-row items-center">
-          <div className="flex order-2 xl:order-1 flex-col space-y-4  xl:-mr-7">
+          <div className="hidden lg:flex order-2 xl:order-1 flex-col space-y-4  xl:-mr-7">
             <div className="w-full xl:-ml-0 ">
               <InfoBar icon="👤" label="Full Name" value={`${userProfile?.data.first_name} ${userProfile?.data.last_name}`} />
             </div>
@@ -140,7 +141,7 @@ export default function UserProfile({ params }: { params: { id: string } }) {
             />
           </div>
 
-          <div className="flex flex-col order-3 space-y-4 my-4 xl:my-0 xl:-ml-9">
+          <div className=" hidden lg:flex flex-col order-3 space-y-4 my-4 xl:my-0 xl:-ml-9">
             <div className="w-full xl:ml-4">
               <InfoBar label="Email" value={userProfile?.data.email || "N/A"} alignRight />
             </div>
@@ -189,20 +190,29 @@ export default function UserProfile({ params }: { params: { id: string } }) {
             {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
-            <select
-              {...register("country_id")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Select Country</option>
-              {countries?.data?.map((country) => (
-                <option key={country.id} value={country.id}>
-                  {country.name}
-                </option>
-              ))}
-            </select>
-            {errors.country_id && <p className="mt-1 text-sm text-red-600">{errors.country_id.message}</p>}
+
+          <div className="space-y-2">
+            <label htmlFor="country" className="block font-medium">
+              Country
+            </label>
+            <Controller
+              control={control}
+              name="country_id"
+              rules={{ required: "Country is required" }}
+              render={({ field }) => (
+                <div>
+                  <SearchableDropdown
+                    options={countries}
+                    placeholder="Select country name"
+                    onChange={(input) => {
+                      setValue("country_id", input, { shouldTouch: true })
+                    }}
+                    defaultOption={userProfile?.data.country as string}
+                  />
+                  {errors.country_id && <p className="text-sm text-red-500">{errors.country_id.message}</p>}
+                </div>
+              )}
+            />
           </div>
 
           <div>

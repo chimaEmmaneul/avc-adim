@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { redirect, usePathname } from "next/navigation"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import Image from "next/image"
 
@@ -15,6 +15,9 @@ import {
 import { cn } from "@/lib/utils"
 import { NAV_ITEMS } from "@/constant/navitems"
 import { LogOutIcon } from "lucide-react"
+import { useLogOut } from "@/modules/authentication/api/mutations"
+import Cookies from "js-cookie"
+import { showerror, showsuccess } from "@/lib/toasts"
 
 type MobileSidebarProps = {
   open: boolean;
@@ -23,6 +26,19 @@ type MobileSidebarProps = {
 
 export default function MobileSidebar({ open, setIsOpen }: MobileSidebarProps) {
   const pathname = usePathname()
+
+  const { logout } = useLogOut()
+
+  const handleLogOut = async () => {
+    try {
+      const res = await logout()
+      Cookies.remove("token")
+      showsuccess("Logged out successfully")
+      redirect("/auth/login")
+    } catch (error) {
+      showerror("something went wrong")
+    }
+  }
 
   return (
 
@@ -100,7 +116,7 @@ export default function MobileSidebar({ open, setIsOpen }: MobileSidebarProps) {
             </ul>
           </div>
           <div className=" text-center  mx-4 px-4">
-            <button className="flex items-center justify-center gap-2 text-white">
+            <button onClick={handleLogOut} className="flex items-center justify-center gap-2 text-white">
               <LogOutIcon />
               Log Out
             </button>

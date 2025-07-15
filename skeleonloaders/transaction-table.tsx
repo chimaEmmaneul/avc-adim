@@ -1,6 +1,6 @@
 export function TransactionTableSkeleton() {
   // Create an array of 5 items to render 5 skeleton rows
-  const skeletonRows = Array(5).fill(null)
+  const skeletonRows = Array(9).fill(null)
 
   return (
     <div className="w-full mt-4">

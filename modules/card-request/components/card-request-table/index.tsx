@@ -5,6 +5,7 @@ import { formatDate } from '@/lib/utils'
 import CardRequestActions from '../card-request-actions'
 import { RequestItem } from '../../@types'
 import Pagination from '@/shared/Pagination'
+import EmptyState from '@/components/common/emptystate'
 
 const CardRequestTable = ({ requests, refetch, itemsPerPage }: { requests: RequestItem[], refetch?: () => void, itemsPerPage: number }) => {
   const [requestData, setRequestData] = useState<RequestItem>();
@@ -18,18 +19,24 @@ const CardRequestTable = ({ requests, refetch, itemsPerPage }: { requests: Reque
     <>
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
-          <thead>
+          <thead className='border-b'>
             <tr className="text-center text-gray-500 text-sm uppercase">
-              {["Request ID", "User", "Country", "Pickup Location", "Request Date", "Status", "Action"].map((header) => (
+              {["User", "Country", "Pickup Location", "Request Date", "Status", "Action"].map((header) => (
                 <th key={header} className="py-4 px-6 font-medium whitespace-nowrap">{header}</th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {currentItems &&
-              currentItems.map((request, index) => (
+            {currentItems.length === 0 && (
+              <tr>
+                <td colSpan={7} className="text-center py-4">
+                  <EmptyState />
+                </td>
+              </tr>
+            )}
+            {currentItems.map((request, index) => (
                 <tr key={`${request.id}-${index}`} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                  <td className="py-4 px-6 text-center text-gray-700 whitespace-nowrap border-b-[2px] border-[#DEE2E6]">{request.id}</td>
+                {/* <td className="py-4 px-6 text-center text-gray-700 whitespace-nowrap border-b-[2px] border-[#DEE2E6]">{request.id}</td> */}
                   <td className="py-4 px-6 text-center whitespace-nowrap border-b-[2px] border-[#DEE2E6]">
                     <div className="text-gray-700 text-left whitespace-nowrap">{`${request.user.name}`}</div>
                     <div className="text-gray-400 text-left text-sm whitespace-nowrap ">{request.user.email}</div>
@@ -52,7 +59,9 @@ const CardRequestTable = ({ requests, refetch, itemsPerPage }: { requests: Reque
           </tbody>
         </table>
       </div>
+      {currentItems.length > 0 && 
       <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
+      }
       <CardRequestActions requestData={requestData as RequestItem} isOpen={isOpen} setIsOpen={setIsOpen} refetch={refetch} />
     </>
   )

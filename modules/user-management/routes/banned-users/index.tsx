@@ -18,7 +18,7 @@ const BannedUsers = () => {
         <h1 className='text-black font-semibold'>Blocked Users</h1>
         <Search searchTerm={search} setSearchTerm={setSearch} />
       </div>
-      {isLoading ? <UserTableSkeleton /> : <UserTable data={bannedUsers?.data.users.data ?? []} itemsPerPage={6} />}
+      {isLoading ? <UserTableSkeleton /> : <UserTable data={bannedUsers?.data.users.data ?? []} itemsPerPage={10} />}
     </div>
   )
 }

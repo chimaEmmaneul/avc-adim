@@ -61,10 +61,10 @@ export type UserData = {
   state: string;
   address: string;
   zip_code: string;
-  kyc_verification: number;
-  two_factor_enabled: number;
+  kyc_verification: boolean;
+  two_factor_enabled: boolean;
   profile_photo?: string;
-  email_verification: number;
+  email_verification: boolean;
   last_login?: string | null;
   created_at?: string;
 };
@@ -112,8 +112,9 @@ export type LoginResponse = {
   success: true;
   message: {
     id: number;
-    token:string;
+    token: string;
     "2fa_required": true;
   };
   data: string;
+  token: string;
 };

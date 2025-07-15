@@ -6,6 +6,7 @@ import { TRANSACTIONS } from "../../constants/transactions"
 import { Transaction } from "../../@types/transaction"
 import { usePathname, useRouter } from "next/navigation"
 import Pagination from "@/shared/Pagination"
+import EmptyState from "@/components/common/emptystate"
 
 interface UserTableProps {
   data: Transaction[]
@@ -40,6 +41,13 @@ const TransactionTable = ({ data, itemsPerPage }: UserTableProps) => {
             </tr>
           </thead>
           <tbody>
+            {currentItems.length === 0 && (
+              <tr>
+                <td colSpan={7} className="text-center py-4">
+                  <EmptyState />
+                </td>
+              </tr>
+            )}
             {currentItems.map((transaction) => (
               <tr onClick={() => router.push(`${pathname}/${transaction.id}`)} key={transaction.id} className="border-b border[#DEE2E6] text-[#6E768E] font-medium text-sm even:bg-[#DEE2E6]/30 odd:bg-white">
                 <td className="px-4 py-4">
@@ -65,9 +73,9 @@ const TransactionTable = ({ data, itemsPerPage }: UserTableProps) => {
         </table>
       </div>
 
-      {/* Pagination */}
-
+      {currentItems.length > 0 && (
       <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
+      )}
     </div>
   )
 }

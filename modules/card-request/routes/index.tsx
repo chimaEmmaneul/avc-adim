@@ -21,7 +21,7 @@ export const CardRequest = () => {
 
 
   return (
-    <>
+    <div className="">
       <TableFilters
         country={country}
         setCountry={setCountry}
@@ -35,6 +35,6 @@ export const CardRequest = () => {
       {isLoading ?
         <RequestTableSkeleton /> :
         <CardRequestTable requests={allRequest?.data ?? []} refetch={allRequestRefetch} itemsPerPage={10} />}
-    </>
+    </div>
   )
 }

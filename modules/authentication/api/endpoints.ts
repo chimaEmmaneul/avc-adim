@@ -16,4 +16,5 @@ export const AUTHENDPOINTS = {
   UPDATE_PASSWORD: "/admin/update-password",
   GET_CODE: "admin/get-code",
   VERIFY_OTP_CODE: "admin/verify-code",
+  LOGOUT: "/admin/logout",
 };

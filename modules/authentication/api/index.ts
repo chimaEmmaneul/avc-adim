@@ -44,6 +44,7 @@ const authClient = {
   getCode: (): Promise<any> => ApiClient.get(AUTHENDPOINTS.GET_CODE),
   updataPassword: (data: { password: string }): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.UPDATE_PASSWORD, data),
+  logout: (): Promise<any> => ApiClient.post(AUTHENDPOINTS.LOGOUT, {}),
 };
 
 export default authClient;

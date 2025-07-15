@@ -4,13 +4,13 @@ import { create } from "zustand";
 interface ProfileState {
   profile: Profile | null;
   setProfile: (profile: Profile) => void;
-  countries: Country[] | null;
+  countries: Country[];
   setCountries: (countries: Country[]) => void;
 }
 
 export const useProfileStore = create<ProfileState>((set) => ({
   profile: null,
   setProfile: (profile) => set({ profile }),
-  countries: null,
+  countries: [],
   setCountries: (countries) => set({ countries }),
 }));

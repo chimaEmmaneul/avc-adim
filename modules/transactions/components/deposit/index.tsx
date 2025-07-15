@@ -1,16 +1,23 @@
+"use client"
 import { Button } from '@/components/ui/button'
 import { WithdrawalIcon } from '@/icon/icon'
 import { Copy, Download } from 'lucide-react'
 import React from 'react'
 import { Transaction } from '../../@types/transaction'
+import { useRouter } from 'next-nprogress-bar'
 
 type DepositeTypes = {
   depositeInfo: Transaction | undefined
 }
 
 const Deposite = ({ depositeInfo }: DepositeTypes) => {
+  const router = useRouter()
   return (
     <div>
+      <div className="flex justify-start">
+        <button onClick={() => router.back()} className="bg-main text-white px-4 py-2 rounded-md font-medium">Go Back</button>
+      </div>
+
       <div className="mt-10 border border-[#EEEEEE] rounded-sm p-4">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 mt-2">
           <div className="flex items-center gap-2 mb-4 border-b pb-2">
