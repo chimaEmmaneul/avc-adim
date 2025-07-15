@@ -5,13 +5,13 @@ import TransactionTableSkeleton from '@/skeleonloaders/transaction-table'
 import TransactionTable from '../../components/transaction-table'
 import { useDebounce } from 'use-debounce'
 import { useGetAllConfirmedTransactions } from '../../api/mutations'
+import Pagination from '@/shared/Pagination'
 
 const ConfirmedTransaction = () => {
-
+  const [page, setPage] = useState(1)
   const [search, setSearch] = useState("")
   const [debouncedValue] = useDebounce(search, 1000);
-  const { confirmedTransactions, isLoading } = useGetAllConfirmedTransactions({ search: debouncedValue })
-  console.log(confirmedTransactions) 
+  const { confirmedTransactions, isLoading } = useGetAllConfirmedTransactions({ search: debouncedValue, page })
   return (
     <div>
       <div className='flex items-center justify-between'>
@@ -20,6 +20,9 @@ const ConfirmedTransaction = () => {
       </div>
 
       {isLoading ? <TransactionTableSkeleton /> : <TransactionTable data={confirmedTransactions?.data ?? []} itemsPerPage={10} />}
+      {(confirmedTransactions?.data?.length ?? 0) > 0 && (
+        <Pagination currentPage={page} setCurrentPage={setPage} totalPages={confirmedTransactions?.meta.last_page as number} />
+      )}
     </div>
   )
 }
