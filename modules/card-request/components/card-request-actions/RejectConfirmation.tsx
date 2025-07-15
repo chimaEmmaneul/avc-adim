@@ -59,7 +59,7 @@ const RejectConfirmation = ({ requestData, setStep, setIsOpen }: RejectConfirmat
       <h2 className="text-xl font-medium mb-2">Confirm Rejection</h2>
 
       <p className="mb-6 text-gray-700">
-        Are you sure you want to reject card pick-up <strong>{requestData.id}</strong>?
+        Are you sure you want to reject card pick-up of <strong>{requestData.user.name}</strong>?
       </p>
 
       <form onSubmit={handleSubmit(onSubmit)}>

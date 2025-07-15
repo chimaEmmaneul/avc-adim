@@ -5,13 +5,10 @@ import { useMemo } from "react";
 import { AxiosError } from "axios";
 import { UsersResponse } from "../@types";
 
-export function useGetAllUsers({ search }: { search: string }) {
+export function useGetAllUsers(request: { search: string; page: number }) {
   const { data, isLoading, refetch, isError, error } = useQuery<UsersResponse>({
-    queryKey: ["GET_ALL_USERS", search],
-    queryFn: ({ queryKey }) => {
-      const [, searchTerm] = queryKey as [string, string];
-      return userManagementClient.getAllUsers(searchTerm);
-    },
+    queryKey: ["GET_ALL_USERS", request.search, request.page],
+    queryFn: () => userManagementClient.getAllUsers(request),
   });
 
   return useMemo(
@@ -25,13 +22,13 @@ export function useGetAllUsers({ search }: { search: string }) {
     [data, isLoading, isError, error, refetch]
   );
 }
-export function useGetAllActiveUsers({ search }: { search: string }) {
+export function useGetAllActiveUsers(request: {
+  search: string;
+  page: number;
+}) {
   const { data, isLoading, refetch, isError, error } = useQuery<UsersResponse>({
-    queryKey: ["GET_ALL_ACTIVE_USERS", search],
-    queryFn: ({ queryKey }) => {
-      const [, searchTerm] = queryKey as [string, string];
-      return userManagementClient.getAllActiveUsers(searchTerm);
-    },
+    queryKey: ["GET_ALL_ACTIVE_USERS", request.page, request.search],
+    queryFn: () => userManagementClient.getAllActiveUsers(request),
   });
 
   return useMemo(
@@ -45,13 +42,13 @@ export function useGetAllActiveUsers({ search }: { search: string }) {
     [data, isLoading, isError, error, refetch]
   );
 }
-export function useGetAllBannedUsers({ search }: { search: string }) {
+export function useGetAllBannedUsers(request: {
+  search: string;
+  page: number;
+}) {
   const { data, isLoading, refetch, isError, error } = useQuery<UsersResponse>({
-    queryKey: ["GET_ALL_BANNED_USERS", search],
-    queryFn: ({ queryKey }) => {
-      const [, searchTerm] = queryKey as [string, string];
-      return userManagementClient.getAllBannedUsers(searchTerm);
-    },
+    queryKey: ["GET_ALL_BANNED_USERS", request.page, request.search],
+    queryFn: () => userManagementClient.getAllBannedUsers(request),
   });
 
   return useMemo(
@@ -65,13 +62,13 @@ export function useGetAllBannedUsers({ search }: { search: string }) {
     [data, isLoading, isError, error, refetch]
   );
 }
-export function useGetAllPendingUser({ search }: { search: string }) {
+export function useGetAllPendingUser(request: {
+  search: string;
+  page: number;
+}) {
   const { data, isLoading, refetch, isError, error } = useQuery<UsersResponse>({
-    queryKey: ["GET_ALL_PENDING_USERS", search],
-    queryFn: ({ queryKey }) => {
-      const [, searchTerm] = queryKey as [string, string];
-      return userManagementClient.getAllUnverifiedUsers(searchTerm);
-    },
+    queryKey: ["GET_ALL_PENDING_USERS", request.page, request.search],
+    queryFn: () => userManagementClient.getAllUnverifiedUsers(request),
   });
 
   return useMemo(

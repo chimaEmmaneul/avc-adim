@@ -1,9 +1,7 @@
 "use client"
 
-import { useState } from "react"
 import { UserIcon } from "lucide-react"
 import { ActionIcon } from "@/icon/icon"
-import Pagination from "@/shared/Pagination"
 import { StatusBadge } from "@/shared/statusbadge"
 import { usePathname, useRouter } from "next/navigation"
 import { User } from "../../@types"
@@ -15,15 +13,9 @@ interface UserTableProps {
   onDelete?: (userId: number) => void
 }
 
-const UserTable = ({ data, itemsPerPage }: UserTableProps) => {
-  const [currentPage, setCurrentPage] = useState(1)
-  const totalPages = Math.ceil(data.length / itemsPerPage)
+const UserTable = ({ data }: UserTableProps) => {
   const router = useRouter()
   const pathname = usePathname()
-
-  const indexOfLastItem = currentPage * itemsPerPage
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem)
 
 
   return (
@@ -41,14 +33,14 @@ const UserTable = ({ data, itemsPerPage }: UserTableProps) => {
           </thead>
           <tbody>
 
-            {currentItems.length === 0 && (
+            {data.length === 0 && (
               <tr>
                 <td colSpan={7} className="text-center py-4">
                   <EmptyState />
                 </td>
               </tr>
             )}
-            {currentItems.map((user) => (
+            {data.map((user) => (
               <tr key={user.id} className="border-b border[#DEE2E6] text-[#6E768E] font-medium text-sm">
                 <td>
                   <div className="w-10 h-10 rounded-[50%] bg-gray-200  flex items-center justify-center">
@@ -74,11 +66,6 @@ const UserTable = ({ data, itemsPerPage }: UserTableProps) => {
           </tbody>
         </table>
       </div>
-
-      {currentItems.length > 0 && (
-      <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
-      )}
-
     </div>
   )
 }

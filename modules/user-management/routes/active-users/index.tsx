@@ -6,11 +6,13 @@ import { useGetAllActiveUsers } from '../../api/mutations'
 import { useDebounce } from 'use-debounce';
 import UserTableSkeleton from '@/skeleonloaders/usertable'
 import UserTable from '../../components/users-table';
+import Pagination from '@/shared/Pagination';
 
 const ActiveUsers = () => {
   const [search, setSearch] = useState("")
+  const [page, setPage] = useState(1)
   const [debouncedValue] = useDebounce(search, 1000);
-  const { activeUsers, isLoading } = useGetAllActiveUsers({ search: debouncedValue });
+  const { activeUsers, isLoading } = useGetAllActiveUsers({ search: debouncedValue, page });
 
   return (
     <div>
@@ -19,7 +21,9 @@ const ActiveUsers = () => {
         <Search searchTerm={search} setSearchTerm={setSearch} />
       </div>
       {isLoading ? <UserTableSkeleton /> : <UserTable data={activeUsers?.data.users.data ?? []} itemsPerPage={10} />}
-
+      {(activeUsers?.data?.users?.data?.length ?? 0) > 0 && (
+        <Pagination currentPage={page} setCurrentPage={setPage} totalPages={activeUsers?.data.users.meta.last_page as number} />
+      )}
     </div>
   )
 }

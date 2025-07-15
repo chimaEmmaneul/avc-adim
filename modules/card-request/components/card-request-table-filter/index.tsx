@@ -2,6 +2,7 @@ import { useGetAllCountries } from '@/modules/authentication/api/mutations';
 import { SearchableDropdown } from '@/shared/searchabledropdown';
 import { useProfileStore } from '@/zustand/useProfileStore';
 import React from 'react'
+import { date } from 'zod';
 
 type TableFiltersProps = {
   country: string;
@@ -15,6 +16,8 @@ type TableFiltersProps = {
 }
 const TableFilters = ({ country, setCountry, status, setStatus, fromDate, setFromDate, toDate, setToDate }: TableFiltersProps) => {
   const { countries } = useProfileStore()
+  const date = new Date()
+  console.log(date.toISOString())
   return (
     <div className="w-full  flex items-center justify-center lg:justify-between  gap-4">
       <div className="mb-4">
@@ -58,6 +61,7 @@ const TableFilters = ({ country, setCountry, status, setStatus, fromDate, setFro
             type="date"
             className="bg-white border border-gray-300 rounded-md py-2 px-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             value={fromDate}
+            defaultValue={"01-01-2025"}
             onChange={(e) => setFromDate(e.target.value)}
             placeholder="dd/mm/yyyy"
           />
@@ -68,7 +72,8 @@ const TableFilters = ({ country, setCountry, status, setStatus, fromDate, setFro
             type="date"
             className="bg-white border border-gray-300 rounded-md py-2 px-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             value={toDate}
-            onChange={(e) => setToDate(e.target.value)}
+            defaultValue={date.toISOString().split("T")[0]}
+            onChange={(e) => setToDate(e.target.value ?? date.toISOString())}
             placeholder="dd/mm/yyyy"
           />
         </div>

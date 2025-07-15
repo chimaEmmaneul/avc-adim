@@ -35,7 +35,7 @@ const AcceptConfirmation = ({ requestData, setStep, setIsOpen }: AcceptConfirmat
 
         <div className="space-y-4 mb-8">
           <p className="text-gray-700">
-            Are you sure you want to approve card pick-up <span className="font-semibold">{requestData.id}</span>?
+            Are you sure you want to approve card pick-up of <span className="font-semibold">{requestData.user.name}</span>?
           </p>
           <p className="text-gray-700">
             This will notify the user that their card is ready for pick-up at the selected location
