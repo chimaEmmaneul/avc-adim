@@ -1,11 +1,8 @@
 "use client"
 
-import { useState } from "react"
 import { ActionIcon } from "@/icon/icon"
-import { TRANSACTIONS } from "../../constants/transactions"
 import { Transaction } from "../../@types/transaction"
 import { usePathname, useRouter } from "next/navigation"
-import Pagination from "@/shared/Pagination"
 import EmptyState from "@/components/common/emptystate"
 
 interface UserTableProps {
@@ -46,12 +43,12 @@ const TransactionTable = ({ data, itemsPerPage }: UserTableProps) => {
                   {transaction.transaction_id}
                 </td>
                 <td className="py-4 px-2  text-center ">
-                  {transaction.user.name}
+                  {transaction.user.name ?? "N/A"}
                 </td>
-                <td className="py-4 px-4 text-center ">{transaction.type}</td>
-                <td className="py-4 px-4 text-center ">{transaction.currency_code}</td>
-                <td className="py-4 px-4 text-center ">{transaction.sending_amount}</td>
-                <td className="py-4 px-4 text-center ">{transaction.status}</td>
+                <td className="py-4 px-4 text-center ">{transaction.type ?? "N/A"}</td>
+                <td className="py-4 px-4 text-center ">{transaction.currency_code ?? "N/A"}</td>
+                <td className="py-4 px-4 text-center ">{transaction.sending_amount ?? "N/A"}</td>
+                <td className="py-4 px-4 text-center ">{transaction.status ?? "N/A"}</td>
                 <td className="py-4 px-4 text-center ">
                   <button
                     className="w-8 h-8 bg-main rounded-[4px] flex items-center justify-center text-white  "

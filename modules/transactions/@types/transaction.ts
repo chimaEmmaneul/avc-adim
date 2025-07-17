@@ -1,11 +1,3 @@
-// export type Transaction = {
-//   id: string;
-//   username: string;
-//   transactionType: string;
-//   amount: string;
-//   paymentMethod: string;
-//   status: string;
-// };
 
 export type SenderInfo = {
   sendingAmount: string;

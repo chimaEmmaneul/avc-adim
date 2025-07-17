@@ -29,7 +29,7 @@ export function SearchableDropdown({
 }: SearchableDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedOption, setSelectedOption] = useState<string | null>(defaultOption);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const [openDirection, setOpenDirection] = useState<'up' | 'down'>('down');
 
@@ -51,16 +51,16 @@ export function SearchableDropdown({
     };
   }, []);
 
-  console.log(isOpen, "isopen")
   useEffect(() => {
-    if (defaultOption) {
-      const optionselect = options.map((option) => {
-        if (option.name === defaultOption) {
-          onChange?.(String(option.id))
-        }
-      })
+    if (defaultOption && options.length > 0) {
+      const match = options.find(option => option.name === defaultOption);
+      if (match) {
+        setSelectedOption(match.name);
+        onChange?.(String(match.id));
+      }
     }
-  }, [])
+  }, [defaultOption, options]);
+
 
   const handleToggleDropdown = () => {
     if (!isOpen && dropdownRef.current) {

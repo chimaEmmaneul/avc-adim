@@ -205,6 +205,7 @@ export default function UserProfile({ params }: { params: { id: string } }) {
                     options={countries}
                     placeholder="Select country name"
                     onChange={(input) => {
+                      console.log(input, 'onChange')
                       setValue("country_id", input, { shouldTouch: true })
                     }}
                     defaultOption={userProfile?.data.country as string}

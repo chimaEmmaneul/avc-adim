@@ -49,7 +49,6 @@ export function formatDate(dateString: string): string {
 }
 
 export function formatDateTime(dateTimeStr: string): string {
-  console.log(dateTimeStr, "dat");
   const date = new Date(dateTimeStr.replace(" ", "T")); // Convert to ISO format
 
   const options: Intl.DateTimeFormatOptions = {

@@ -1,11 +1,16 @@
+"use client"
 import { Pen, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
+import { Country } from '../../@types'
+import EmptyState from '@/components/common/emptystate'
+import { useRouter } from 'next-nprogress-bar'
 
 type countryListProps = {
-  countries: any
+  countries: Country[]
 }
 const CountryListTable = ({ countries }: countryListProps) => {
+  const router = useRouter()
   return (
     <div> <div className="overflow-x-auto">
       <table className="w-full border-collapse">
@@ -19,23 +24,33 @@ const CountryListTable = ({ countries }: countryListProps) => {
           </tr>
         </thead>
         <tbody>
-          {countries.map((country: any, index: number) => (
-            <tr key={country.name} className={index % 2 === 1 ? "bg-gray-50" : "bg-white"}>
-              <td className="py-3 px-4 text-gray-900 ">{country.name}</td>
-              <td className="py-3 px-4 text-gray-700 font-semibold">{country.currencyCode}</td>
-              <td className="py-3 px-4">
-                <Image
-                  src={country.flagUrl || "/placeholder.svg"}
-                  alt={`${country.name} flag`}
-                  width={40}
-                  height={40}
-                  className="rounded-full object-cover bg-gray-200"
-                />
+
+          {countries.length === 0 && (
+            <tr>
+              <td colSpan={7} className="text-center py-4">
+                <EmptyState />
               </td>
-              <td className="py-3 px-4 text-gray-700">{country.continent}</td>
+            </tr>
+          )}
+          {countries.map((country: Country, index: number) => (
+            <tr key={country.name} className="border-b border[#DEE2E6] text-[#6E768E] font-medium text-sm ">
+              <td className="py-3 px-4 text-gray-900 ">{country.name}</td>
+              <td className="py-3 px-4 text-gray-700 font-semibold">{country.currency_code || "N/A"}</td>
+              <td className="py-3 px-4">
+                <div className='relative w-10 h-10 rounded-[50%]'>
+                <Image
+                    src={country.flag || "/placeholder.svg"}
+                  alt={`${country.name} flag`}
+                    fill
+                  className="rounded-full object-cover bg-gray-200"
+                  />
+                </div>
+              </td>
+              <td className="py-3 px-4 text-gray-700">{country.continent || "N/A"}</td>
               <td className="py-3 px-4 text-right">
                 <div className="flex justify-end gap-2">
                   <button
+                    onClick={() => router.push(`/settings/countries/${country.id}`)}
                     className="w-8 h-8 bg-blue-500 hover:bg-blue-600 text-white rounded-lg flex items-center justify-center transition-colors"
                     aria-label="Edit country"
                   >

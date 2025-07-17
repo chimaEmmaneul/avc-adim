@@ -11,6 +11,9 @@ const settingsRequestClient = {
       })
     ),
 
+  getCountryDetails: (id: string): Promise<any> =>
+    ApiClient.get(SETTINGSENDPOINTS.GET_COUNTRY_DETAILS(id)),
+
   updateCountry: ({ id, data }: { id: string; data: FormData }) =>
     ApiClient.post(SETTINGSENDPOINTS.UPDATE_COUNTRY(id), data, {
       headers: {
