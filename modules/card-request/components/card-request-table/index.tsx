@@ -35,14 +35,14 @@ const CardRequestTable = ({ requests, refetch, itemsPerPage }: { requests: Reque
               </tr>
             )}
             {currentItems.map((request, index) => (
-                <tr key={`${request.id}-${index}`} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+              <tr key={`${request.id}-${index}`} >
                 {/* <td className="py-4 px-6 text-center text-gray-700 whitespace-nowrap border-b-[2px] border-[#DEE2E6]">{request.id}</td> */}
                   <td className="py-4 px-6 text-center whitespace-nowrap border-b-[2px] border-[#DEE2E6]">
                     <div className="text-gray-700 text-left whitespace-nowrap">{`${request.user.name}`}</div>
                     <div className="text-gray-400 text-left text-sm whitespace-nowrap ">{request.user.email}</div>
                   </td>
                   <td className="py-4 px-6 text-center text-gray-700 whitespace-nowrap border-b-[2px] border-[#DEE2E6]">{request.country}</td>
-                  <td className="py-4 px-6 text-center text-gray-700 whitespace-nowrap border-b-[2px] border-[#DEE2E6]">{`${request.location.address} ${request.location.name}, ${request.location.state}`}</td>
+                <td className="py-4 px-6  text-gray-700  border-b-[2px] border-[#DEE2E6] max-w-[400px]">{`${request.location.address} ${request.location.name}, ${request.location.state}`}</td>
                   <td className="py-4 px-6 text-center text-gray-700 whitespace-nowrap border-b-[2px] border-[#DEE2E6]">{formatDate(request.request_date)}</td>
                   <td className="py-4 px-6 text-center border-b-[2px] border-[#DEE2E6]">
                     <span>

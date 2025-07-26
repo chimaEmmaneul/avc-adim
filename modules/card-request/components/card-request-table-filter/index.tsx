@@ -1,5 +1,6 @@
+import { Country } from '@/modules/authentication/@types';
 import { useGetAllCountries } from '@/modules/authentication/api/mutations';
-import { SearchableDropdown } from '@/shared/searchabledropdown';
+import SearchableDropdown from '@/shared/searchabledropdown';
 import { useProfileStore } from '@/zustand/useProfileStore';
 import React from 'react'
 import { date } from 'zod';
@@ -17,7 +18,6 @@ type TableFiltersProps = {
 const TableFilters = ({ country, setCountry, status, setStatus, fromDate, setFromDate, toDate, setToDate }: TableFiltersProps) => {
   const { countries } = useProfileStore()
   const date = new Date()
-  console.log(date.toISOString())
   return (
     <div className="w-full  flex items-center justify-center lg:justify-between  gap-4">
       <div className="mb-4">
@@ -29,12 +29,15 @@ const TableFilters = ({ country, setCountry, status, setStatus, fromDate, setFro
           <span className="text-sm font-medium text-gray-600">Country</span>
           <div className=" max-lg:flex-1 ">
             <SearchableDropdown
-              options={countries}
-              placeholder="Select country name"
-              onChange={(input) => {
-                setCountry(input)
+              items={[{ name: "All", code: "all", flag: "all", phone: "all" }, ...countries] as Country[]}
+              displayKey="name"
+              valueKey="name"
+              value={country}
+              defaultValue={undefined}
+              onSelect={(input) => {
+                setCountry(String(input?.id))
               }}
-              defaultOption={null}
+              placeholder="Choose a country..."
             />
           </div>
         </div>
