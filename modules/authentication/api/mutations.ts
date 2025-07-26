@@ -2,10 +2,12 @@ import { AxiosError } from "axios";
 import { useMemo } from "react";
 import {
   CountryResponse,
+  CurrencyResponse,
   LoginPayload,
   LoginResponse,
   Profile,
   ResetPasswordPayload,
+  StateResponse,
   User,
   UserData,
   UserResponse,
@@ -229,6 +231,48 @@ export function useGetAllCountries() {
     [data, isLoading, isError, error, refetch]
   );
 }
+
+export function useGetState({ id }: { id: string }) {
+  const { data, isLoading, refetch, isError, error, isSuccess } = useQuery<
+    StateResponse,
+    { id: string }
+  >({
+    queryKey: ["GET_ALL_STATE", id],
+    queryFn: () => authClient.getStates(id),
+  });
+
+  return useMemo(
+    () => ({
+      states: data,
+      refetch,
+      isLoading,
+      isError,
+      error,
+      isSuccess,
+    }),
+    [data, isLoading, isError, error, refetch]
+  );
+}
+export function useGetCurrencies() {
+  const { data, isLoading, refetch, isError, error, isSuccess } =
+    useQuery<CurrencyResponse>({
+      queryKey: ["GET_ALL_CURRENCIES"],
+      queryFn: () => authClient.getCurrencies(),
+    });
+
+  return useMemo(
+    () => ({
+      currencies: data,
+      refetch,
+      isLoading,
+      isError,
+      error,
+      isSuccess,
+    }),
+    [data, isLoading, isError, error, refetch]
+  );
+}
+
 
 export function useUpadteAdminProfile() {
   const queryClient = useQueryClient();

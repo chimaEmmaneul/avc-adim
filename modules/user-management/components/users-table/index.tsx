@@ -47,7 +47,7 @@ const UserTable = ({ data }: UserTableProps) => {
 
                   {user.profile_photo ?
                     <div className="w-10 h-10 rounded-[50%] bg-gray-200  flex items-center justify-center">
-                      <Image src={user.profile_photo} alt="user image" width={50} height={50} className="flex self-center flex-shrink-0 animate-inner " />
+                      <Image src={user.profile_photo} alt="user image" width={50} height={50} className="flex self-center flex-shrink-0 rounded-[50%] " />
                     </div>
                     :
                     <div className="w-10 h-10 rounded-[50%] bg-gray-200  flex items-center justify-center">

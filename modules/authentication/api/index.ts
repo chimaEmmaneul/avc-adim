@@ -28,6 +28,10 @@ const authClient = {
   verifyOtpCode: (data: { verification_code: string }): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.VERIFY_OTP_CODE, data),
   getAdminProfile: (): Promise<any> => ApiClient.get(AUTHENDPOINTS.PROFILE),
+  getCurrencies: (): Promise<any> =>
+    ApiClient.get(AUTHENDPOINTS.GET_CURRENCIES),
+  getStates: (id: string): Promise<any> =>
+    ApiClient.get(AUTHENDPOINTS.GET_STATE(id)),
   updateProfile: (data: ProfileFormData): Promise<any> =>
     ApiClient.post(AUTHENDPOINTS.UPDATE_PROFILE, data, {
       headers: {

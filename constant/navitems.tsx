@@ -48,6 +48,7 @@ export const NAV_ITEMS: NavItem[] = [
     subItems: [
       { name: "Countries", path: "/settings/countries" },
       { name: "Points Conversion", path: "/settings/point-conversion" },
+      { name: "Privacy Policy", path: "/manage-content/privacy-policy" },
       { name: "Security", path: "/settings/security" },
     ],
   },

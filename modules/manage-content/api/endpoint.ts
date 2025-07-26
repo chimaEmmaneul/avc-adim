@@ -6,4 +6,6 @@ export const MANAGECONTENTENDPOINTS = {
   ADD_FOOTER_LINK: "admin/social-links/add",
   GET_CONTACTUS_DETAILS: "admin/website-setting",
   UPDATE_CONTACT_US: "admin/update-website",
+  GET_PRIVACY_POLICY_DETAILS: `admin/privacy-policy`,
+  UPDATE_PRIVACY_POLICY_DETAILS: `admin/update-privacy`,
 };

@@ -2,7 +2,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import settingsRequestClient from ".";
 import { useMemo } from "react";
 import { AxiosError } from "axios";
-import { CountriesResponse, CountryDetailsResponse } from "../@types";
+import {
+  CountriesResponse,
+  CountryDetailsResponse,
+  CurrencyResponse,
+} from "../@types";
 
 export function useGetCountry(request: { search: string; page: number }) {
   const { data, isLoading, refetch, isError, error } =
@@ -14,6 +18,23 @@ export function useGetCountry(request: { search: string; page: number }) {
     () => ({
       countries: data,
       countriesRefetch: refetch,
+      isLoading,
+      isError,
+      error,
+    }),
+    [data, isLoading, isError, error, refetch]
+  );
+}
+export function useGetConversion(request: { search?: string; page: number }) {
+  const { data, isLoading, refetch, isError, error } =
+    useQuery<CurrencyResponse>({
+      queryKey: ["GET_CONVERSION", request.page, request.search],
+      queryFn: () => settingsRequestClient.getConversion(request),
+    });
+  return useMemo(
+    () => ({
+      conversion: data,
+      conversionRefetch: refetch,
       isLoading,
       isError,
       error,

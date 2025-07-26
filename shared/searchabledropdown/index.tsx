@@ -1,191 +1,214 @@
-'use client';
+"use client"
 
-import type React from 'react';
-import { useState, useEffect, useRef } from 'react';
-import { ChevronDown, X, Check } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import type React from "react"
 
-interface Option {
-  id: number
-  name: string;
-  code: string;
-  currency_code?: string;
-  flag?: any;
-  continent?: any;
+import { ChevronDown, Search, X } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
+
+interface SearchableDropdownProps<T> {
+  items: T[]
+  displayKey: keyof T
+  valueKey: keyof T
+  value?: T[keyof T]
+  defaultValue?: T[keyof T]
+  onSelect: (item: T) => void
+  placeholder?: string
+  className?: string
+  disabled?: boolean
 }
 
-interface SearchableDropdownProps {
-  options: Option[];
-  placeholder?: string;
-  onChange?: (value: string) => void;
-  defaultOption: string | null;
-}
+export default function SearchableDropdown<T extends Record<string, any>>({
+  items,
+  displayKey,
+  valueKey,
+  defaultValue,
+  onSelect,
+  value,
+  placeholder = "Select an option...",
+  className = "",
+  disabled = false,
+}: SearchableDropdownProps<T>) {
+  const [isOpen, setIsOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [selectedItem, setSelectedItem] = useState<T | null>(null)
+  const [highlightedIndex, setHighlightedIndex] = useState(-1)
 
-export function SearchableDropdown({
-  options,
-  placeholder = '',
-  onChange,
-  defaultOption,
-}: SearchableDropdownProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [highlightedIndex, setHighlightedIndex] = useState(-1);
-  const [openDirection, setOpenDirection] = useState<'up' | 'down'>('down');
+  const dropdownRef = useRef<HTMLDivElement>(null)
+  const searchInputRef = useRef<HTMLInputElement>(null)
 
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const targetValue = value !== undefined ? value : defaultValue
+    if (targetValue) {
+      const targetItem = items?.find((item) => item[valueKey] === targetValue)
+      if (targetItem) {
+        setSelectedItem(targetItem)
+        onSelect(targetItem)
+      }
+    } else if (value === null || value === undefined) {
+      setSelectedItem(null)
+    }
+  }, [value, defaultValue, items, valueKey])
 
-  const filteredOptions = options.filter((option) =>
-    option.name.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+        setIsOpen(false)
+        setSearchTerm("")
+        setHighlightedIndex(-1)
       }
-    };
+    }
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
 
   useEffect(() => {
-    if (defaultOption && options.length > 0) {
-      const match = options.find(option => option.name === defaultOption);
-      if (match) {
-        setSelectedOption(match.name);
-        onChange?.(String(match.id));
-      }
+    if (isOpen && searchInputRef.current) {
+      searchInputRef.current.focus()
     }
-  }, [defaultOption, options]);
+  }, [isOpen])
 
-
-  const handleToggleDropdown = () => {
-    if (!isOpen && dropdownRef.current) {
-      const rect = dropdownRef.current.getBoundingClientRect();
-      const spaceBelow = window.innerHeight - rect.bottom;
-      const spaceAbove = rect.top;
-
-      if (spaceBelow < 200 && spaceAbove > spaceBelow) {
-        setOpenDirection('up');
-      } else {
-        setOpenDirection('down');
-      }
-    }
-    console.log("testing")
-    setIsOpen(!isOpen);
-    if (!isOpen) {
-      setSearchTerm('');
-      setHighlightedIndex(-1);
-    }
-  };
-
-  const handleOptionClick = (option: Option) => {
-    setSelectedOption(option.name);
-    setIsOpen(false);
-    setSearchTerm('');
-    if (onChange) {
-      onChange(String(option.id));
-    }
-  };
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-    setHighlightedIndex(-1);
-  };
+  const filteredItems = items?.filter((item) =>
+    String(item[displayKey]).toLowerCase().includes(searchTerm.toLowerCase()),
+  )
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      setHighlightedIndex((prevIndex) =>
-        prevIndex < filteredOptions.length - 1 ? prevIndex + 1 : prevIndex,
-      );
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      setHighlightedIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : 0));
-    } else if (e.key === 'Enter' && highlightedIndex !== -1) {
-      e.preventDefault();
-      handleOptionClick(filteredOptions[highlightedIndex]);
-    } else if (e.key === 'Escape') {
-      setIsOpen(false);
+    if (!isOpen) {
+      if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
+        e.preventDefault()
+        setIsOpen(true)
+      }
+      return
     }
-  };
 
-  const clearSelection = () => {
-    setSelectedOption(null);
-    setSearchTerm('');
-    if (onChange) {
-      onChange('');
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault()
+        setHighlightedIndex((prev) => (prev < filteredItems.length - 1 ? prev + 1 : 0))
+        break
+      case "ArrowUp":
+        e.preventDefault()
+        setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : filteredItems.length - 1))
+        break
+      case "Enter":
+        e.preventDefault()
+        if (highlightedIndex >= 0 && filteredItems[highlightedIndex]) {
+          handleSelect(filteredItems[highlightedIndex])
+        }
+        break
+      case "Escape":
+        setIsOpen(false)
+        setSearchTerm("")
+        setHighlightedIndex(-1)
+        break
     }
-  };
+  }
+
+  const handleSelect = (item: T) => {
+    setSelectedItem(item)
+    setIsOpen(false)
+    setSearchTerm("")
+    setHighlightedIndex(-1)
+    onSelect(item)
+  }
+
+  const handleClear = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setSelectedItem(null)
+    setSearchTerm("")
+    onSelect(null as any)
+  }
+
+  const toggleDropdown = () => {
+    if (disabled) return
+    setIsOpen(!isOpen)
+    if (!isOpen) {
+      setSearchTerm("")
+      setHighlightedIndex(-1)
+    }
+  }
 
   return (
-    <div className="relative w-full" ref={dropdownRef}>
-      <div
-        className="flex static z-50 items-center justify-between w-full p-3 border border-gray-300 rounded-lg bg-white cursor-pointer transition-all duration-300 ease-in-out hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        onClick={handleToggleDropdown}
+    <div
+      ref={dropdownRef}
+      className={`relative w-full ${className}`}
+      onKeyDown={handleKeyDown}
+      tabIndex={disabled ? -1 : 0}
+    >
+      <button
+        type="button"
+        onClick={toggleDropdown}
+        disabled={disabled}
+        className={`
+          w-full px-4 py-3 text-left bg-white border border-gray-300 rounded-lg shadow-sm
+          transition-all duration-200 ease-in-out
+          ${disabled
+            ? "bg-gray-50 text-gray-400 cursor-not-allowed"
+            : "hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+          }
+          ${isOpen ? "border-blue-500 ring-2 ring-blue-500" : ""}
+        `}
       >
-        {selectedOption ? (
-          <div className="flex items-center justify-between w-full">
-            <span className="font-medium">{selectedOption}</span>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                clearSelection();
-              }}
-              className="text-gray-400 hover:text-gray-600 focus:outline-none"
-            >
-              <X size={18} />
-            </button>
-          </div>
-        ) : (
-          <span className="text-gray-500 text-xs">{placeholder}</span>
-        )}
-        <ChevronDown
-          size={20}
-          className={`text-gray-400 transition-transform duration-300 ${isOpen ? 'transform rotate-180' : ''}`}
-        />
-      </div>
-      {isOpen && (
-        <div
-          className={cn(
-            'absolute z-[999999999] w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg overflow-hidden transition-all duration-300 ease-in-out',
-            openDirection === 'up' ? 'bottom-full mb-1' : 'top-full mt-1',
-          )}
-        >
-          <div className="p-2 border-b border-gray-200">
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={handleSearchChange}
-              onKeyDown={handleKeyDown}
-              className="w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        <div className="flex items-center justify-between">
+          <span className={selectedItem ? "text-gray-900" : "text-gray-500"}>
+            {selectedItem ? String(selectedItem[displayKey]) : placeholder}
+          </span>
+          <div className="flex items-center gap-2">
+            {selectedItem && !disabled && (
+              <X className="w-4 h-4 text-gray-400 hover:text-gray-600 transition-colors" onClick={handleClear} />
+            )}
+            <ChevronDown
+              className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
             />
           </div>
-          <ul className="max-h-60 overflow-auto py-1">
-            {filteredOptions.length === 0 ? (
-              <li className="px-4 py-2 text-gray-500">No results found</li>
+        </div>
+      </button>
+
+      {isOpen && (
+        <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
+          <div className="p-3 border-b border-gray-200">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value)
+                  setHighlightedIndex(-1)
+                }}
+                placeholder="Search..."
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-amber-500 focus:border-amber-500"
+              />
+            </div>
+          </div>
+
+          <div className="max-h-60 overflow-y-auto">
+            {filteredItems?.length === 0 ? (
+              <div className="px-4 py-3 text-gray-500 text-center">No options found</div>
             ) : (
-              filteredOptions.map((option, index) => (
-                <li
-                  key={option.name}
-                  onClick={() => handleOptionClick(option)}
-                  className={`px-4 py-2 cursor-pointer flex items-center justify-between ${index === highlightedIndex ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-50'
-                    }`}
+                filteredItems?.map((item, index) => (
+                  <button
+                    key={`${String(item[valueKey])}-${index}`}
+                    type="button"
+                    onClick={() => handleSelect(item)}
+                    className={`
+                    w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors duration-150
+                    ${highlightedIndex === index ? "bg-blue-50 text-blue-700" : "text-gray-900"}
+                    ${selectedItem && selectedItem[valueKey] === item[valueKey]
+                        ? "bg-blue-100 text-blue-700 font-medium"
+                        : ""
+                      }
+                  `}
+                    onMouseEnter={() => setHighlightedIndex(index)}
                 >
-                  <span>{option.name}</span>
-                  {selectedOption && selectedOption === option.name && (
-                    <Check size={18} className="text-blue-500" />
-                  )}
-                </li>
+                    {String(item[displayKey])}
+                  </button>
               ))
             )}
-          </ul>
+          </div>
         </div>
       )}
     </div>
-  );
+  )
 }

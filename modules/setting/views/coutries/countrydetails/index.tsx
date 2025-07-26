@@ -2,11 +2,14 @@
 "use client"
 import type React from "react"
 
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { useEffect, useState } from "react"
 import { X } from "lucide-react"
 import { useGetCountryDetails, useUpdatecountry } from "@/modules/setting/api/mutation"
-import { showsuccess } from "@/lib/toasts"
+import { showerror, showsuccess } from "@/lib/toasts"
+import { useProfileStore } from "@/zustand/useProfileStore"
+import { Currency } from "@/modules/authentication/@types"
+import SearchableDropdown from "@/shared/searchabledropdown"
 
 interface CountryFormData {
   name: string
@@ -17,21 +20,23 @@ interface CountryFormData {
 const CountriesDetailsView = ({ params }: { params: { id: string } }) => {
   const [flagPreview, setFlagPreview] = useState<string>("/german-flag.png")
   const [isOpen, setIsOpen] = useState(true)
+  const { currencies } = useProfileStore()
   const { countryDetails, isLoading } = useGetCountryDetails(params.id)
   const { updateCountry, isPending } = useUpdatecountry()
-  console.log(countryDetails, "details")
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
+    control,
     reset,
     setValue,
   } = useForm<CountryFormData>({
     defaultValues: {
-      name: "Germany",
-      currency_code: "EUR",
-      continent: "Europe",
+      name: "",
+      currency_code: "",
+      continent: "",
       flag: null,
     },
   })
@@ -68,10 +73,11 @@ const CountriesDetailsView = ({ params }: { params: { id: string } }) => {
       updatetedData.append("name", data.name)
       updatetedData.append("currency_code", data.currency_code)
       updatetedData.append("continent", data.continent)
-      updatetedData.append("flag", data.flag[0])
+      updatetedData.append("flag", data.flag?.[0] ?? String(countryDetails?.data.flag))
       const res = await updateCountry({ id: params.id, data: updatetedData })
       showsuccess(res.message)
-    } catch (error) {
+    } catch (error: any) {
+      showerror(Array.isArray(error) ? error[0] : error.message)
       console.log(error)
     }
   }
@@ -135,7 +141,7 @@ const CountriesDetailsView = ({ params }: { params: { id: string } }) => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Code*</label>
-              <input
+              {/* <input
                 type="text"
                 {...register("currency_code", {
                   required: "Currency code is required",
@@ -147,8 +153,32 @@ const CountriesDetailsView = ({ params }: { params: { id: string } }) => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 placeholder="EUR"
               />
-              {errors.currency_code && <p className="mt-1 text-sm text-red-600">{errors.currency_code.message}</p>}
-            </div>
+              {errors.currency_code && <p className="mt-1 text-sm text-red-600">{errors.currency_code.message}</p>} */}
+              <Controller
+                control={control}
+                name="currency_code"
+                rules={{ required: "Country is required" }}
+                render={({ field }) => {
+                  return (
+                    <div>
+                      <SearchableDropdown
+                        items={currencies as Currency[]}
+                        displayKey="name"
+                        valueKey="code"
+                        value={field.value ? field.value : undefined}
+                        defaultValue={countryDetails?.data.currency_code}
+                        onSelect={(input) => {
+                          console.log(input, 'onChange')
+                          setValue("currency_code", String(input.code), { shouldTouch: true })
+                        }}
+                        placeholder="Choose a country..."
+                      />
+                      {errors.currency_code && <p className="text-sm text-red-500">{errors.currency_code.message}</p>}
+                    </div>
+                  )
+                }}
+              />
+            </div> 
           </div>
 
           <div>

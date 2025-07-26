@@ -11,13 +11,13 @@ const CardPickupTable = ({ locations }: { locations: LocationType[] }) => {
   return (
     <div className="overflow-x-auto w-full ">
       <table className="w-full">
-        <thead className="bg-gray-50">
+        <thead className="text-blackd border-b ">
           <tr>
             {["Location Name", "Country", "Service Days", "Service Hours", "Address", "Action"].map(
               (header) => (
                 <th
                   key={header}
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap tracking-wider"
+                  className="px-6 py-3 text-left text-xs font-medium text-black uppercase whitespace-nowrap tracking-wider"
                 >
                   {header}
                 </th>
@@ -27,7 +27,7 @@ const CardPickupTable = ({ locations }: { locations: LocationType[] }) => {
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {locations.map((location: LocationType, index) => (
-            <tr key={`${location.id}-${index}`} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+            <tr key={`${location.id}-${index}`}>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{location.name}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{location.country}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{location.service_days}</td>

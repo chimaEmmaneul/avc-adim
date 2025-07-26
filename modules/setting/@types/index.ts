@@ -32,3 +32,26 @@ export interface CountryDetailsResponse {
   message: string;
   data: Country;
 }
+
+
+export interface Currency {
+  id: number;
+  name: string;
+  code: string;
+  exchange_rate: number;
+}
+
+export interface Meta {
+  current_page: number;
+  total: number;
+  per_page: number;
+  last_page: number;
+}
+
+export interface CurrencyResponse {
+  success: boolean;
+  message: string;
+  data: Currency[];
+  meta: Meta;
+}
+

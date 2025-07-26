@@ -17,4 +17,6 @@ export const AUTHENDPOINTS = {
   GET_CODE: "admin/get-code",
   VERIFY_OTP_CODE: "admin/verify-code",
   LOGOUT: "/admin/logout",
+  GET_CURRENCIES: "/currencies",
+  GET_STATE: (id: string) => `/states?country_id=${id}`,
 };

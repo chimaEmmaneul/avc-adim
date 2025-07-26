@@ -27,4 +27,10 @@ export const ManageContentClient = {
 
   getContactUsDetails: async (): Promise<any> =>
     ApiClient.get(MANAGECONTENTENDPOINTS.GET_CONTACTUS_DETAILS),
+
+  updatePrivacyPolicy: async (data: any): Promise<any> =>
+    ApiClient.post(MANAGECONTENTENDPOINTS.UPDATE_PRIVACY_POLICY_DETAILS, data),
+
+  getPrivacyPolicy: async (): Promise<any> =>
+    ApiClient.get(MANAGECONTENTENDPOINTS.GET_PRIVACY_POLICY_DETAILS),
 };

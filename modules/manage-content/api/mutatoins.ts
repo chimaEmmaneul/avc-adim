@@ -4,6 +4,7 @@ import { ManageContentClient } from ".";
 import { useMemo } from "react";
 import { TestimonialResponse } from "../@types/testimoinals";
 import { SiteDetailsResponse } from "../@types/contactus";
+import { MANAGECONTENTENDPOINTS } from "./endpoint";
 
 export function useAddNewTestimonial() {
   const queryClient = useQueryClient();
@@ -27,6 +28,50 @@ export function useAddNewTestimonial() {
     [, isError, error, mutateAsync, isPending]
   );
 }
+
+export function useGetPrivacyPolicy() {
+  const { data, isLoading, refetch, isError, error } = useQuery<any>({
+    queryKey: ["GET_PRIVACY_POLICY"],
+    queryFn: () => ManageContentClient.getPrivacyPolicy(),
+  });
+
+  return useMemo(
+    () => ({
+      privayPolicy: data,
+      refetch,
+      isLoading,
+      isError,
+      error,
+    }),
+    [data, isLoading, isError, error, refetch]
+  );
+}
+
+export function useUpdatePrivacyPolicy() {
+  const queryClient = useQueryClient();
+  const { mutateAsync, data, isPending, error, isError } = useMutation<
+    any,
+    AxiosError,
+    any
+  >({
+    mutationFn: (data) => ManageContentClient.updatePrivacyPolicy(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["GET_PRIVACY_POLICY"] });
+    },
+  });
+
+  return useMemo(
+    () => ({
+      updatePrivcyPolicy: mutateAsync,
+      data,
+      isPending,
+      error,
+      isError,
+    }),
+    [mutateAsync, data, isPending, error, isError]
+  );
+}
+
 
 export function useAddFooterLink() {
   const queryClient = useQueryClient();

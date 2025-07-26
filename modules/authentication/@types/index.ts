@@ -118,3 +118,27 @@ export type LoginResponse = {
   data: string;
   token: string;
 };
+
+
+export type StateResponse = {
+  success: boolean;
+  message: string;
+  data: State[];
+};
+
+export type State = {
+  id: number;
+  name: string;
+  country_id: number;
+};
+
+export type CurrencyResponse = {
+  success: boolean;
+  message: string;
+  data: Currency[];
+};
+
+export type Currency = {
+  code: string;
+  name: string;
+};
