@@ -35,7 +35,7 @@ export default function SearchableDropdown<T extends Record<string, any>>({
 
   const dropdownRef = useRef<HTMLDivElement>(null)
   const searchInputRef = useRef<HTMLInputElement>(null)
-
+  console.log(defaultValue, "defaul")
   useEffect(() => {
     const targetValue = value !== undefined ? value : defaultValue
     if (targetValue) {

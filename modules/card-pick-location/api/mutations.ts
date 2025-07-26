@@ -4,11 +4,11 @@ import { useMemo } from "react";
 import { CreateLocationPayload, LocationResponse } from "../@types";
 import { AxiosError } from "axios";
 
-export function useGetAllPickupLocation() {
+export function useGetAllPickupLocation({ page }: { page: number }) {
   const { data, isLoading, refetch, isError, error } =
     useQuery<LocationResponse>({
-      queryKey: ["GET_ALL_PICKUP_LOCATION"],
-      queryFn: () => pickupLocationClient.getAllPickupLocations(),
+      queryKey: ["GET_ALL_PICKUP_LOCATION", page],
+      queryFn: () => pickupLocationClient.getAllPickupLocations({ page }),
     });
 
   return useMemo(

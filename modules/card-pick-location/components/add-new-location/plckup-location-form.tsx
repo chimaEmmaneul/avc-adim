@@ -17,7 +17,8 @@ import { useAddNewPickupLocation, useUpdatePickupLocation } from "../../api/muta
 import { showerror, showsuccess } from "@/lib/toasts"
 import { AxiosError } from "axios"
 import { LocationType } from "../../@types"
-import { SearchableDropdown } from "@/shared/searchabledropdown"
+import { Country } from "@/modules/authentication/@types"
+import SearchableDropdown from "@/shared/searchabledropdown"
 
 type LocationFormData = {
   name: string
@@ -66,7 +67,7 @@ export default function AddNewLocationForm({ isOpen, onClose, pickupLocation }: 
       console.log(pickupLocation.service_days.split("-")[1])
       reset({
         name: pickupLocation.name,
-        country: pickupLocation.country,
+        country: "",
         state: pickupLocation.state,
         address: pickupLocation.address,
         openingHour: pickupLocation.service_hour.split("-")[0],
@@ -168,7 +169,7 @@ export default function AddNewLocationForm({ isOpen, onClose, pickupLocation }: 
             {errors.state && <p className="text-sm text-red-500">{errors.state.message}</p>}
           </div>
 
-          <div className="space-y-2">
+          <div className="">
             <label htmlFor="country" className="block font-medium">
               Country
             </label>
@@ -176,19 +177,25 @@ export default function AddNewLocationForm({ isOpen, onClose, pickupLocation }: 
               control={control}
               name="country"
               rules={{ required: "Country is required" }}
-              render={({ field }) => (
-                <div>
-                  <SearchableDropdown
-                    options={countries}
-                    placeholder="Select country name"
-                    onChange={(input) => {
-                      setValue("country", input, { shouldTouch: true })
-                    }}
-                    defaultOption={pickupLocation?.country as string}
-                  />
-                  {errors.country && <p className="text-sm text-red-500">{errors.country.message}</p>}
-                </div>
-              )}
+              render={({ field }) => {
+                return (
+                  <div>
+                    <SearchableDropdown
+                      items={countries as Country[]}
+                      displayKey="name"
+                      valueKey="name"
+                      value={field.value ? Number(field.value) : undefined}
+                      defaultValue={pickupLocation?.country}
+                      onSelect={(input) => {
+                        console.log(input, 'onChange')
+                        setValue("country", String(input.id), { shouldTouch: true })
+                      }}
+                      placeholder="Choose a country..."
+                    />
+                    {errors.country && <p className="text-sm text-red-500">{errors.country.message}</p>}
+                  </div>
+                )
+              }}
             />
           </div>
 

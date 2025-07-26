@@ -9,7 +9,7 @@ import Pagination from '@/shared/Pagination'
 const CardPickupLocation = () => {
   const [currentPage, setCurrentPage] = useState(1)
 
-  const { pickupLocations, isLoading, isError } = useGetAllPickupLocation()
+  const { pickupLocations, isLoading, isError } = useGetAllPickupLocation({ page: currentPage })
 
   if (isLoading) return <CardPickUpLoader />
   return (

@@ -9,16 +9,17 @@ import { useRouter } from "next/navigation"
 import { showerror, showsuccess } from "@/lib/toasts"
 import { formatDate, formatDateTime } from "@/lib/utils"
 import { useGetAllCountries, useGetUser, useUpdateUsers } from "@/modules/authentication/api/mutations"
-import { SearchableDropdown } from "../searchabledropdown"
 import { useProfileStore } from "@/zustand/useProfileStore"
 import ProfileLoadingSkeleton from "@/skeleonloaders/profiledetailsSkeleton"
+import SearchableDropdown from "../searchabledropdown"
+import { Country, State } from "@/modules/authentication/@types"
 
 
 
 export default function UserProfile({ params }: { params: { id: string } }) {
   const router = useRouter()
   const { isLoading, userProfile } = useGetUser(params.id)
-  const { countries } = useProfileStore()
+  const { countries, states } = useProfileStore()
   const [emailVerification, setEmailVerification] = useState(false)
   const [twoFAVerification, setTwoFAVerification] = useState(false)
   const [kycVerification, setKYCVerification] = useState(false)
@@ -191,7 +192,7 @@ export default function UserProfile({ params }: { params: { id: string } }) {
           </div>
 
 
-          <div className="space-y-2">
+          <div className="">
             <label htmlFor="country" className="block font-medium">
               Country
             </label>
@@ -199,20 +200,25 @@ export default function UserProfile({ params }: { params: { id: string } }) {
               control={control}
               name="country_id"
               rules={{ required: "Country is required" }}
-              render={({ field }) => (
-                <div>
-                  <SearchableDropdown
-                    options={countries}
-                    placeholder="Select country name"
-                    onChange={(input) => {
-                      console.log(input, 'onChange')
-                      setValue("country_id", input, { shouldTouch: true })
-                    }}
-                    defaultOption={userProfile?.data.country as string}
-                  />
-                  {errors.country_id && <p className="text-sm text-red-500">{errors.country_id.message}</p>}
-                </div>
-              )}
+              render={({ field }) => {
+                return (
+                  <div>
+                    <SearchableDropdown
+                      items={countries as Country[]}
+                      displayKey="name"
+                      valueKey="name"
+                      value={field.value ? Number(field.value) : undefined}
+                      defaultValue={userProfile?.data.country}
+                      onSelect={(input) => {
+                        console.log(input, 'onChange')
+                        setValue("country_id", String(input.id), { shouldTouch: true })
+                      }}
+                      placeholder="Choose a country..."
+                    />
+                    {errors.country_id && <p className="text-sm text-red-500">{errors.country_id.message}</p>}
+                  </div>
+                )
+              }}
             />
           </div>
 
@@ -239,14 +245,32 @@ export default function UserProfile({ params }: { params: { id: string } }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">State</label>
-            <input
-              type="text"
-              placeholder="Enter State..."
-              {...register("state")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            <label htmlFor="state" className="block text-sm font-medium">
+              State
+            </label>
+            <Controller
+              control={control}
+              name="state"
+              rules={{ required: "state is required" }}
+              render={({ field }) => {
+                return (
+                  <div>
+                    <SearchableDropdown
+                      items={states as State[] ?? []}
+                      displayKey="name"
+                      valueKey="name"
+                      value={undefined}
+                      defaultValue={userProfile?.data.state}
+                      onSelect={(input) => {
+                        setValue("state", String(input.name), { shouldTouch: true })
+                      }}
+                      placeholder="Choose a state..."
+                    />
+                    {errors.state && <p className="text-sm text-red-500">{errors.state.message}</p>}
+                  </div>
+                )
+              }}
             />
-            {errors.state && <p className="mt-1 text-sm text-red-600">{errors.state.message}</p>}
           </div>
 
           <div>
